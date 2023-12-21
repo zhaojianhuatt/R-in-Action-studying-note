@@ -1,0 +1,6187 @@
+---
+title: "《R语言实战》自学笔记"
+author: "ZJH"
+date: 2021年2月4日至`r format(Sys.time(), '%Y年%m月%d日')`
+CJKmainfont: Microsoft YaHei
+geometry: "left = 3.0cm, right = 3.0cm, top = 2.0cm, bottom = 2.0cm"
+output: 
+  pdf_document:
+    includes:
+      header-includes:
+        - \usepackage{xeCJK}
+    keep_tex: yes
+    latex_engine: xelatex
+    toc: yes
+    highlight: tango
+  word_document: 
+    toc: yes
+  html_document: 
+    toc: yes
+    fontsize: 8pt
+    theme: cosmo
+    highlight: tango
+---
+
+\newpage
+
+# **第一部分 入门**
+
+# 第1章 R语言介绍
+
+## 1.1 为何要使用R？
+
+-   开源，免费；
+-   一个全面的统计研究平台，几乎任何类型的数据分析皆可在R中完成；
+-   顶尖水准的制图功能；
+-   一个可进行交互式数据分析和探索的强大平台；
+-   R可以轻松地从各种类型的数据源导入数据；
+-   R是一个无与伦比的平台，在其上可使用一种简单而直接的方式编写新的统计方法；
+-   R囊括了在其他软件中尚不可用的、先进的统计计算例程；
+-   R可运行于多种平台之上，包括Windows、UNIX和Mac OS X；
+-   简单易学。[<sup>1-2</sup>](#refer-anchor)
+
+## 1.2 R的获取和安装
+
+**R的安装**  
+R的获取：CRAN (Comprehensive R Archive Network) <http://cran.r-project.org>  
+RStudio获取：<https://rstudio.com>  
+RStudio是一款R语言的IDE，是辅助你使用R进行编辑的工具。  
+安装：先安装R，再安装RStudio。
+
+**R的更新**  
+查看R版本：version。  
+方法1：  
+1、下载最新版的R并安装  
+2、打开新版的R输入update.packages(checkBuilt=TRUE,ask=FALSE)（这一步是将旧版的包迁移到了新版）  
+3、删除旧版的R，更新完成。  
+方法2：  
+1、install.packages("installr")  
+2、library(installr)  
+3、updateR()  
+**RStudio更新**  
+打开RStudio，点击Help，从下拉菜单中选择Check for Updates即可。[<sup>3</sup>](#refer-anchor)
+
+## 1.3 R的使用
+
+<font color=blue size=3>R使用 \<- 作为赋值符号。</font>\
+注释由符号 \# 开头。在 \# 之后出现的任何文本都会被R解释器忽略。
+
+### 1.3.1 新手上路
+
+《R语言实战》例子：
+
+```{r}
+age <- c(1, 3, 5, 2, 11, 9, 3, 9, 12, 3) # 构建向量age。
+weight <- c(4.4, 5.3, 7.2, 5.2, 8.5, 7.3, 6.0, 10.4, 10.2, 6.1) # 构建向量weight。
+mean(weight) # weight求平均值。
+sd(weight) # weight求标准差。
+cor(age, weight) # age和weight的关系系数。
+plot(age, weight) # 绘制age和weight关系图。
+```
+
+### 1.3.2 获取帮助
+
+?函数名即可查看相关函数功能，如?mean就是查看函数mean的帮助文档。帮助文档包括对函数的基本描述，函数公式解释，公式内各参数的解释，参考文献等，最下面还给出了示例。对英文不好的我而言，看英文帮助文件费时费力，可以借助百度搜索来学习包或者函数的功能。\
+![](D:/documents/1.3.2.png)
+
+### 1.3.3 工作空间
+
+工作空间：R当前的工作环境，储存着用户定义的对象（向量，矩阵，函数，数据框，列表）。\
+工作目录：R用来读取文件和保存结果的默认目录。\
+getwd()查看当前工作目录;\
+setwd()设定当前工作目录，注意setwd()命令里的路径使用正斜杠。\
+![](D:/documents/1.3.3.png)
+
+### 1.3.4 输入输出  
+
+**1.输入**  
+函数source("filename")可在当前会话中执行一个脚本。   
+**2.文本输出**  
+函数sink("filename")将输出重定向到文件filename中。    
+**3.图形输出**  
+![](D:/documents/1.4.png)  
+在R studio中完成数据的输入输出及可视化更为便捷。
+
+## 1.4 包
+
+### 1.4.1 什么是包
+
+包是R函数、数据、预编译代码以一种定义完善的格式组成的集合。\
+R自带了一系列默认包，包括base、datasets、utils、grDevices、graphics、mydata、methods。\
+扩展包：R扩展包数不胜数，如数据可视化包ggplot2、数据处理包dplyr等，根据自身需求寻求包并下载使用。[<sup>4</sup>](#refer-anchor)
+
+### 1.4.2 包的安装
+
+方法1：在R或者RStudio的console中键入命令install.packages("R包名")。要多个包一起安装，install.packages(c("package 1","package 2",···))。\
+方法2：在RStudio右下角窗口中的Packages中点击install，在跳出的窗口中输入想要安装的包，点击install。\
+方法3：点击RStudio主菜单Tools，选择install packages...，在跳出的窗口中的Packages栏键入想要安装的包名称，点击install。
+
+### 1.4.3 包的载入
+
+载入包：library(包的名称)。如library(ggplot2)就是载入ggplot2包。也可使用require(包的名称)。\
+移除使用的包：detach(package:包的名称)。
+
+### 1.4.4 包的使用
+
+**包的相关操作**\
+获取包的信息：??R包名。也可以用help(package="R包名")。\
+获取所有已安装的包的列表：installed.packages()。也可以用(.packages(all.available = T))。 获取R包所在库的路径：.libPaths()。\
+获取当前R环境中加载的所有包：search()。\
+查看已加载的包：(.packages())。
+
+**包的更新**
+
+方法1：update.packages("R包名")。\
+方法2：在RStudio右下角窗口中的Packages中点击Update。\
+方法3：点击RStudio主菜单Tools，选择Check for Packages Updates，在跳出的选择框中勾选你要更新的包，点击Install Updates。
+
+### 1.4.5 包的卸载
+
+卸载包：remove.packages("R包名")。 在RStudio中Packages中勾选想要卸载的包，在包最右侧点×进行卸载。
+
+## 1.5 批处理
+
+## 1.6 将输出用为输入--结果的重用
+
+```{r}
+lm(mpg ~ wt,data = mtcars) # 数据集mtcars做线性回归。结果在屏幕呈现，但不会保存。
+lmfit <- lm(mpg ~ wt,data = mtcars) # 将线性回归的结果保存在lmfit中。
+summary(lmfit) # 分析结果呈现。
+```
+
+## 1.7 处理大数据集
+
+R可以处理GB级到TB级的数据分析问题，但需要专门的手段。
+
+## 1.8 示例实践
+
+## 1.9 小结
+
+**R代码编写规范**
+
+-   R文件名应该以.R结尾；\
+-   变量命名应全部小写，字与字之间用小黑点分隔；函数命名字与字之间没有分隔，但每个字首字母大写；\
+-   每一行代码长度不超过80个字符；\
+-   缩进代码时使用两个空格的长度；\
+-   请在所有的二元操作符(**+**, **-**, **\***, **\<-**, etc)两边都加上空格，逗号前一定不能有空格，逗号后一定得有空格。\
+-   当注释你的代码的时候，所有的注释都应该以\#开头，并空一个空格。短注释应该和代码同行，而后空两个空格，以\#开头，空一个空格，随后写注释。[<sup>5</sup>](#refer-anchor)
+
+# 第2章 创建数据集
+
+## 2.1 数据集的概念
+
+数据集：由数据构成的一个矩形数组，行表示观测，列表示变量。
+
+## 2.2 数据结构
+
+R拥有许多用于存储数据的对象类型，包括标量、向量、矩阵、数组、数据框和列表。\
+![](D:/documents/2.2.png)
+
+### 2.2.1 向量
+
+向量(Vector)是用于存储数值型、字符型或逻辑型数据的<font color=red size=3>**一维**</font>数组。\
+向量类型：数值型(numeric)、字符型(character)、逻辑型(logical)、整数型(integer)、复数型(complex)。\
+单个向量中的数据必须拥有相同的类型或模式。\
+单个数值是标量(scalar)，标量实际上是长度为1的向量。[<sup>6,7,8,9</sup>](#refer-anchor)
+
+#### 1.构建向量
+
+函数：c(....)\
+....：被连接的对象。
+
+```{r}
+a <- c(1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0) # 数值型。可以有小数点。
+a # 返回结果。
+a1 <- c("one", "two", "three", "four", "five", "six", "seven", "eight") # 字符型。
+a1 # 返回结果。
+a2 <- c(TRUE, FALSE, TRUE, FALSE, TRUE, FALSE, TRUE, FALSE) # 逻辑型。
+a2 # 返回结果。
+a3 <- c(1:20) # 整数型。
+a3 # 返回结果。
+a4 <- c(1+1i, 2+3i, 3+5i) # 复数型。
+a4 # 返回结果。
+```
+
+#### 2.向量的命名
+
+函数：names(x)\
+x：要操作的对象。
+
+```{r}
+names(a) <- c("one", "two", "three", "four", "five", "six", "seven", "eight") # 给向量a的每个元素命名。
+a # 显示结果
+```
+
+#### 3.向量类型查看和转换
+
+```{r}
+mode(a) # 查看向量a的数据类型。
+class(a1) # 查看向量a1的数据类型。
+length(a) # 查看向量a的元素个数。
+print(a) # 查看a。
+is.numeric(a) # 判断a是否是数值型。
+is.character(a) # 判断a是否是特征型。
+is.logical(a) # 判断a是否是逻辑型。
+is.vector(a) # 判断a是否是向量。
+is.matrix(a) # 判断a是否是矩阵。
+is.data.frame(a) # 判断a是否是数据框。
+is.factor(a) # 判断a是否是因子。
+```
+
+#### 4.向量的索引
+
+R会对向量各元素从1开始标注下标。索引时就是按下标进行的。
+
+```{r}
+a[6] # 访问向量a中第6个元素。
+a[c(3,6)] # 访问向量a中第3和第6个元素。
+a["seven"] # 返回向量a中名为seven的元素。
+a[a < 5] # 返回向量a小于5的数值。
+a[a < 3 | a > 6] # 返回a小于3且大于6的数值。
+a[a > 3 & a < 6] # 返回3到6的数值。
+```
+
+#### 5.向量的排序
+
+```{r}
+sort(a) # 升序排列向量a元素。数值型按照数值从小到大排序。
+sort(a1) # 向量b排序。字符型按照首字母顺序排序。
+sort(a, decreasing = TRUE) # decreasing默认为FALSE，升序。
+rev(sort(a)) # 使用rev()函数实现向量a元素降序排列。
+order(a1) # 返回排序用的下标。a1是字母顺序排序。
+```
+
+#### 6.向量的运算
+
+```{r}
+a+3 # 向量a各元素加3。
+a-2 # 向量a各元素减2。
+a*3 # 向量a各元素乘以3。
+a**3 # 向量a各元素3连乘。
+a%%3 # 向量a各元素除3求余数。
+a%/%3 # 向量a各元素整除3。
+a^2 # 向量a各元素平方。
+a+a # 加。长度相同的向量可以进行加减乘除等运算。
+a-a # 减。
+a*a # 乘。
+a/a # 除。
+a5 <- c(1,2) # 构建新的向量a5。
+a+a5 # 长度不等的向量进行运算，将循环使用较短的向量进行运算。
+append(a, 9, after = 8) # 在向量a元素中的8后面添加元素9。
+a6 <- c(a, 10) # 在向量a的基础上增加元素10形成新的向量a6。
+a6 # a6结果显示。
+a7 <- c(a, a) # 将a1和a两个向量合并形成新的向量a7。
+a7 # a7结果显示。
+a1 %in% a7 # 判断向量a1的元素是否包含在a7中。
+mean(a) # 求向量a的平均值。
+median(a) # 向量a的中位数。
+sum(a) # 求向量a的总和。
+sd(a) # 求向量a的标准差。
+max(a) # 求向量a的最大值。
+min(a) # 求向量a的最小值。
+length(a) # 求向量a的数据长度。
+range(a) # 求向量a的数据范围。
+quantile(a) # 向量a的分位数。
+var(a) # 求向量a的方差。
+prod(a) # 向量a元素连乘。
+sqrt(a) # 向量a元素开方。
+a[-2] # 删除向量a中第2个元素。
+```
+
+### 2.2.2 矩阵
+
+矩阵(matrix)是一个<font color=red size=3>**二维**</font>数组，只是每个元素都拥有相同的模式（数值型、字符型或逻辑型）。\
+函数：matrix(vector, nrow=number_of_rows, ncol=number_of_columns, byrow=logical_value, dimnames=list(char_vector_rownames, char_vector_colnames))\
+其中vector包含了矩阵的元素，nrow和ncol用以指定行和列的维数，dimnames包含了可选的、以字符型向量表示的行名和列名。选项byrow则表明矩阵应当按行填充(byrow=TRUE)还是按列填充(byrow=FALSE)，默认情况下按列填充。[<sup>10</sup>](#refer-anchor)
+
+#### 1.创建矩阵
+
+```{r}
+b <- matrix(1:9, 3, 3) # 1到9构建矩阵b，3行，3列。
+b # 显示矩阵b。
+```
+
+```{r}
+b1 <- matrix(c("one", "two", "three", "four", "five", 
+               "six", "seven", "eight", "nine"), 3, 3) # 字符型矩阵。
+b1 # 显示矩阵b1。
+```
+
+```{r}
+b[!upper.tri(b, diag = TRUE)] <- 0 # 构建上三角矩阵。
+b # 显示结果。
+b1[!lower.tri(b1, diag = TRUE)] <- 0 # 构建下三角矩阵。
+b1 # 显示结果。
+```
+
+#### 2.查看矩阵
+
+```{r}
+dim(b) # 显示矩阵维度。
+nrow(b1) # 查看矩阵行维度。
+ncol(b1) # 查看矩阵列维度。
+diag(b1) # 返回矩阵的对角。
+b1[2,1] # 返回矩阵第2行，第1列的元素。
+b1[2,3] = "eight" # 改变矩阵b1中第2行，第3列的元素为eight。
+b1 # 显示结果。
+b1[upper.tri(b1)] = c("four", "seven", "eight") # 通过upper.tri()查询上三角并重新赋值。
+b1 # 显示结果。
+b1[lower.tri(b1)] = c("two", "two", "two") # 通过upper.tri()查询上三角并重新赋值。
+b1 # 显示结果。
+diag(b1) = c("one", "one", "one") # 通过diag()索引对角并重新赋值。
+b1 # 显示结果。
+```
+
+#### 3.矩阵重命名行和列
+
+```{r}
+colnames(b) <- c("a", "b", "c") # 给矩阵b的列重命名为a，b，c。
+rownames(b) <- c("a", "b", "c") # 给矩阵b的行重命名为a，b，c。
+b # 显示结果。
+```
+
+#### 4.矩阵运算
+
+```{r}
+b2 <- cbind(b, b1) # 合并矩阵b和b1。
+b2 # 显示结果。
+t(b2) # 矩阵转置。
+b+2 # 矩阵内各元素加2。
+b*2 # 矩阵内各元素乘以2。
+b+b # 矩阵相加
+b-b # 矩阵相减。
+b3 <- matrix(1:15, 3, 5) # 构建矩阵b3，1到15的数值，3行，5列。
+b3 # 显示b3。
+b4 <- matrix(1:18, 3, 6) # 构建矩阵b4，1到15的数值，3行，6列。
+b4 # 显示b4。
+t(b3) %*% b4 # 矩阵b3乘以b4。
+crossprod(b3, b4) # 用函数crossprod()进行矩阵相乘。
+rowSums(b) # 矩阵的行之和。
+rowMeans(b) # 矩阵行的平均值。
+colSums(b) # 矩阵的列之和。
+colMeans(b) # 矩阵列平均值。
+```
+
+-   矩阵相乘规则：若A矩阵的维度为m$\times$n，相乘时，那么B矩阵的维度应为n$\times$p，生成的结果矩阵的维度为m$\times$P。这里b3的维度是3 $\times$ 5，b4的维度是3 $\times$ 6，为符合规则，将b3进行转置，维度变为5 $\times$ 3，生成新的矩阵的维度为5 $\times$ 6。
+
+### 2.2.3 数组
+
+数组(array)与矩阵类似，但是<font color=red size=3>**维度可以大于2**</font>。\
+函数：array(vector,dimensions,dimnames)\
+其中vector包含了数组中的数据，dimensions是一个数值型向量，给出了各个维度下标的最大值，而dimnames是可选的、各维度名称标签的列表。
+
+#### 1.创建数组
+
+```{r}
+c <- array(1:20, dim = c(2, 5, 2)) # 创建数组c，向量为1到20的数值，每组2行5列，2组。
+c # 显示结果z。
+dimnames(c) <- list(c("a", "b"), c("a", "b", "c", "d", "e"), c("a", "b")) # 数组重命名。
+c # 显示重命名结果c。
+```
+
+#### 2.数组索引
+
+```{r}
+c[2, 3, 1] # 返回第1组第2行第3列的数值。
+c[2, 3, 1] <- 2 # 可以通过索引修改相应的值，这里索引到第1组第2行第3列，将值重新赋值为2。
+c # 显示修改结果。
+```
+
+### 2.2.4 数据框
+
+数据框(data.frame)是R中最常处理的数据结构。\
+函数：data.frame(col1,col2,col3,....,row.name=NULL, check.rows = FALSE, check.names=TRUE, stringsAsFactors = default.stringsAsFactors())\
+其中的列向量col1, col2, col3,...可为任何类型(如字符型、数值型或逻辑型)。每一列的 名称可由函数names指定。row.name用于指定各行（样本）的名称，默认没有名称，使用从1开始自增的序列来标识每一行；check.rows用于用来检查行的名称和数量是否一致，默认为FALSE；check.names来检查变量（列）的名称是否唯一且符合语法，默认为TRUE；stringsAsFactors用来描述是否将字符型向量自动转换为因子，默认转换，若不改变的话使用stringsAsFactors = FALSE来指定即可。 每一列数据的模式必须唯一，不过你却可以将多个模式的不同列放到一起组成数据框。
+
+#### 1.创建数据框
+
+```{r}
+A <- data.frame(name = c("one", "two", "three", "four", "five", "six", "seven", "eight"), values = c(1, 2, 3, 4, 5, 6, 7, 8), values2 = c(8, 7, 6, 5, 4, 3, 2, 1), row.names = c("r1", "r2", "r3", "r4", "r5", "r6", "r7", "r8")) # 使用data.frame函数创建数据框A，行名定义为r1到r8。
+A # 显示结果A。
+name <- c("one", "two", "three", "four", "five", "six", "seven", "eight") # 构建字符型向量name。
+values <- c(1, 2, 3, 4, 5, 6, 7, 8) # 构建数值型向量values。
+values2 <- c(8, 7, 6, 5, 4, 3, 2, 1) # 构建数值型向量values2。
+A <- data.frame(name, values, values2, row.names = c("r1", "r2", "r3", "r4", "r5", "r6", "r7", "r8")) # 创建数据框A。
+A # 显示结果A。
+```
+
+#### 2.数据框索引
+
+R语言的下标索引是从1开始的，且下标索引为负数的话表示删除某个元素，[行下标, 列下标]
+
+```{r}
+A[4,] # 返回数据框A第4行。
+A[,2] # 返回数据框A第2列。
+A[4,1] # 返回数据框A第4行，第1列。
+A[1:4,] # 返回数据框A第1至第4行。
+A[,1:2] # 返回数据框A第1至第2列。
+A[c(1,4),c(1,3)] # 返回数据框A第1和第4行，第1和第3列的数据。
+A$values # 返回数据框第2列。$符可以选取数据框中的某列，$前是数据框名，$后是列名。
+A[,-3] # 提取第3列以外的其他数据。
+A[4,"name"] # 通过指定列名，返回到具体值。
+A[2] # 直接得到一个新的数据框，仅包含原数据框A的第2列。[]中输入想要得到的列号就可以。
+A[[2]] # 访问第2列。
+A[c(1,2)] # 得到新数据框，数据框含原数据框A的列1和列2。
+A[which(A$values < 4),] # 返回数据框values列小于4的数据，which可以输入<,>等其他条件。
+A[which(A$values < 4),"name"] # 返回name列中符合条件为values列中小于4的数据。
+A[which(A$values < 2 | A$values > 6),] # 返回数据框A中values小于2或大于6的数据。
+A[which(A$values > 4 & A$values < 6),] # 返回数据框A中values大于4与小于6的数据。
+A[-which(A$values > 4 & A$values < 6),] # 返回数据框A中values列大于4，小于6以外的数据，相对于上列进行了条件反转。
+```
+
+attach、detach和with()\
+函数attach()可将数据框添加到R的搜索路径中。\
+函数detach()将数据框从搜索路径中移除。\
+函数attach()和detach()最好在你分析一个单独的数据框，并且不太可能有多个同名对象时使用。\
+with()就是把所有操作都限制在数据框上。
+
+```{r}
+attach(A) # 将数据框A加入搜索路径。
+values # 显示数据框A中的values列。可以看出调用values列可以直接在程序中输入列名values，而不用再输入A$values。detach是与attach相反的操作。
+A1 <- data.frame(name = c("n1", "n2", "n3", "n4", "n5", "n6", "n7", "n8"), values = c(2, 1, 4, 3, 6, 5, 8, 7), values2 = c(2, 3, 5, 2, 4, 4, 6, 5)) # 创建数据框A1。
+A1 # 显示数据框A1。
+with(A1, {plot(values, values2)}) # 虽然数据框A和A1有相同的列名称，但是这里用with函数后，{}中只调用数据框A1中的values和values2。
+with(A1, {name1 <<- name}) # 想在with函数中对全局的变量进行赋值，那么需要使用<<-运算符。
+name1 # 显示name1。
+```
+
+#### 3.查看数据框
+
+```{r}
+head(A) # 查看数据前6行。
+head(A, 3) # 查看数据框A前3行数据。
+tail(A) # 查看数据后6行。
+tail(A, 5) # 查看数据后5行。
+print(A) # 查看数据框A。
+A # 也可以直接输入数据框名称查看数据。也可以在R studio种的环境界面直接点击A查看。
+length(A[,1]) # 查看数据框行数量。
+length(A[1,]) # 查看数据框列数量。
+length(A$name) # 查看数据框A中列name的数量。
+colnames(A) # 查看数据框列名。
+rownames(A) # 查看数据框行名。
+dim(A) # 显示数据框A的维度。8行，3列。
+str(A) # 查看数据框A的数据结构。
+class(A) # 查看数据框类型。
+class(A$values) #查看数据框列的类型。
+mode(A$name) # 显示数据框A中name列的模式。
+summary(A) # 数据框基本描述性统计。
+duplicated(A$values) # 查询数据框A中values列是否有重复数据，若有会返回TRUE，若无，返回FLASE。
+```
+
+#### 4.数据框操作
+
+```{r}
+is.data.frame(b3) # is.data.frame()用于判定数据是否是数据框。若是，返回值为TURE，不是，返回FALSE。
+b3 <- as.data.frame(b3) # as.data.frame()用于将数据转换为数据框。这里将矩阵b3转为数据框。
+b3 # 显示结果。
+colnames(b3)[3] <- "value" # 修改数据框y3第3列列名为value。要修改行名用rownames(A)[行号,列号] <- “新名称”。
+b3 # 显示结果。
+colnames(b3) <- c("列1", "列2", "列3", "列4", "列5") # 对数据框b3的所有列重命名。
+b3 # 显示结果。
+A # 显示数据框A。
+t(A) # 数据框转置。
+A[1,] <- c(1, 1, 1) # 修改数据框A第1行的数据。
+A # 显示结果A。
+A[,2] <- c(2, 4, 6, 8, 10, 12, 14, 16) # 修改数据框A第2列的数据。
+A # 显示结果A。
+A[1,1] <- "one" # 修改第1列第1行的值。
+A # 显示结果A。
+A$values <- as.character(A$values) # 将数据框A中values列类型从数值型改为字符型。
+class(A$values) # 查看结果。
+A$values <- as.numeric(A$values) # 从字符型转换会数值型。
+class(A$values) # 查看结果。
+A[9,] <- c("nine", 18, 0) # 给数据框A增加第9行。
+A # 显示结果。
+A[,4] <- c(1, 3, 5, 7, 9, 11, 13, 15, 17) # 增加新列。
+A # 显示结果。
+A$values1 <- c(1, 1, 2, 2, 3, 3, 4, 4, 5) # 增加新列，列名为values2。
+A # 显示结果。
+A <- data.frame(A, values3 = c("a", "b", "a", "b", "a", "b", "a", "b", "a")) # 在原有数据框的基础上使用data.frame()函数新增列。
+A # 显示结果。
+A <- A[-9,] # 删除第9行。
+A # 显示结果。
+A <- A[,-4] # 删除第4列数据。
+A # 显示结果。
+```
+
+#### 5.数据框排序
+
+```{r}
+A[order(A$values1),] # 数据框排序，按照values1进行，order函数默认是升序。
+A[order(-A$values1),] # 对数据框A以values1变量降序排列。
+A[order(A$name, decreasing = T),] # 当排序依据变量为数值型时，前面加-就是按照降序排列，但是当变量为字符型时，就需在order函数中指定参数decreasing，T为TRUE，即降序。本例中为英文字母，所以降序按照英文字母首字母排序。
+A[order(A$values, -A$values1),] # 以values升序排列，以values1为降序排列。
+sort(A$values3) # 也可以用sort()函数进行排序。使用方法与order基本相同。
+```
+
+[<sup>11</sup>](#refer-anchor)
+
+#### 6.数据框统计运算
+
+```{r}
+str(A) # 查看数据结构。
+mean(A$values) # 求数据框A中values列的平均值。
+```
+
+### 2.2.5 因子
+
+变量可归结为名义型、有序型或连续型变量。  
+名义型变量：没有顺序之分的类别变量。糖尿病类型Diabetes（Type1、Type2）。  
+有序型变量：表示一种顺序关系，而非数量关系。病情Status（poor, improved,excellent）是顺序型变量的一个上佳示例。  
+连续型变量：可以呈现为某个范围内的任意值，并同时表示了顺序和数量。年龄Age就是一个连续型变量，它能够表示像14.5或22.8这样的值以及其间的其他任意值。  
+类别（名义型）变量和有序类别（有序型）变量在R中称为因子(factor)。  
+因子在R中非常重要，它决定了数据的分析方式以及如何进行视觉呈现。   
+函数：factor(x=character, levels, labels=levels, exclude = NA, ordered = is.ordered(x), namax = NA)  
+x是创建因子的数据，向量；  levels用来指定因子可能的水平（缺省值是向量x中互异的值）；  labels用来指定水平的名字；  exclude表示从向量x中剔除的水平值，默认为NA值；  ordered是一个逻辑型选项用来指定因子的水平是否有次序，若有，取值TRUE，若没有取值FALSE；  
+namax水平个数的限制。
+1 创建因子  
+```{r}
+f1 <- c("a","b","c","b","c","a","c","b","a") # 创建因子f1。
+f1 # 返回结果。
+```
+2 因子操作
+```{r}
+f1[1] # 返回因子第1个水平。
+f1[1:2] # 返回因子第1到第2个水平。
+f1[1] <- 1 # 将因子f1中的第1个水平修改为1。
+f1 # 返回结果。
+```
+
+3 转换因子
+```{r}
+A1 <- data.frame(v1 = c("T1", "T2", "T1", "T2", "T1", "T2", "T1", "T2"), v2 = c(5, 2, 7, 3, 9, 6, 1, 8)) # 构建数据框A1。
+A1 # 显示结果。
+str(A1) # 显示数据结构。
+A1$v1 <- factor(A1$v1) # 将数据框A1的v1列作为因子。
+str(A1) # 显示数据结构。
+```
+
+### 2.2.6 列表
+
+列表就是一些对象（或成分，component）的有序集合。\
+函数：list(object1,object2,.....)\
+对象(object)可以是目前为止讲到的任何结构。
+
+#### 1.创建列表
+
+```{r}
+title <- "我的列表" # 构建title。
+ages <- c(8, 10, 19, 35, 50) # 构建数值向量ages
+mydataframe <- data.frame(ID = c("five", "four", "three", "two", "one"), ages) # 构建数据框。
+mylist <- list(标题 = title, 向量 = ages, 数据框 = mydataframe) # 构建列表。
+mylist # 显示结果。
+```
+
+#### 2.列表索引
+
+```{r}
+mylist[[2]] # 查看列表第2项。
+mylist[[3]][1] # 查看列表第3项第1列。
+```
+
+#### 3.列表操作
+
+```{r}
+mylist$标题 <- "mylist" # 将列表中标题改为mylist。
+mylist # 显示结果。
+names(mylist) <- c("mylist", "vector", "dataframe") # 重命名列表元素。
+mylist # 显示结果。
+mylist$mylist <- NULL # 删除mylist中的title。
+mylist # 显示结果。
+mylist$newvector <- c("low", "low", "low", "high", "high") # 添加newvector到列表mylist。
+mylist # 显示结果。
+mylist$dataframe[,1] <- c("one", "two", "three", "four", "five") # 修改列表中数据框中的第1列。
+mylist # 显示结果。
+mylist1 <- list(title = "mylist1", vector1 = c(5, 4, 3, 2, 1), dataframe1 = mydataframe) # 构建新的列表mylist1。
+newmylist <- c(mylist, mylist1) # 合并列表mylist和mylist1。
+newmylist # 显示结果。
+unlist(newmylist) # 将列表newmylist解包。
+```
+
+## 2.3 数据输入
+
+R可从键盘、文本文件、Microsoft Excel和Access、流行的统计软件、特殊格式的文件，以及多种关系型数据库中导入数据。\
+![](D:/documents/2.3.png)
+
+### 2.3.1 使用键盘输入
+
+函数edit()会自动调用一个允许手动输入数据的文本编辑器。\
+示例：\
+1、创建一个空的数据框。\
+f \<- data.frame(ID = character(0), pattern = character(0), values = numeric(0))\
+2、通过调用edit()手动录入数据。编辑的对象需要赋值回对象，若不赋值，所有编辑将不会保存。\
+f \<- edit(f)
+
+![](D:/documents/2.3.1.1.png)
+
+fix()函数用于直接编辑数据对象。\
+fix(a)\
+这里直接调出了数据a，可以在调出的数据界面进行数据修改。
+
+![](D:/documents/2.3.1.2.png)
+
+### 2.3.2 从带分隔符的文本文件导入数据
+
+函数：read.table(file, header = FALSE, sep = "",stringsAsFactors,colClasses = NA)\
+read.table()函数内参数达十几个，以上为常用参数，其中，File是带分隔符的ASCII文本文件；header表示文件是否在第一行包含了变量的逻辑型变量，简单理解就是是否有表头，TRUE为有表头，FALSE为无表头；sep用来指定分割数据的分隔符；stringsAsFactors可以设置字符变量与因子之间的转换。colClasses为每一列指定一个类型，也可以设置字符型变量和因子之间的转换。[<sup>12</sup>](#refer-anchor)
+
+```{r}
+mydata <- read.table(file = "D:/Documents/R wd/mydata.csv", header = T, sep = ",", colClasses = c(year = "character", nitrogen = "character", pattern = "character", replicates = "character")) # 读入mydata.csv文件，有表头，分隔符为","，将数据框mydata中year,nitrogen,pattern和replicates列类型指定为字符型。注意mydata.csv若放置于工作目录下，可直接输入文件名，若不是，则要指定工作目录。
+```
+
+### 2.3.3 导入Excel数据
+
+读取一个Excel文件的最好方式，就是在Excel中将其导出为一个逗号分隔文件（csv，txt），再将其导入R中。\
+xlsx包可以用来读取这种格式的电子表格。其最简单的调用格式是read.xlsx(file, n)，其中file是Excel2007工作簿的所在路径，n则为要导入的工作表序号。
+
+```{r}
+library(readxl) # 调用readxl包。
+mydata1 <- read_excel("D:/Documents/R wd/mydata.xlsx", sheet=1) # 导入excel数据mydata.xlsx，数据表1的数据。赋值给mydata1。
+mydata1 # 显示数据。
+```
+
+### 2.3.4 导入XML数据
+
+对使用R存取XML文档感兴趣的读者可以参阅www.omegahat.org/RSXML，从中可以找到若干份优秀的软件包文档。
+
+### 2.3.5 从网页爬取数据
+
+请参考可在网站Programming with R(www.programmingr.com)上找到的"Webscraping using readLines and RCurl"一文。
+
+### 2.3.6 导入SPSS数据
+
+SPSS数据集可以通过foreign包中的函数read.spss()导入到R中，也可以使用Hmisc包中的spss.get()函数。
+
+### 2.3.7 导入SAS数据
+
+R中设计了若干用来导入SAS数据集的函数，包括foreign包中的read.ssd()和Hmisc包中的sas.get()\
+你可以在SAS中使用PROC EXPORT将SAS数据集保存为一个逗号分隔的文本文件，再导入R。
+
+### 2.3.8 导入Stata数据
+
+read.dta("要导入的文件.dat")
+
+### 2.3.9 导入netCDF数据
+
+### 2.3.10 导入HDF5数据
+
+### 2.3.11 访问数据库管理系统
+
+### 2.3.12 通过Stat/Transfer导入数据
+
+## 2.4 数据集标注
+
+### 2.4.1 变量标签
+
+### 2.4.2 值标签
+
+## 2.5 处理数据对象的实用函数
+
+![](D:/documents/2.5.png)
+
+## 2.6 小结
+
+**R语言中符号总结**
+
+- <-  赋值。左分配，将右边的值分配给左边向量。
+- -> 右分配，左边值分配给右边的向量。
+- " " 字符串，设定字符型向量时，一定要加注。
+- "$" 提取对象。
+- : 创建顺序一系列数字向量，如1:8，就是从1到8的数值。
+- []  数据索引。[A,B] A为行下标，B为列下标。
+- [[]]  列表取子集。
+- ()  函数。
+- "|"  表示或者。
+- "&"  表示并且。
+- "!"  表示否。
+- "=="  判断是否相等。
+- != 检查第一个向量的每个元素是否不等于第二个向量的元素。
+- "#"  注释。
+- {}  多行代码。
+- ::  包::函数。
+-  %in%操作符用来判断操作符左边的向量中的元素是否位于操作符右边的向量中。
+-  %>% 管道符，来自于dplyr包，意为将符号左边的对象传递给右边的函数。
+- "~"  分隔符号，左边为响应变量，右边为解释变量，常用于方差分析和回归分析。
+- "+"  分隔预测变量。如A+B在方差分析中表示无交互。
+- $\ast$  表示交互项。如A$\ast$B在方差分析中表示A与B的交互作用。
+[<sup>39-40</sup>](#refer-anchor)
+
+# 第3章 图形初阶
+
+## 3.1 使用图形
+
+R是一个惊艳的图形构建平台。在R中，图形通常都是以这种交互式的风格绘制的。可以通过代码或图形用户界面来保存图形。
+```{r}
+df <- read.table(file = "D:/Documents/R wd/df.csv", header = T, sep = ",", colClasses = c(year = "character", nitrogen = "character", variety = "character", block = "character")) # 数据导入。
+head(df) # 查看数据前6行。
+attach(df) # 绑定数据集。
+plot(v1, v2) # 绘制图形，x轴为v1，y轴为v2。
+abline(lm(v2~v1)) # 添加回归线。
+title("This is the first graph for me that was made by R") # 添加标题。
+detach(df) # 解除绑定。
+```
+
+
+## 3.2 一个简单的例子  
+plot()是R中为对象作图的一个泛型函数（它的输出将根据所绘制对象类型的不同而变化）。    
+plot(x, y = NULL, type = "p", xlim = NULL, ylim = NULL, log = "", main = NULL, sub = NULL, xlab = NULL, ylab = NULL,ann = par("ann"), axes = TRUE, frame.plot = axes, panel.first = NULL, panel.last = NULL, asp = NA, ...)  
+
+x相当于自变量，y相当于因变量；  
+type：为一个字符的字符串，用于给定绘图的类型，可选的值如下：
+
+"p"：绘点（默认值）；  
+"l"：绘制线；  
+"b"：同时绘制点和线；  
+"c"：仅绘制参数"b"所示的线；  
+"o"：同时绘制点和线，且线穿过点；  
+"h"：绘制出点到横坐标轴的垂直线；  
+"s"：绘制出阶梯图（先横后纵）；  
+"S"：绘制出阶梯图（先纵后竖）；  
+"n"：作空图。  
+
+xlim和ylim参数 都是二维向量，分别表示x轴和y轴的取值范围。  
+main：给出图形的标题；  
+sub：给出图形的子标题；  
+xlab和ylab：用于给出x轴和y轴的标签。
+ann：逻辑性变量，用于指定是否显示默认的坐标轴标题，FALSE为不显示。  
+axes：逻辑变量，用于指定坐标轴是否显示，FALSE为不显示。  
+frame.plot：逻辑变量，用于确定是否显示图形边框。TRUE为绘出边框。  
+
+```{r}
+plot(df$v1, df$v2) # 以v1为x轴，v2为y轴的散点图。
+plot(df) # 所有数据绘图。
+```
+
+## 3.3 图形参数
+
+通过par()设定图形参数，设定后将对当前所有图形参数有效，而在绘图函数中指定的参数则仅对那个特定图形有效。
+
+函数：par(...,no.readonly = FALSE) 通过设定函数par()的各个参数来调整图形。\
+...,表示需要设定的图形参数，"参数名=取值"或"赋值参数列表"形式的变量。\
+no.readonly逻辑变量，如果是TRUE且没有其他变量，则返回当前绘图设备下已设定好的绘图参数。 [<sup>13</sup>](#refer-anchor)
+
+par() 可返回系统当前图形参数列表。  
+
+```{r}
+plot(df$v2) # 绘制基本图形。
+par(lty=3, pch=18) # 使用par()函数设定线型为3，点为18。
+plot(df$v2, type="b") # 再次绘制图形。
+plot(df$v2, type="b", lty=3, pch=18) # 也可以直接在plot中设置参数。
+```
+
+### 3.3.1 符号和线条
+
+可以使用图形参数来指定绘图时使用的符号和线条类型。
+
+![](D:/documents/3.3.1.1.png)
+
+选项pch=用于指定绘制点时使用的符号。  
+选项lty=用于指定想要的线条类型。  
+可选取的值见下图。  
+![](D:/documents/3.3.1.2.png)
+
+```{r}
+plot(df$v2, type="b", pch=21, cex=2, lty=5, lwd=2, col="blue", bg="green") # 设定图形参数，类型是点线图，点类型选择了21，cex设置了大小为2，lty设置了线类型为5虚线，lwd设置了线宽为2，col设置了线颜色为蓝色，bg设置了点填充色为绿色。
+```
+
+### 3.3.2 颜色
+
+在R中，可以通过颜色下标、颜色名称、十六进制的颜色值、RGB值或HSV值来指定颜色。查看系统中所有可用颜色colors()，也可写为colours()。\
+函数rgb()可基于红---绿---蓝三色值生成颜色。 [<sup>14</sup>](#refer-anchor)     
+函数：rgb(red, green, blue, alpha, names = NULL, maxColorValue = 1)\
+红、绿、蓝三色的取值范围在0-1之间，alpha设置透明度，0代表完全透明，1代表完全不透明。names用于指定生产颜色的名称。
+
+```{r}
+rgb(red =0.8, green = 0.2, blue = 0.5, alpha = 0.7) # 生成颜色。
+```
+
+palette()调色板。  
+默认是8种颜色，即："black"、"red"、"green3"、"blue"、"cyan"、 "magenta"、"yellow"、"gray"，并且循环引用。
+
+```{r}
+palette() # 默认调色板。
+palette(c("red", "blue", "green", "black")) # 自定义颜色集。
+barplot(df$v2, col = palette()) # 使用自定义调色板绘图。
+palette("default") # 调色板恢复默认值。
+```
+
+hsv()则基于色相(Hue)-饱和度(Saturation)-亮度(Value)值来生成颜色。\
+函数：hsv(h = 1, s = 1, v = 1, alpha)\
+h，s，v的取值为0-1之间。
+
+```{r}
+hsv(h =0.3, s = 0.5, v = 0.8) # 生产颜色。
+```
+
+![](D:/documents/3.3.2.png)
+
+R中也有多种用于创建连续型颜色向量的函数， 包括rainbow()、heat.colors()、 terrain.colors()、 topo.colors()以及cm.colors()。
+
+```{r}
+mycolors <- rainbow(10) # 生产10种连续的彩虹型颜色，赋值为mycolors。
+plot(df$v2, type="b", lty=3, pch=18, col=mycolors) # 绘图，颜色使用mycolors。
+pie(rep(1, 10), labels = mycolors, col = mycolors) # 绘制饼图，rep(1,10)表示将1重复10次，标签和颜色使用mycolors。
+mygrays <- gray(0:10/10) # 定义多阶灰度色。
+pie(rep(1, 10), labels = mygrays, col = mygrays) # 绘制饼图，标签和颜色使用mygrays。
+```
+
+### 3.3.3 文本属性  
+
+图形参数同样可以用来指定字号、字体和字样。
+
+![](D:/documents/3.3.3.png)
+
+```{r}
+plot(df$v2, type="b", lty=5, pch=21, main="Example plot", sub="this is a subtitle", col=mycolors, cex=1.5, cex.axis=2, cex.lab=1.5, cex.main=2, cex.sub=2, font=3, font.axis=4, font.lab=2, font.main=1, font.sub=1, ps=0.5) # 设置图形参数。
+```
+
+### 3.3.4 图形尺寸与边界尺寸
+
+![](D:/documents/3.3.4.png)
+
+```{r}
+plot(df$v2, type="b", lty=5, pch=25, col=mycolors, main="Example plot", font.lab=3, cex.lab=1.5, font.main=2, cex.main=2, pin=c(4,3), mai=c(1,2,1,2)) # pin设定图形宽4英寸，高3英寸，mai设定图形图形边界大小，下1英寸，左2英寸，上1英寸，右2英寸。
+```
+
+## 3.4 添加文本、自定义坐标轴和图例
+
+### 3.4.1 标题
+
+函数：title(main="main title", sub="sub-title", xlab="x-axis label", ylab="y-axis label")\
+main指定主标题，位于图形上方，sub指定副标题，位于图形下方，xlab指定x轴标签，ylab指定y轴标签。
+col.main指定标题颜色，cex.main指定标题文字大小，font.main指定标题文字格式，若要改变副标题参数，则只需将main变为sub，即col.sub，cex.sub，font.sub；若要改变x和y轴标签相关参数，则可col.lab，cex.lab，font.lab，注意xlab和ylab的参数设置是不能分开的，只能同时设置。  
+```{r}
+plot(df$v1, df$v2, ann=F) # 绘制基本图形，其中的ann=F表示去除图标题。
+title(main="main title", sub="subtitle", xlab="yield of crop", ylab="example index") # 添加主副标题及轴标题。
+plot(df$v1, df$v2, ann=F) # 绘制基本图形，其中的ann=F表示去除图标题。
+title(main="main title", sub="subtitle", xlab="yield of crop", ylab="example index", col.main="red", cex.main=3, font.main=4, col.sub="blue", cex.sub=5, font.sub=2, col.lab="green", cex.lab=2, font.lab=3) # 对各标题参数进行设置。
+plot(df$v1, df$v2, ann=F) # 绘制基本图形，其中的ann=F表示去除图标题。
+title(main="main title", sub="subtitle", xlab="yield of crop", ylab="example index", col.main="red", cex.main=3, font.main=4, col.sub="blue", cex.sub=5, font.sub=2, col.lab="green", cex.lab=2, font.lab=3, adj=1) # 对各标题参数进行设置，并改变主副标题位置到右侧，若adj=0为在左侧，若adj=0.5为居中。
+```
+
+也可以在plot函数中进行标题的设置。
+```{r}
+plot(df$v1, df$v2) # 绘制基础图形。
+plot(df$v1, df$v2, type="b", lty=5, pch=25, col=mycolors,  main="main title", sub="subtitle", xlab=expression("yield"~~ kg/hm^2), ylab="yield", col.main="green", cex.main=3, font.main=2, col.sub="blue", cex.sub=2, font.sub=2, font.lab=4, cex.lab=1.5, col.lab="red", adj=0) # 图形参数调整，其中的expression函数中~为空格，^为上标，[]为下标，*为连接符。
+```
+
+可以看到，上面在title函数中用adj进行标题位置设置后，呈现的结果是主副标题连带轴标题都随设置的参数变动了，那么要怎样按照自己的想法将标题放置在自己想要的地方呢。本人通过百度搜索学习后，觉得可这样实现。
+```{r}
+plot(df$v1, df$v2, ann=F) # 绘制基本图形，去除自动生产的标题。
+title(main="This is an example", adj=0) # 指定主标题，位置放置在图形左上角。
+title(sub="I am subtitle", adj=1) # 指定副标题，位置放置在图形右下角。
+title(xlab="index", ylab="yield of crop") # 指定x和y轴标题，位置为默认的居中。
+```
+
+
+### 3.4.2 坐标轴
+
+在绘图的时候，R自动生成的坐标轴不能“尽如我意”，这时候就需要进行坐标轴的自定义。首先要学会怎么去除系统自动生成的坐标轴。
+
+**1 基础图形绘制**  
+
+```{r}
+plot(df$v1, df$v2, pch=25, col="red", font.lab=3, cex.lab=1.5, font.main=2, cex.main=2, pin=c(4,3), mai=c(1,0.5,1,0.5), main="Example", sub="This is an example plot", xlab="index", ylab="yield") # 绘制图形。
+```
+  
+**2 禁用坐标轴**   
+
+*禁用全部坐标轴*   
+
+```{r}
+plot(df$v1, df$v2, pch=25, col="red", font.lab=3, cex.lab=1.5, font.main=2, cex.main=2, pin=c(4,3), mai=c(1,0.5,1,0.5), main="Example", sub="This is an example plot", xlab="index", ylab="yield", axes=FALSE) # axes=FALSE将禁用系统生成的全部坐标轴。
+```
+
+*禁用坐标轴但保留边框*
+
+```{r}
+plot(df$v1, df$v2, pch=25, col="red", font.lab=3, cex.lab=1.5, font.main=2, cex.main=2, pin=c(4,3), mai=c(1,0.5,1,0.5), main="Example", sub="This is an example plot", xlab="index", ylab="yield", axes=FALSE, frame.plot=TRUE) # 禁用坐标轴，但保留边框，保留边框的命令是frame.plot=TRUE。
+```
+  
+*禁用部分坐标轴*  
+
+```{r}
+plot(df$v1, df$v2, pch=25, col="red", font.lab=3, cex.lab=1.5, font.main=2, cex.main=2, pin=c(4,3), mai=c(1,0.5,1,0.5), main="Example", sub="This is an example plot", xlab="index", ylab="yield", xaxt="n") # 命令是xaxt="n"可禁用x轴，只是去除了刻度，但是保留框架线。
+```
+```{r}
+plot(df$v1, df$v2, pch=25, col="red", font.lab=3, cex.lab=1.5, font.main=2, cex.main=2, pin=c(4,3), mai=c(1,0.5,1,0.5), main="Example", sub="This is an example plot", xlab="index", ylab="yield", yaxt="n") # 命令是xaxt="n"可禁用x轴，只是去除了刻度，但是保留框架线。
+```
+
+  
+**3 坐标轴参数设置**  
+
+知道了怎么去除自动生成的坐标轴后，接下来就按照自己的需求对图形坐标轴进行自定义，用到的函数是axis()。
+
+函数：axis(side, at = NULL, labels = TRUE, tick = TRUE, line = NA, pos = NA, outer = FALSE, font = NA, lty = "solid", lwd = 1, lwd.ticks = lwd, col = NULL, col.ticks = NULL, hadj = NA, padj = NA, gap.axis = NA, ...)\
+side表示坐标轴位置，取值1、2、3、4分别代表下、左、上、右；\
+at表示需要添加刻度的数值，默认会根据变量的取值范围计算几个合适的刻度，也可以手工指定；\
+labels表示刻度标签，指定在刻度上需要标记的内容，默认就是刻度对应的值；\
+tick是逻辑变量，取TRUE表示显示坐标轴和刻度线，取FALSE时，坐标轴线和刻度线不画出；\
+line表示坐标轴线位置与图像边框的距离，取负数时会画在图像边框以内； 
+pos 表示轴线所在的位置； line.outer取TRUE时，坐标轴将画在画布边缘处； font.axis表示坐标轴刻度值的字体，font=1表示正体，2表示黑体，3表示斜体，4表示黑斜体。\
+lty表示线型，用在axis函数中表示坐标轴线型；\
+lwd表示线的粗细，用在axis函数中表示坐标轴线粗细；\
+lwd.ticks表示刻度线粗细。\
+col表示图的颜色，用在axis函数中表示坐标轴线和坐标刻度线的颜色；\
+col.axis表示坐标轴刻度值的颜色；\
+col.ticks表示坐标轴刻度线的颜色； 
+hadj指将刻度值沿平行坐标轴方向调整的距离；\
+padj指将刻度值沿垂直坐标轴方向调整的距离；\
+las表示坐标刻度值文字方向，las=0表示文字方向与坐标轴平行，1表示始终为水平方向，2表示文字方向与坐标轴垂直，3表示始终为垂直方向。
+tck表示刻度线长度。
+
+![](D:/documents/3.4.2.png)
+
+```{r}
+plot(df$v1, df$v2, pch=25, col="red", font.lab=3, cex.lab=1.5, font.main=2, cex.main=2, main="Example", sub="This is an example plot", xlab="index", ylab="yield", axes=T, frame.plot=TRUE, xlim=c(1,1.5),ylim=c(1,5)) # 绘制图形。
+axis(side = 1, at=c(1, 1.2, 1.3,1.5), labels=c("a0", "a2", "a4", "a6"), pos = 1, col = "blue", lwd=2, lwd.tick=2, col.tick="black", las = 0, tck = 0.05, col.axis="red" , font.axis=2, cex.axis=1.5, hadj = 0.04) # 自定义x轴，side=1表示坐标轴位置是在下方，at表示显示刻度线的位置为0，2，4，6；labels定义了刻度线对应的标签显示结果；pos定义了坐标轴是y=1的位置；col定义坐标轴颜色，lwd定义坐标轴粗细，lwd.tick和col.tick分别定义刻度线粗细和颜色，las定义标签文字方向，tck定义了刻度线长度，col.axis,font.axis,cex.axis分别定义了坐标轴标签颜色，字体，大小；hadj定义了沿x轴调整的距离。
+```
+  
+**4 次要刻度线**     
+
+minor.tick(nx=n,ny=n,tick.ration=n)  
+nx和ny分别指定了X轴和Y轴每两条主刻度线之间通过次要刻度线划分得到的区间个数。    
+tick.ratio表示次要刻度线相对于主刻度线的大小比例。
+```{r}
+plot(df$v1, df$v2, pch=25, col="red", main="Example", sub="This is an example plot", xlab="index", ylab="yield")# 绘制基础图形。
+library(Hmisc) # 调用Hmisc包。
+minor.tick(nx=2, ny=3, tick.ratio = 0.5) # 给x轴主刻度线之间增加1条次要刻度线，给y轴添加2条次要刻度线。次要刻度线的长度是主刻度线的一半。
+```
+
+### 3.4.3 参考线  
+
+**1 添加参考线**  
+
+abline(a = NULL, b = NULL, h = NULL, v = NULL, reg = NULL, coef = NULL, untf = FALSE, ...)   a为指定截距（直线与y轴的交点距坐标原点的位置），b为斜率，v为竖线指定横坐标，h为水平线指定纵坐标。  
+abline(a,b)表示画一条y=a+bx的直线。   abline(h=i)表示画一条y=i的水平直线。   abline(v=i)表示画一条x=i的水平直线。    
+
+```{r}
+plot(df$v1,df$v2) # 绘制图形。
+abline(h=3.5,lty=4, col="red") #  添加横线，对应y坐标为3.5。
+abline(v=1.2,lty=4, col="black") #  添加竖线，对应x坐标为1.2。
+abline(a=1.5, b=1, lty=1, col="blue") # 添加斜线，y=1.5+1x。
+```
+  
+
+```{r}
+plot(df$v1,df$v2) # 绘制图形。
+abline(h=c(2.5, 3.5),lty=2, col="yellow", lwd=2) #  添加多条横线。
+abline(v=c(1.1, 1.2, 1.4),lty=2, col="black") #  添加竖线，对应x坐标为1.1,1.2,1.4。
+```
+
+很多时候，我们做出图后，想要在已有的图上添加点或者线。  
+
+**2 添加点或线**   
+
+points(x, y, ...)  
+x和y用于指定添加点的位置，...用于设定添加点的其他参数，如类型，颜色等。  
+
+```{r}
+plot(df$v1, df$v2) # 绘制基本图形。
+points(x=1.2, y=3.5, pch=15, col="red") # 添加点，方位是x=1.2，y=3.5。
+```
+
+
+lines(x, y = NULL, type = "l", ...)  
+
+x, y是数值向量，表示点的坐标。  
+
+type字符串，表示绘图类型。默认为划线。  
+
+...为附加参数，如线型，线的颜色等等。  
+
+```{r}
+plot(df$v1, df$v2) # 绘制基本图形。
+lines(x=c(1.1,1.2,1.3,1.4),y=c(2.5,3.5,2.5,3.5), col="red", lwd=2, lty=1) # 添加线。
+lines(x=c(0,2), y=c(3.5,3.5), col="blue", lty=3, lwd=4) # 通过设置x和y的坐标添加线，相当于参考线。
+```
+  
+**3 添加栅格** 
+
+grid(nx, ny, ...)  
+
+nx,ny分别表示x和y方向的虚线，若赋值为NA，则不对相应的方向进行分割；...表示其他的参数设置，如线型，线粗等。  
+
+```{r}
+plot(df$v1, df$v2) # 绘制基本图形。
+grid(nx = 6, ny = 6, lty = 2, lwd = 1) # 绘制x轴和y轴栅格，均等分为6段，线型是1，线粗为2。
+```
+
+```{r}
+plot(df$v1, df$v2) # 绘制基本图形。
+grid(nx = NA, ny = 5, lwd = 2) # 只绘制y轴方向上的栅格，等分为5段。
+```
+
+```{r}
+plot(df$v1, df$v2) # 绘制基本图形。
+grid(nx = 4, ny = NA, lwd = 3) # 只绘制x轴方向上的栅格，等分为4段。
+```
+
+**4 添加箭头**   
+
+arrows(x1, y1, x2, y2, length, angle, code, ....)  
+x1，y1，x2，y2表示箭头的起点和终点坐标，length表示箭头尖上短线的长度（单位：英寸），angle 表示箭头尖短线的角度（默认为 30度），code表示箭头的样式。  
+```{r}
+plot(df$v1, df$v2) # 绘制基本图形。
+arrows(1.1,1.5,1.2,2.5,length=0.2, angle = 30, code = 2, col = "red") # 绘制箭头。
+```
+
+**5 添加线段**  
+
+segments(x1, y1, x2, y2, ....)  
+x1，y1，x2，y2表示线段的起点和终点坐标，....用于指定线段其它参数。  
+```{r}
+plot(df$v1, df$v2) # 绘制基本图形。
+segments(1.2,2.5,1.4,3.5, col = "red") # 绘制线段。
+```
+
+**6 x样条**  
+
+样条是用光滑曲线连接若干数据点的曲线。
+
+xspline(x, y = NULL, shape = 0, open = TRUE, repEnds = TRUE, draw = TRUE,border = par("fg"), col = NA, ...)  
+前两个参数给定点的位置，  
+shape 为样条的形状，取值在 \([-1, 1]\)之间，当取值为负数时，曲线穿过给定的点，负值绝对值越小则曲线的角度越尖锐，反之角度越圆滑，shape取值为正数时，曲线脱离给定的点，正值越小越靠近给定点；  
+open 决定是否样条曲线封闭；  
+repEnds 为逻辑值，当样条曲线不封闭时，该参数决定是否重复使用端点上的点；  
+draw 决定是否画线，若为FALSE，则仅仅计算曲线的坐标位置而不画线；  
+border 为曲线的颜色；  
+col 为封闭曲线的填充颜色[<sup>42</sup>](#refer-anchor)。  
+
+```{r}
+plot(df$v1, df$v2) # 绘制基本图形。
+xspline(x=c(1.1,1.3,1.4),y=c(1.5,2.5,3.5), shape = -0.8) # 绘制线段
+```
+
+### 3.4.4 图例
+
+函数：legend(location, title, legend, ....)
+  
+x和y：用于定位图例，也可用关键词"bottomright", "bottom", "bottomleft", "left", "topleft", "top", "topright", "right" 和 "center"；当图例用关键词设置位置后，inset = 分数，可以设置其相对位置；  
+legend：指定图例标签，字符或表达式向量；  
+fill：用特定的颜色进行填充；  
+col：设置图例中出现的点或线的颜色；  
+border：当fill = 参数存在的情况下，用于指定填充的边框颜色；  
+lty, lwd：图例中线的类型与宽度；  
+pch：点的类型；  
+angle：阴影的角度；  
+density：阴影线的密度；
+cex：指定图例显示大小；
+bg：指定图例的背景色； 
+bty：指定图例框是否画出，默认o为画出，n为不画出；  
+box.lty, box.lwd, box.col： 设置图例边框线型，线粗，颜色，box.lty为虚线，box.lwd决定粗线，box.col决定颜色；  
+pt.bg：图例中点的背景色；  
+pt.cex：图例中点的大小；  
+pt.lwd：图例中点边缘的线宽；  
+x.intersp：图例中文字离图片的水平距离；  
+y.intersp：图例中文字离图片的垂直距离；  
+adj：图例中字体的相对位置；  
+text.width：图例中字体所占的宽度，调整后图例整个宽度也跟着变化了；  
+text.col：图例字体的颜色；  
+text.font：图例字体；  
+merge：逻辑值，merge=TRUE，合并点与线，但不填充图例框，默认为TRUE；  
+trace：逻辑值，trace=TRUE显示图例信息；  
+plot：逻辑值，plot=FALSE不画出图例；  
+ncol：图例中分类的列数；  
+horiz：逻辑值，horiz=TRUE，水平放置图例；  
+title：给图例加标题；  
+xpd：xpd=FALSE，即不允许在作图区域外作图，改为TRUE即可，与par()参数配合使用；  
+title.col：标题颜色；    
+title.adj：图例标题的相对位置，0.5为默认，在中间。0最左，1为最右；  
+seg.len：指定图例中线的线长，长度单位为字符宽度。  
+![](D:/documents/3.4.4.png)  
+ 
+**1 图例方位**    
+
+```{r}
+plot(df$v1, df$v2) # 基本图形绘制。
+legend("bottom", title = "bottom", legend = "B", pch = 1) # 底部。
+legend("bottomleft", title = "bottomleft", legend = "B", col = "red", pch = 1) # 底部左部。
+legend("bottomright", title = "bottomright", legend = "B", col = "blue", pch = 1) # 底部右部。
+legend("topleft", title = "topleft", legend = "B", col = "green", pch = 1) # 顶部左部。
+legend("topright", title = "topright", legend = "B", col = "orange", pch = 1) # 顶部右部。
+legend("top", title = "top", legend = "B", col = "pink", pch = 1) # 顶部中部。
+legend("left", title = "left", legend = "B", col = "brown", pch = 1) # 中部左部。
+legend("right", title = "right", legend = "B", col = "gray", pch = 1) # 中部右部。
+legend("center", title = "center", legend = "B", col = "yellow", pch = 1) # 图形正中。
+legend(x=1.1, y=3.5, title = "自定义", legend = "B", col = "yellow", pch = 1) # 自定义位置。
+legend("topleft", title = "调整", legend = "B", col = "green", pch = 1, inset = 0.05) # 顶部左部，偏离0.05。
+```
+
+**2 修饰图例**
+```{r}
+plot(df$v1, df$v2) # 绘制图形。
+legend("topleft", title = "topleft", legend = "B", col = "green", pch = 1, inset = 0.05, bg="yellow", box.lty = 2) # bg设置图例背景色为黄色，box.lty设置图例边框线型。
+legend("topright", title = "无边框", legend = "B", col = "blue", pch = 1, bty = "n") # bty="n"，不绘制图例边框。
+```
+
+**3 图例绘制在图外**  
+```{r}
+par(mai=c(1,2,1,2)) # 设置图形边缘尺寸，mai=c(下,左,上,右)。
+plot(df$v1, df$v2) # 绘制图形。
+par("usr") # 查看图形坐标轴范围，返回结果为4个值，范围对应 x轴的起始，x轴的终止，y轴的起始，y轴的终止。
+legend(x=1.5+xinch(0.1), y=4.5-yinch(0.2), title = "图外图例", legend = "B", pch=1, xpd = T) # bty=“n”，不绘制图例边框。xinch()、yinch()，分别表示沿x轴，y轴移动的距离，按绝对距离计算，或按坐标轴的数量级计算。
+```
+
+### 3.4.5 文本标注  
+
+**1 图内标注**  
+
+函数text()用于绘图区域内部添加文本。  
+函数：text(x, y = NULL, labels = seq_along(x$x), adj = NULL, pos = NULL, offset = 0.5, vfont = NULL, cex = 1, col = NULL, font = NULL, ...)   
+
+x和y：用于指定添加文本的位置坐标，为数值型向量。如果，x和y向量的长度不同，则短的将会被循环使用。  
+labels：指定添加文本的内容，为字符串向量。  
+adj：调整文字的位置。其值位于[0,1]之间。当adj为1个值时，是调整labels的x轴的位置，当是2个值时，第1个调整的是x轴的位置，第2个调整的是y轴的位置。  
+pos：调整文字的方向位置，如果给定了此值，将覆盖adj给定的值。1,2,3和4分别对应坐标的下，左，上和右。  
+offset：此参数需要与pos结合使用。当指定pos时，给出字符偏移量。  
+vfont：NULL值为默认使用当前字体族。或者是一个长度为2的矢量字体字符向量。向量的第一个元素用于指定一种字体，第二个元素用于指定一种样式。如文本标签用表达式给出，则该项设置将被忽略。  
+cex：设置字体大小，如果为NA或NULL，则设置为1。  
+col：设置文本的颜色。  
+font：设置文本字体，1是默认值，普通文字，2代表加粗，3代表斜体， 4代表加粗+斜体，5只有用来ADOBE的设备上时，才有用。
+srt：文本倾斜的角度。[<sup>43</sup>](#refer-anchor)  
+
+*1.1 指定坐标添加文本*  
+
+```{r}
+plot(df$v1,df$v2) # 绘制图形。
+text(x=1.4, y=1.5, labels="my words", pos=3, col="red", offset=-0.5, cex=1.2, font=3) # 图形区域添加文本。x和y标明location，pos指定方位，side指定放置文本的边。
+```
+
+*1.2 指定坐标添加多个文本*    
+```{r}
+plot(df$v1,df$v2) # 绘制图形。
+text(x=c(1.1, 1.4), y=c(1.5, 3.5), labels=c("my text","my words"), pos=c(3,2), col=c("blue","red"), cex=c(1.5,2), font=c(1,3)) # 图形区域添加多个文本。
+```
+
+*1.3 对图形元素添加文本标注*  
+```{r}
+plot(df$v1,df$v2) # 绘制图形。
+text(df$v1, df$v2, labels = df$v2,cex=0.5, col="red", pos = 4, srt=30) # 对图的每个点添加标注。
+```
+
+*1.4 特殊符号*  
+有时候需要在图上标注诸如求和、积分、上下标等数学符号，还有一些公式等。这里需要用到函数expression(...)，...是要输入的表达式。 可以通过help(plotmath)以获得更多表达式的细节和示例。   
+```{r}
+plot(df$v1,df$v2, ann=F) # 绘制图形。
+text(x=1.3, y=1.5, labels=expression(y == log(x) + sqrt(x) + sqrt(x,3)),col="red",font=3) # 添加数学公式。
+text(x=1.1, y=2.5, labels=expression(x^(y + z)),col="green", cex=1.2, font=3) # 添加数学公式有上标。
+text(x=1.2, y=2.5, labels=expression(alpha+pi-sigma),col="blue", cex=1.2, font=3) # 添加数学公式，希腊字母。
+title(xlab=expression(kg/hm^2), ylab= expression(paste("this is", sqrt(x)))) # 也可以将数学公式添加到标题中。
+```
+
+**2 图外标注**  
+
+函数mtext()用于在图形四个边界之一添加文本。  
+mtext(text, side = 3, line = 0, outer = FALSE, at = NA, adj = NA, padj = NA, cex = NA, col = NA, font = NA, ...)  
+
+text：指定文本内容。  side：指定是哪个页边空白(1=下面，2=左边，3=上边，4=右边）。  line：指定文字出现的位置，文字和对应坐标轴平行。从坐标轴开始向外从0开始计数。  
+at：以用户坐标指定字符串位置。  
+adj：调整阅读方向。为使字符串平行坐标轴，adj=0，意味着左对齐或下对齐，而adj=1表示右对齐或上对齐。  
+padj：调整每个字符串垂直阅读的方向（它通过adj控制）。对于平行轴的字符串，padj=0表示右或上对齐，padj=1表示左或下对齐。  cex：调整字体大小，默认为1。  
+font：调整文字字体。   
+col：调整文字颜色。  
+
+![](D:/documents/3.4.5.png)
+
+```{r}
+plot(df$v1,df$v2) # 绘制图形。
+mtext("my text", side = 4, col="blue") # 在图形右边添加文本。
+mtext("my text", side = 4, line=0.8, col="red") # 在图形右边添加文本并向外偏移0.8。
+mtext("my text", side = 4, line=0.8, col="black", adj = 1) # 在图形右边添加文本并向外偏移0.8，右上对齐。
+mtext("my text", side = 3, line=0.5, col="green", adj = 0, padj = 1) # 在图形右边添加文本并向外偏移0.5，阅读方向左对齐，垂直阅读方向为下对齐。
+```
+
+## 3.5 图形的组合
+
+在R中使用函数par()或layout()可以容易地组合多幅图形为一幅总括图形。  
+**1 par()**  
+
+按行填充：par(mfrow=c(nrows, ncols))  
+按列填充：par(mfcol=c(nrows, ncols))  
+nrows用于指定行数，ncols用于指定列数。[<sup>13</sup>](#refer-anchor)  
+*1.1 按行填充组图*  
+
+```{r}
+par(mfrow=c(2,2)) # 创建2行2列的矩阵，形成的图形按行填充。
+plot(df$v2) # 点图。
+hist(df$v2) # 直方图。
+boxplot(df$v2) # 箱图。
+qqnorm(df$v2) # QQ图。
+```
+
+*1.2 按列填充组图*  
+```{r}
+par(mfcol=c(2,2)) # 创建2行2列的矩阵，形成的图形按列填充。
+plot(df$v2) # 点图。
+hist(df$v2) # 直方图。
+boxplot(df$v2) # 箱图。
+qqnorm(df$v2) # QQ图。
+```
+*1.3 同行同列*  
+```{r}
+par(mfcol=c(2,1)) # 创建2行1列的矩阵，形成的图形按列填充。
+plot(df$v2) # 点图。
+hist(df$v2) # 直方图。
+```
+
+```{r}
+par(mfcol=c(1,2)) # 创建1行2列的矩阵，形成的图形按列填充。
+plot(df$v2) # 点图。
+hist(df$v2) # 直方图。
+```
+
+
+
+**2 layout()**   
+layout(mat, widths = rep.int(1, ncol(mat)),heights = rep.int(1, nrow(mat)), respect = FALSE)  
+mat：一个矩阵，提供了作图的顺序以及图形版面的安排。0代表不绘制图形，大于0的数代表绘图顺序，相同数字代表占位符。  
+widths：各列宽度，各列宽度值组成的一个向量。  
+heights：各行高度，各行高度值组成的一个向量。  
+respect：控制着各图形内的横纵轴刻度长度的比例尺是否一样。逻辑值，若为TRUE，表示图形不贴上下边，若为FALSE，表示图铺满整张画布。  
+byrow：可以调整图是按行排列还是按列排列。  
+
+layout.show(n=1) 用于查看当前画布布局。
+lcm()用于指定图形绝对宽度，单位cm。
+```{r}
+layout(matrix(c(1,1,1,0,2,3),3,2), widths=c(2,1), heights = c(1,2,3)) # 3行2列的矩阵，矩阵内的1代表第1幅图，2代表第2幅图，3代表第3幅图；widths中的2，1代表第1列的宽度是第2列的2倍，heights中的1，2，3代表3行的宽度比例是1:2:3，也就是说如果第1行是1个单位，第2行是2个单位，第3行是3个单位。
+plot(df$v2) # 点图。
+hist(df$v2) # 直方图。
+boxplot(df$v2) # 箱图。
+layout.show(n=3) # 显示画布布局，第1幅图占据第1列的整个3行，对应layout函数矩阵中的1，1，1；第2列第1行不绘图，对应矩阵中的0；第2幅图在第2列第2行，对应矩阵中的2；第3幅图在第2列的第3行，对应矩阵中的3。
+```
+
+**图形布局精细控制**  
+
+par(fig=c(x1, x2, y1, y2), new=TRUE)  
+fig=默认会新建一幅图形，所以在添加一幅图到一幅现有图形上时，请设定参数new=TRUE。  
+参数fig=的取值是一个形如c(x1, x2, y1, y2)的数值向量。
+
+![](D:/documents/3.5.png)
+
+```{r}
+par(fig=c(0,0.9,0,0.9)) # 设置第1幅图的边界。
+plot(df$v1, df$v2) # 第1幅图绘制。
+par(fig=c(0,0.8,0.45,1), new=TRUE) # 设置第2幅图的边界。
+boxplot(df$v1, horizontal = TRUE, axes=FALSE) # 第2幅图绘制。
+par(fig=c(0.65,1,0,0.8), new=TRUE) # 设置第3幅图的边界。
+boxplot(df$v2, axes=FALSE) # 第3幅图的绘制。
+```
+
+
+## 3.6 小结
+
+ifelse()函数[<sup>16</sup>](#refer-anchor)。\
+ifelse(test, yes, no)\
+如果test成立，执行yes，否则执行no，可以对数据做递归循环。\
+可以使用ifelse()函数按函数设定的条件对图形进行部分参数调整。
+
+```{r}
+plot(df$v2, type = "b", lty = 5, pch = 16, col = ifelse(df$nitrogen == "N1", "blue", "red"), cex = ifelse(df$v2 < 2, 1.5, 2.5)) # 这里设置如果df数据集中nitrogen等于N1，图形颜色为蓝色，否则为红色；变量v2若小于2，大小为1.5，否则大小为2.5。
+```
+
+# 第4章 基本数据管理
+
+## 4.1 一个示例
+
+## 4.2 创建新变量
+
+变量名←表达式\
+以上语句中的"表达式"部分可以包含多种运算符和函数。\
+![](D:/documents/4.2.png)
+
+```{r}
+df$p1 <- df$v1 + df$v2 # 形成新列p1，变量值为v1和v2的和。
+df$p2 <- df$v2 - df$v1 # 形成新列p2，变量值为v2减v1的差。
+df$p3 <- df$v1 * df$v2 # 形成新列p3，变量值为v1和v2的积。
+df$p4 <- df$v1 / df$v2 # 形成新列p4，变量值为v1除v2。
+df$p5 <- df$v1^2 # 形成新列p5，变量值为v1平方。
+df$p6 <- df$v2 %% 2 # 形成新列p6，变量值为v2除2的余数。
+df$p7 <- df$v2 %/% 2 # 形成新列p7，变量值为v2除2商的整数。
+head(df) # 显示结果。
+```
+
+为原数据框添加新的列，可以改变原变量列的值，也可以赋值NULL删除列变量
+transform(`_data`, ...)  
+data：要修改的数据；  
+...：进行修改的内容。
+```{r}
+df <- df[,-c(9:15)] # 将原来df中的9到15列删除。
+head(df) # 显示数据df。
+df <- transform(df, sum=v1+v2, mean=(v1+v2)/2) # 给df增加新列，新列sum等于v1+v2，mean列为v1+v2的平均值。
+head(df) # 显示数据df。
+```
+
+
+## 4.3 变量的重编码  
+
+语句variable[condition] <- expression将仅在condition的值为TRUE时执行赋值。   
+
+![](D:/documents/4.3.png)  
+```{r}
+df$p8[df$v1 < 1] <- "low"  # 新建p8列，当v1变量值小于5，变量值赋值low。
+df$p8[df$v1 > 1] <- "high" # 新建p8列，当v1变量值大于5，变量值赋值high。  
+head(df) # 显示数据。
+```
+
+使用within函数进行转化。  
+within(data, expr, ...)  
+data：要处理的数据；  
+expr：计算表达式。    
+```{r}
+head(df) # 显示原数据。
+df <- within(df, {
+                 new <- NA
+                 new[v1 < 1] <- "low"
+                 new[v1 > 1] <- "high"
+}) # 设定新列new，条件是v1小于5的赋值low，v1大于5的赋值为high。
+head(df) # 显示变化后的数据。
+```
+
+## 4.4 变量重命名
+
+**1、fix()函数**  
+
+使用fix()函数调用交互式编辑器修改变量名。例如，要修改df数据集p8列的变量名称为v3，运行fix(df)结果如下：
+![](D:/documents/4.4.png)
+  
+*edit和fix的区别*    
+edit()函数也可以调出交互式编辑器，修改数据后关闭窗口发现数据还是原来的值，所以需要进行赋值操作才能保存修改结果，比如我的数据修改可以写为df <- edit(df)。  fix()函数调出的交互式编辑器，修改数据后关闭窗口发现已经保存了修改后的值，不需要赋值操作。[<sup>44</sup>](#refer-anchor)
+  
+**2、reshape包 rename()函数**  
+rename(dataframe, c(oldname="newname", oldname="newname", ...))  
+dataframe：要修改的数据框；  
+oldname="newname"：指定修改前变量名和修改后变量名。   
+```{r}
+library(reshape) # 调用reshape包。
+df <- rename(df, c(v1="c1", v2="c2")) # 改变df数据框v1和v2列的变量名为c1和c2。
+head(df) # 返回数据。
+```
+  
+**3、names()函数重命名变量名**    
+
+```{r}
+names(df)[9] <- "level" # 将df第9列v3名称改为level。
+names(df)[5:8] <- c("v1", "v2", "v3", "v4")
+head(df) # 显示结果。
+```
+
+## 4.5 缺失值
+
+在R中，缺失值以符号NA（Not Available，不可用）表示。不可能出现的值（例如，被0除的结果） 通过符号NaN（Not a Number，非数值）来表示。  
+
+检查缺失值用is.na()函数，返回一个相同大小的对象，如果某个元素是缺失值，相应的位置将被改写为TRUE，不是缺失值的位置则为FALSE。  
+
+```{r}
+is.na(df[1:5,]) # 检查数据集df前6行是否存在缺失值。
+```
+
+### 4.5.1 重编码某些值为缺失值  
+
+```{r}
+a8 <- c(1, 9, 3, 4, 9, 6, 9, 8, 9, 10) # 构建向量a8。
+is.na(a8) # 检查缺失值。
+a8[a8 == 9] <- NA # 将向量中数值为9的值重新编码为NA。
+a8 # 显示结果。
+```
+
+### 4.5.2 在分析中排除缺失值  
+在R中，含有缺失值的算术表达式和函数的计算结果也是缺失值。因此，在进一步分析数据之前需以某种方式删除这些缺失值。    
+R的多数函数中有na.rm=TRUE选项，添加此选项可移除缺失值并使用剩余值进行计算。  
+na.omit()可以删除所有含有缺失数据的行。
+
+```{r}
+sum(a8) # 不排除缺失值情况下的向量求和。
+sum(a8, na.rm = TRUE) # 排除缺失值后的向量求和。  
+na.omit(a8) # na.omit()可以删除所有含有缺失数据的行。
+```
+
+## 4.6 日期值
+
+日期值通常以字符串的形式输入到R中，然后转化为以数值形式存储的日期变量。函数as.Date()用于执行这种转化。\
+as.Date(x,"input_format")    
+x：字符型日期数据，    
+input_format：给出用于读入日期的适当格式。
+
+```{r}
+Sys.Date() # 返回当天日期。
+date() # 返回当前的日期和时间。
+mydates <- as.Date(c("2021-3-1", "2021-3-2")) # 字符型转换成日期型。
+format(mydates, format="%m/%d/%Y") # 将日期型转换为指定的格式。
+format(mydates, format="%m-%d-%y") # 将日期型转换为指定的格式。
+as.Date("2021年3月20日", "%Y年%m月%d日")
+today <- Sys.Date() # 今天的日期赋值给today。
+past <- as.Date("2000-01-01") # 过去的时间past。
+today-past # 计算日期差。
+difftime(today, past, units = "week") # 计算时间差，以周为单位。
+```
+
+![](D:/documents/4.6.png)
+
+### 4.6.1 将日期转化为字符型变量  
+函数as.character()可将日期值转换为字符型。  
+
+## 4.7 类型转换
+
+向一个数值型向量中添加一个字符串会将此向量中的所有元素转换为字符型。
+is.datatype()用于判断数据类型，返回值为TRUE或FALSE，常见类型包括数值型numeric、字符型character、逻辑型logical、数据框data.frame等。  as.datatype()可将数据类型进行转化。  
+![](D:/documents/4.7.png)  
+
+查看数据类型：mode(), class(), typeof(), storage.mode() 
+逻辑值转换成数值时，TRUE转换成1，FALSE转换成0。[<sup>17</sup>](#refer-anchor)
+
+```{r}
+mode(df$nitrogen) # 查看df数据集nitrogen列的数据类型。
+class(df$nitrogen) # 同上。
+typeof(df$nitrogen) # 同上。
+storage.mode(df$nitrogen) # 同上。
+is.data.frame(df) # 判断df数据集是否为数据框。
+str(df) # 查看df数据集结构。
+is.numeric(df$year) # 判断数据集df中year列的数据类型是否为数值型。
+df$year <- as.numeric(df$year) # 将数据集df中year列转换为数值型。
+is.numeric(df$year) # 判断df数据集中year列数据类型是否为数值型。
+df$year <- as.character(df$year) # 将数据集df中year列转换为字符型。
+is.character(df$year) # 判断df数据集中year列数据类型是否为字符型。
+```
+
+## 4.8 数据排序
+
+函数：order(x,decreasing=F,na.last=NA)\
+x是要排序的数据，可以是数据框也可以是向量，decreasing=F是默认升序，在排序变量前加一个减号可得到降序排序结果，na.last =NA表示将NA元素移到最后，否则，将NA放在第一个。
+
+```{r}
+head(df) # 以数据框df为例。
+head(df[order(df$nitrogen),])  # 对数据框df按照nitrogen列升序排序。
+head(df[order(-df$v1),]) # 对数据框df按照v1列降序排序。
+head(df[order(df$nitrogen, -df$v1),]) # 对数据集df先按nitrogen升序排列，在同样nitrogen下再按v1降序排列。
+```
+
+## 4.9 数据集合并
+
+### 4.9.1 添加列
+
+函数：cbind(A, B) ，不需要指定一个公共索引对数据框进行合并。\
+cbind：根据列进行合并，即叠加所有列，m列的矩阵与n列的矩阵cbind()最后变成m+n列，合并前提：cbind(a, c)中矩阵a、c的行数必需相符。[<sup>18</sup>](#refer-anchor)
+
+merge(A, B) ：横向合并两个数据框（数据集），在多数情况下，两个数据框是通过一个或多个共有变量进行联结的（即一种内联结，inner join）。[<sup>19</sup>](#refer-anchor)
+
+```{r}
+df1 <- df[1:5, 1:5] # 构建df1。
+df1 # 显示df1。
+df2 <- df[1:5,1:3] # 构建df2。
+df2 # 显示df2。
+cbind(df1,df2) # 将df1和df2合并。
+merge(df1, df2, by="year") # merge()函数合并数据框df1和df2。以共有变量year进行联结。
+```
+
+### 4.9.2 添加行
+
+rbind(A, B) ：纵向合并两个数据框（数据集），两个数据框必须拥有相同的变量，不过它们的顺序不必一定相同。\
+rbind：根据行进行合并，就是行的叠加，m行的矩阵与n行的矩阵rbind()最后变成m+n行，合并前提：rbind(a, c)中矩阵a、c的列数必需相符。[<sup>18</sup>](#refer-anchor)
+
+```{r}
+df3 <- df[1:2,] # 构建新的数据框df3，数据是df的前2行。
+df3 # 显示数据df3。
+df4 <- df[3:4,] # 构建新的数据框df4，数据是df的3和4行。
+df4 # 显示数据df4。
+rbind(df3, df4) # 按行合并df3和df4。
+```
+
+## 4.10 数据集取子集
+
+### 4.10.1 选入（保留）变量
+
+函数：dataframe[row indices, column indices] dataframe为要索引的数据框，[]中，前面的是行，后面是列。
+
+```{r}
+df[1,3] # 选择第3列第1行的值。
+df[1:6,3:5] # 选择第1至6行，第3至5列。
+df[c(2,4,6),c(1,3,5)] # 选择第2、4、6行，第1、3、5列。
+```
+
+### 4.10.2 剔除（丢弃）变量
+
+在某一列或行的下标之前加一个减号（-）就会剔除那一列或行。
+
+```{r}
+df[-c(12:24),-c(7:9)] # 剔除12到24行，第7到第9列数据。
+```
+
+### 4.10.3 选入观测
+
+```{r}
+head(df[which(df$v2<2),]) # 将df数据集v2列观测值小于2的所有列变量选择出来。
+```
+
+### 4.10.4 subset函数
+
+subset(x, subset, select, drop = FALSE, ...)\
+x是要进行操作的数据框，subset是对数据的某些字段进行操作，select是选取要显示的字段。[<sup>20</sup>](#refer-anchor)
+
+```{r}
+subset(df, v2<2) # 选取df数据框中v2小于2的观测。
+subset(df, v2<2, select = c(year, nitrogen)) # 选取df数据框中v2小于2的观测。且指定显示的列为year，nitrogen。
+subset(df, v2<2 | v2>4) # 选取df数据框中v2小于2或者v2大于4的观测。
+```
+
+### 4.10.5 随机抽样
+
+sample(x, size, replace = FALSE, prob = NULL)\
+x表示所要抽样数据，size表示抽样元素个数，replace为T表示采取有重复的抽样，prob用于指定抽样的概率。[<sup>21,22</sup>](#refer-anchor)
+
+```{r}
+sample(1:20) # 1到20随机抽样。
+sample(1:20, size=10) # 1到20随机抽样，指定抽取元素的个数为10。
+sample(1:20, size = 10, replace = T) # 从1到20的数中随机抽样，抽样个数10，repalce就是可以重复抽样，即10个元素中个别元素可以重复出现。
+sample(1:2, size = 20, replace = T, prob = c(0.8,0.2)) # 这样设定后，意味着1在抽样中出现的概率是80%，2出现的概率是20%。
+```
+
+## 4.11 使用SQL语句操作数据框
+
+## 4.12 小结
+
+# 第5章 高级数据管理
+
+## 5.1 一个数据处理难题
+
+## 5.2 数值和字符处理函数
+
+### 5.2.1 数学函数
+
+![](D:/documents/5.2.1.png)
+
+**1、常见数学函数**  
+常见数学函数运算。函数可以按照自己的需求进行套用。[<sup>45,46</sup>](#refer-anchor)      
+```{r}
+abs(-5) # 返回绝对值。
+sqrt(5) # 返回平方根。
+ceiling(c(0.78, 1.56, 3.58)) # 返回数据最小整数。
+floor(c(0.78, 1.56, 3.58)) # 返回数据最大整数。
+trunc(c(0.78, 1.56, 3.58)) # 向0的方向截取的整数部分。
+round(c(0.78, 1.56, 3.58), digits = 1) # 将数据舍入为1位小数。
+signif(c(0.78, 1.56, 3.58), digits = 1) # 将数据舍入为1的有效数字位数。
+log(5,2) # 对5取以2为底的对数。
+log(10) # 自然对数。
+log10(10) # 常用对数。
+exp(10) # 指数函数。
+which.max(c(1, 5, 8, 2, 4, 3)) # 返回数据最大值元素的下标。
+which.min(c(1, 5, 8, 2, 4, 3)) # 返回数据最小值元素的下标。
+rev(c(1, 5, 8, 2, 4, 3)) # 将数据集数据逆序排列。
+sort(c(1, 5, 8, 2, 4, 3)) # 将数据集数据升序排列。
+cumsum(c(1, 5, 8, 2, 4, 3)) # 累积求和。返回一个向量，第i个元素是从1到i的和。
+cumprod(c(1, 5, 8, 2, 4, 3)) # 累积乘积。
+match(c(1, 5, 8, 2, 4, 3), c(1, 2, 3, 4)) # 返回一个和x的长度相同的向量，表示x中与y中元素相同的元素在y中的位置（没有则返回NA）。  
+which(df$v1 < 1.2) # which(x)返回一个包含x符合条件（当比较运算结果为真（TRUE）的下标的向量。
+table(c(1, 5, 8, 2, 4, 3, 2, 3, 2)) # 返回一个表格，给出y中重复元素的个数列表。
+union(c(1, 5, 8, 2, 4, 3), c(1, 2, 3, 4)) # 求两个向量的并集。
+intersect(c(1, 5, 8, 2, 4, 3), c(1, 2, 3, 4)) # 求两个向量的交集。
+setdiff(c(1, 5, 8, 2, 4, 3), c(1, 2, 3, 4)) # 返回两个向量中的不同元素。
+setequal(c(1, 5, 8, 2, 4, 3), c(1, 2, 3, 4)) # 判断两个数据集是否相等。
+format(200000, scientific = TRUE) # 把数据转换为科学计数。本例中将200000转换为科学计数。
+```
+
+当这些函数被应用于数值向量、矩阵或数据框时，它们会作用于每一个独立的值。  
+```{r}
+round(df$v1, digits = 1) # 对数据集df中v3列数据保留1位小数。
+log(df$v1) # 对数据集df中v3列数值取自然对数。
+```
+
+**2、运算符**  
+2.1 关系运算符  
+```{r}
+a # 显示向量a
+a < 5 # < 小于。
+a > 5 # > 大于。
+a <= 5 # <=小于等于。
+a >= 5 # >=大于等于。
+3 == 5 # == 等于，也可判断是否相等。
+3 != 5 # ! 不等于。
+```
+2.2 算术运算符  
+```{r}
+a + 2 # 加。
+a - 2 # 减。
+a * 2 # 乘。
+a / 2 # 除。
+a^2 # ^或** 乘方，求幂值。2的2次方。 
+10 %% 3 # A%%B 求余数。
+10 %/% 3 # A%/%B 整数除法。
+```
+2.3 逻辑运算符  
+```{r}
+a[a<3 | a>6] # | 或，比较两个向量的所有元素。
+a[a>3 & a<6] # & 与。
+a && a+2 # 比较两个向量的第一个元素。a中的第一个元素是1，a+2中的第1个元素是3。
+sign(-1) # sign判断正负。
+```
+2.4 其他运算符  
+```{r}
+2:8 # :冒号运算符。 它为向量按顺序创建一系列数字。
+8 %in% a # %in%判断元素是否属于向量。
+```
+
+### 5.2.2 统计函数  
+统计概念学习。[<sup>47</sup>](#refer-anchor)     
+1. 求和(sum)：已知数据所有观测值的总和。  
+2. 最大值(max)：已知数据中最大的一个值。    
+3. 最小值(min)：已知数据中最小的一个值。  
+4. 算术平均值(arithmetic mean)：资料中各个观测值的总和除以观测值的个数所得的商，简称平均数。    
+$$ \overline x = \frac {x_1 + x_2 + ...+x_n } n $$  
+5. 中位数(median)：将资料内所有观测值从小到大依次排列，当观测值的个数是奇数时，位于中间的那个观测值为中位数，或者当观测值个数是偶数时，位于中间的两个观测值的平均数为中位数。记作$M_d$。    
+
+(1)当观测值为奇数时，(n+1)/2位置的观测值即为中位数。  
+$$ M_d = x_{(n+1)/2} $$    
+
+(2)当观测值个数为偶数时，n/2和n/2 + 1位置的两个观测值的平均数为中位数。  
+$$ M_d = \frac {x_{n/2} + x_{n/2+1}} 2 $$
+6. 标准差(Standard deviation)：一组数据中的每一个观测值与这组数据的平均数的差的平方的和再除以数据个数，取平方根。用于表示数据点的离散程度。记为S。    
+$$ S = \sqrt {\frac 1n\sum_{i=1} ^n (x_i - \overline x)^2}$$  
+其中，每一个观测值与平均数的差的平方和称为离均差平方和(SS - sum of squares of deviation from mean)，SS越大说明总体的变异程度越大，说明数据离散程度越大。 
+7. 方差(variance)：亦称为均方(mean square, MS)，每个值减去平均值的平方求和后除以总数，用于描述数据的离散程度。记为$S^2$。  
+$$ S^2 = \frac 1n \sum_{i=1} ^n (x_i - \overline x)^2$$   
+可以看出，方差是标准差的平方。  
+8. 分位数(Quantile)：将一个随机变量的概率分布范围分为几个等份的数值点，常用的有中位数（即二分位数）、四分位数、百分位数等。[<sup>48</sup>](#refer-anchor)     
+9. 绝对中位差(Median Absolute Deviation)：数据点到中位数的绝对偏差的中位数。算法是用原数据减去中位数后得到的新数据的绝对值的中位数。[<sup>49,50</sup>](#refer-anchor)。  
+
+![](D:/documents/5.2.2.png)
+
+```{r}
+mean(df$v1) # 返回数据框df中v1列的平均值。
+median(df$v1) # 返回数据框df中v1列的中位数。
+sd(df$v1) # 返回v1列标准差。
+var(df$v1) # 返回v1列方差。
+mad(df$v1) # 返回v1列的绝对中位差。
+quantile(df$v1, c(0, 0.25, 0.5, 0.75, 1)) # 返回v1列的四分位数。
+IQR(df$v1) # 求df$v1的四分位距。
+range(df$v1) # 求v1列值域。
+sum(df$v1) # v1列求和。
+diff(df$v1) # 滞后差分。
+diff(range(df$v1)) # 求数据极差，即最大值减最小值。
+min(df$v1) # 返回最小值。
+max(df$v1) # 返回最大值。
+fivenum(df$v1) # 可以通过fivenum函数直接获得基本描述性统计结果。
+summary(df$v1) # 可以通过summary获得最小值、最大值、中位数、平均数、第25和75分位数。
+```
+
+**数据的标准化**  
+数据的标准化是指将数据按照比例缩放，使之落入一个特定的区间。  
+数据的中心化：数据集中的各项数据减去数据集的均值。  中心化公式：
+$$ Z_i = X_i - \overline X $$
+数据的标准化：中心化之后的数据再除以数据集的标准差，即数据集中的各项数据减去数据集的均值再除以数据集的标准差。经过该方法处理的数据的均值是0，标准差是1。  标准化公式：  
+$$ Z_i = \frac {(X_i- \overline X)} S $$
+其中，x为观测者，$\overline X$为平均值，S为标准差。    
+
+scale(x, center = TRUE, scale = TRUE)    
+x：用于标准化的数据，   
+center=T：表示数据中心化，  
+scale=T：表示数据标准化。   
+默认情况下，center=TRUE，scale=TRUE，scale()函数首先把一组数的每个数都减去这组数的平均值，然后除以这组数的均方根。  
+如果scale=TRUE，而center=FALSE，那么，scale()函数不会把一组数中的每个数减去平均值，而直接除以这组数据的均方根。[<sup>23</sup>](#refer-anchor)
+
+
+```{r}
+a <- 1:10 # 向量a。
+scale(a, center=T, scale=F) # 数据中心化，对向量a每个数据减去平均值5.5。
+scale(a, center=F, scale=T) # 每个数据除以均方根6.540472。
+scale(a, center=T, scale=T) # 数据a标准化，每个数据减去平均值再除以均方根。
+scale(df[5:8])*2 + 5 # 对数据集df的5到8列进行数据标准化。
+```
+
+### 5.2.3 概率函数  
+在R中，概率函数形如： 
+[dpqr]distribution_abbreviation  
+其中第一个字母表示其所指分布的某一方面： 
+d = 密度函数（density） 
+p = 分布函数（distribution function） 
+q = 分位数函数（quantile function） 
+r = 生成随机数（随机偏差）  
+**以正态分布为例**  
+*1 什么是正态分布？*    
+正态分布也被称为高斯分布，是统计学中极为常见的连续型概率分布。正态曲线呈钟型，两头低，中间高，左右对称因其曲线呈钟形，因此人们又经常称之为钟形曲线。  
+*2 正态分布的两个参数及图形*  
+正态分布有两个参数，即均数和标准差。  1）概率密度曲线在均值处达到最大，并且对称；  2）一旦均值和标准差确定，正态分布曲线也就确定；  3）当X的取值向横轴左右两个方向无限延伸时，曲线的两个尾端也无限渐近横轴，理论上永远不会与之相交；  4）正态随机变量在特定区间上的取值概率由正态曲线下的面积给出，而且其曲线下的总面积等于1；  
+5）均值可取实数轴上的任意数值，决定正态曲线的具体位置；标准差决定曲线的“陡峭”或“扁平”程度：标准差越大，正态曲线越扁平；标准差越小，正态曲线越陡峭。这是因为，标准差越小，意味着大多数变量值离均数的距离越短，因此大多数值都紧密地聚集在均数周围，图形所能覆盖的变量值就少些，于是都挤在一块，图形上呈现瘦高型。相反，标准差越大，数据跨度就比较大，分散程度大，所覆盖的变量值就越多，图形呈现“矮胖型”。[<sup>52</sup>](#refer-anchor)    
+*3 标准正态分布*  
+如果不指定一个均值和一个标准差，则函数将假定其为标准正态分布（均值为0，标准差为1）。    
+*4 正态分布的概率函数*    
+概率密度函数为dnorm()，分布函数pnorm()，分位函数qnorm()，随机数生成函数rnorm()。    
+dnorm(x, mean = 0, sd = 1, log = FALSE)
+pnorm(q, mean = 0, sd = 1, lower.tail = TRUE, log.p = FALSE)
+qnorm(p, mean = 0, sd = 1, lower.tail = TRUE, log.p = FALSE)
+rnorm(n, mean = 0, sd = 1)  
+x - 是数字的向量。  
+p - 是概率向量。  
+n - 是观察次数(样本量)。  
+mean - 是样本数据的平均值，默认值为零。  
+sd - 是标准偏差，默认值为1。[<sup>51</sup>](#refer-anchor)  
+```{r}
+plot(pretty(c(-5, 5), 100), dnorm(pretty(c(-5, 5), 100), 0, 1)) # 绘制标准正态分布下的概率密度曲线。
+dnorm(0, mean = 0 , sd = 1) # 求算x=0时概率。
+
+plot(pretty(c(-3, 3), 100), pnorm(pretty(c(-3, 3), 100), 0, 1)) # 绘制标准正态分布下的概率分布曲线。
+pnorm(0.5) # 表示x等于0.5，小于等于0.5的对于的概率。
+
+plot(pretty(c(0, 1), 90), qnorm(pretty(c(0, 1), 90), 0, 1)) # 绘制标准正态分布下的概率分布曲线。
+qnorm(0.6, mean = 0, sd = 1) # 均值为50，标准差为10的正态分布的0.6分位点值。
+
+rnorm(90, mean = 50, sd = 10) # 生成90个均值为50，标准差为10的正态随机数。
+hist(rnorm(90, mean = 50, sd = 10)) # 绘制均值为50，标准差为10的90个正态随机数图形。
+```
+  
+pretty()创建美观的分割点。选取n+1等间距的取整数，将连续变量x分割为n个区间。pretty(x,n)  
+x:它被定义为矢量数据。  
+n:结果向量的长度。  
+返回：等长区间的数据向量。  
+```{r}
+pretty(c(-5,5),10) # 生成-5到5的序列，间隔1。
+seq(-5,5,1) # 生成-5到5的序列，间隔1。
+```
+
+**设定随机数种子**\
+set.seed()\
+该函数是设定生成随机数的种子，种子是为了让结果具有重复性，保证你在执行和调试后，所创造的随机数保持不变。[<sup>24</sup>](#refer-anchor)\
+runif(n, min = 0, max = 1)  
+该函数用于创建均匀分布的随机偏差。n表示观察次数，min和max分别为最小最大值。  
+```{r}
+runif(5) # 生成0-1之间服从正态分布的伪随机数。
+runif(5) # 再次运行runif生成随机数，对比前一个命令，形成的结果是不一样的。
+set.seed(1) # 设定种子1。
+runif(5) # 再次运行生成随机数。
+set.seed(1) # 设定种子1。
+runif(5) # 再次运行生成随机数，对比上一个runif可以看到，结果是相同的。
+```
+
+其他概率分布见下表。  
+![](D:/documents/5.2.3.1.png) 
+
+### 5.2.4 字符处理函数  
+字符处理函数可以从文本型数据中抽取信息，或者为打印输出和生成报告重设文本格式。  
+
+![](D:/documents/5.2.4.png)
+
+```{r}
+zf <- c("nitrogen", "agriculture") # 创建一个字符型变量。
+nchar(zf) # 返回变量的字符数量。nitrogen由8个字母组成，返回值为8。
+length(zf) # 注意length函数返回的是变量包含的个数，而nchar则是数据集每个变量的字符个数。
+grep("n",zf) # 判断字母“n”是否包含在字符变量zf中，因为n包含在zf中的第1个元素nitrogen，而第2个元素agriculture中没有n，所以返回下标1。
+sub("n", "5", "nitrogen") #  将zf中的小写字母n替换为大写字母N。注意sub只替换匹配的第一个。这个例子中末尾也有一个“n”，但是第一个匹配的是首字母n。
+gsub("n", "5", "nitrogen") # gsub("目标字符", "替换字符", 对象)，将nitrogen中的n替换为5。gsub是所有满足条件的都替换。
+chartr("n", "5", "nitrogen") # 将nitrogen中的n替换成5。chartr(old,new,x)，其中，old表示原有字符串内容，new为替换后的字符串内容，x表示要操作的对象。
+strsplit('nitrogen','') # 分割字符变量nitrogen，分割方式为''。
+paste("nitrogen", 1:8, sep = "-") # 将nitrogen与1到8连接，连接符为-。
+paste("nitrogen", "level") # paste函数连接nitrogen和level，paste函数连接默认分割符为空格。
+paste0("nitrogen", "level") # paste0函数连接nitrogen和level，paste0函数连接默认分割符为空。
+toupper("nitrogen") # 将字符变量nitrogen转为大写。
+tolower("NITROGEN") # 将字符变量NITROGEN转为小写。
+casefold("nitrogen", upper = T) # 将nitrogen转为大写。
+substr(zf, 4, 8) # 提取字符向量zf从第4到第8的字符。
+substr(zf, 4, 8) <- "12345" # 替换字符向量中元素4到8的字符为12345。
+zf # 返回替换结果。
+substr("nitrogen", 1, 6) # 提取字符变量1到6的字母。
+substring("nitrogen", 1, 6) # 作用同上。当substr和substring的起始和结束参数为整数时，两函数运行结果相同。
+substring("nitrogen",1) # substring函数不指定结束参数的话，默认为最大。
+substr("nitrogen", 1:4, 4:8) # substr返回的字符串个数是第一个参数的长度。
+substring("nitrogen", 1:4, 4:8) # substring返回3个参数中最长的向量长度。短向量循环。
+```
+
+[<sup>25</sup>](#refer-anchor)
+
+### 5.2.5 其他实用函数
+
+![](D:/documents/5.2.5.png)
+
+```{r}
+length(zf) # 返回对象长度。
+seq(1,10,2) # 生成序列，从1到10的数，间隔2。
+rep(5,10) # 将5重复10次。
+cut(1:12, 3) # 将1到12的数分割成3个水平的因子。
+pretty(1:12, 4) # 将1到12的数分割为4个区间。
+cat("I","am studying", "\n", "\'","R","\'") # 连接对象，\n表示新行，\t为制表符，\'为单引号，\b为退格，等等。键入?Quotes以了解更多。
+data.frame(v1 = seq(1,12,2), v2 = rep(c(1,2,3),2)) # 利用seq和rep来构建一个数据框。
+```
+
+### 5.2.6 将函数应用于矩阵和数据框    
+
+R函数的诸多有趣特性之一，就是它们可以应用到一系列的数据对象上，包括标量、向量、矩阵、数组和数据框。    
+```{r}
+a9 <- 9 # 定义标量a9。
+sqrt(a9) # 将函数应用于标量a9。
+a10 <- c(1.325, 2.568, 1.529) # 定义向量a10。
+round(a10, 2) # 将函数应用于向量。
+a11 <- matrix(runif(18), nrow = 6) # 构建矩阵a11，6行3列的矩阵。
+log(a11) # log函数应用于矩阵。
+mean(a11) # mean函数应用于矩阵。
+```
+
+R中提供了一个apply()函数，可将一个任意函数“应用”到矩阵、数组、数据框的任何维度上。  
+apply(x, MARGIN, FUN, ..., simplify = TRUE)
+其中，x为数据对象，可以是数组、矩阵、数据框，数据至少是二维的，MARGIN是维度的下标，MARGIN=1表示行，MARGIN=2表示列。FUN是自定义调用的函数，可为任意R函数，而...则包括了任何想传递给FUN的参数。 
+apply函数只能用于处理矩阵类型的数据，也就是说所有的数据必须是同一类型。因此要使用apply函数的话，需要将数据类型转换成矩阵类型。  
+
+
+```{r}
+a11 # 显示矩阵a11。
+apply(a11, 2, sd) # 计算矩阵a11每列的标准差。
+apply(a11, 1, mean) # 计算矩阵a11每行的平均值。
+apply(a11, 1:2, function(x) x+1) # 若将MARGIN设置为1:2，则后面的函数将对每一个单元格进行操作。
+```
+
+lapply(x, FUN)  
+lapply函数将函数应用于输入变量x的每一个元素，返回一个与x长度相同的列表。x可以是列表，向量或数据框。  
+
+sapply(x, FUN)  
+x可以是列表，矩阵或数据框，以向量或矩阵形式输出结果。执行的功能与lapply函数相同。  
+
+tapply(X, INDEX, FUN = NULL)  
+tapply用于数据框类型的数据，可以按因子变量分组计算统计量。    X可以是数组、矩阵、数据框等分割型数据向量，INDEX是一个或多个因子的列表，每个因子的长度都与x相同，FUN为自定义的调用函数。[<sup>53</sup>](#refer-anchor)    
+
+```{r}
+lapply(df, mean) # 对数据框df应用lapply函数。会对数据框有数据的列进行函数应用。
+sapply(df, mean) # 对数据框df应用sapply函数。
+tapply(df$v1, df$year, mean) # 求算df数据框v1列的平均值，按照分组year进行计算。
+tapply(df$v1, list(df$year, df$nitrogen), mean) # 多因子组合分组统计平均值。list中添加多个分组因子。
+```
+
+
+## 5.3 数据处理难题的一套解决方案  
+```{r}
+df # 显示数据框df。
+options(digits = 1) # 限定数据输出的小数点后数字的位数。
+df # 再次显示数据df。
+a12 <- scale(df[,c(8,10)]) # 第8列和第10列不好比较，先进行标准化。
+mean_row <- apply(a12, 1, mean) # 计算每行的均值。
+df <- cbind(df, mean_row) # 将行平均值加入数据框df。
+y1 <- quantile(df$mean_row, c(0.8, 0.6, 0.4, 0.2)) # 计算列mean_row的百分位数。
+y1 # 显示结果。
+df$grade[mean_row >= y1[1]] <- "A" # 重编码新的分类变量grade，大于等于mean_row列第1分位数的赋值为A。
+df$grade[mean_row < y1[1] & mean_row >= y1[2]] <- "B" # 重编码新的分类变量grade，大于等于mean_row列第2分位数，且小于第1分位数的赋值为B。
+df$grade[mean_row < y1[2] & mean_row >= y1[3]] <- "C" # 重编码新的分类变量grade，大于等于mean_row列第3分位数，且小于第2分位数的赋值为C。
+df$grade[mean_row < y1[3] & mean_row >= y1[4]] <- "D" # 重编码新的分类变量grade，大于等于mean_row列第4分位数，且小于第3分位数的赋值为D。
+df$grade[mean_row < y1[4]] <- "E" # 重编码新的分类变量grade，小于第4分位数的赋值为E。
+df # 显示数据df。
+df[order(df$nitrogen, df$grade),] # 对df先按nitrogen，再按grade进行排序。
+```
+
+
+## 5.4 控制流
+
+在正常情况下，R程序中的语句是从上至下顺序执行的。但有时你可能希望重复执行某些语句，仅在满足特定条件的情况下执行另外的语句。这就是控制流结构发挥作用的地方了。\
+ 语句（statement）是一条单独的R语句或一组复合语句（包含在花括号{ } 中的一组R语句，使用分号分隔）；\
+ 条件（cond）是一条最终被解析为真（TRUE）或假（FALSE）的表达式；\
+ 表达式（expr）是一条数值或字符串的求值语句；\
+ 序列（seq）是一个数值或字符串序列。
+
+### 5.4.1 重复和循环
+
+循环结构重复地执行一个或一系列语句，直到某个条件不为真为止。循环结构包括for和while结构。
+for循环重复地执行一个语句，直到某个变量的值不再包含在序列seq中为止。语法为：for(var in seq) statement\
+var为循环变量，seq为序列，statement为表达式。var在每次循环时从seq中顺序取值，代入到后面的statement语句中进行运算。
+
+```{r}
+for(i in 1:5) print("Hello") # 输出5次Hello。
+for(i in 1:3) {print(i)} # 将i在1-3之间循环，也就是逐个输出。
+for(i in 1:10) {print(x=i+1)} # 将i+1循环10次。
+```
+
+while循环重复地执行一个语句，直到条件不为真为止。\
+语法为：while(cond) statement\
+cond是一个条件表达式，其值为TRUE或者FALSE，statement是当cond为TRUE时要执行的表达式。[<sup>26</sup>](#refer-anchor)
+
+```{r}
+i <- 1
+while (i <= 5) {
+  print(i+i) 
+  i <- i + 1
+  } # i=1，输出i+i，条件是小于5。
+```
+
+### 5.4.2 条件执行
+
+在条件执行结构中，一条或一组语句仅在满足一个指定条件时执行。条件执行结构包括if-else、ifelse和switch。   
+**1.if-else结构**\
+控制结构if-else在某个给定条件为真时执行语句。也可以同时在条件为假时执行另外的语句。\
+if (cond) statement\
+if (cond) statement1 else statement2\
+表达式1：当括弧中的cond条件为TRUE时，则执行表达式statement；\
+表达式2：如果if后的条件满足，则执行if与else间的语句，否则执行离else最近的一条语句，如果if块和else块有多条语句，需要将多个语句放在花括号中。[<sup>27</sup>](#refer-anchor)
+
+```{r}
+x <- 5 # 定义x为5.
+if(x<8) x <- x*2 # 如果x小于8，则x等于x乘以2。
+x # 返回结果。
+x1 <- 5 # 定义x1。
+if(x1>6) x1 <- x1*2 # 如果x1小于6，则x1等于x1乘以2，这里的x1小于6，判断为FALSE，所以返回结果还是原来的x1，值为5。
+x1 # 返回结果。
+x2 <- 6 # 定义x2。
+if(x2>8) {
+  x2 <- X2*3
+  }else{
+    x2 <- x2*5
+  } # 如果x2大于8，执行条件1乘以3，如果不大于8，执行条件2乘以5。
+x2 #返回结果。
+```
+
+**2.ifelse结构**\
+ifelse(cond, statement1, statement2)\
+若cond为TRUE，则执行第一个语句；若cond为FALSE，则执行第二个语句。
+
+**ifelse和if(){}else{}的区别**  
+ifelse()中的条件判断中可以得到多个逻辑结果，有多少个逻辑结果，ifelse()的返回值就有多少个元素，且不同的逻辑结果取不同的值。    
+if(){}else{}中的条件判断中只得到一个逻辑结果（如果有多个逻辑结果，会自动取第一个，并抛出警告）。然后根据这个逻辑结果，取后面表达式的值。    
+```{r}
+x3 <- 5 # 定义x3为5。
+ifelse(x3 > 6, x3 + 1, x3 - 1) # 判断x3是否大于6，如果要是大于6，执行x3+1，小于6，执行x3-1。
+if(x3 > 6) {x3 + 1} else {x3 - 1} # 使用if(){}else{}语句。
+```
+
+
+**3.switch结构**\
+switch根据一个表达式的值选择语句执行。\
+switch(expr, .....)\
+其中expr为表达式，可以是整数或字符串，如果是整数则返回对应的 case位置值，如果整数不在位置的范围内则返回NULL，...表示与expr的各种可能输出值绑定的语句。若expr的计算结果为整数，且值在1\~length(list)之间时，则switch()函数返回列表相应位置的值。若expr的值超出范围，则没有返回值。[<sup>28</sup>](#refer-anchor)
+
+```{r}
+switch (3, "case = action", "nitrogen", "agriculture") # 返回第3个位置的值。
+```
+
+## 5.5 用户自编函数
+
+R的最大优点之一就是用户可以自行添加函数。\
+myfunction \<- function(arg1, arg2, ... ){ statements return(object) } myfunction是自定义函数的名称，arg1，arg2为参数，statements为函数语句，用于定义函数的作用，return(object)返回结果。
+
+```{r}
+myfunction <- function(x){
+  mean <- mean(x)
+  sd <- sd(x)
+  return(c(mean, sd))
+} # 自定义函数myfunction，函数参数为x，函数语句包括mean和sd，返回结果也是mean和sd。
+myfunction(df$v1) # 运行myfunction，返回的结果是df的v1列的平均值和标准差。
+```
+
+## 5.6 整合与重构
+
+### 5.6.1 转置
+
+转置（反转行和列）也许是重塑数据集的众多方法中最简单的一个了。使用函数t()即可对一个矩阵或数据框进行转置。对于后者，行名将成为变量（列）名。
+
+```{r}
+1:10 # 1到10的数，为10行，1列。
+t(1:10) # 通过转置，1到10变为了1行，10列。
+A # 显示数据框A。
+as.data.frame(t(A)) # 将数据框A装置。这里实际上是分了两步完成的，t(A)将A转置，但是系统将数值型变量全部变为了字符型，加上as.data.frame，则将A变为数据框。
+```
+
+### 5.6.2 整合数据
+
+aggregate(x, by, FUN)\
+其中x是待折叠的数据对象，by是一个变量名组成的列表，这些变量将被去掉以形成新的观测，而FUN则是用来计算描述性统计量的标量函数，它将被用来计算新观测中的值。[<sup>29</sup>](#refer-anchor)
+
+```{r}
+head(df) # 查看数据前6行。
+aggregate(df[5:8], by = list(df$year), FUN = mean) # 对df数据框5到8列的数据，依据df数据框中的year为分组依据进行平均值的统计。
+aggregate(cbind(df$v1, df$v4) ~ df$year + df$nitrogen, FUN = mean) # 可以这样编写想要处理的数据列和因子的关系。
+aggregate(df[5:8], by = list(df$year, df$nitrogen), FUN = mean) # aggregate中的list可以是多因子，这里选择了year和nitrogen。
+aggregate(df[5:8], by = list(df$year, df$nitrogen, df$variety), FUN = mean) # 因子增加为year，nitrogen和variety。
+aggregate(df[5:8], by = list(df$year, df$nitrogen, df$variety), FUN = myfunction) # 将自定义函数应用于aggregate函数中。
+```
+
+### 5.6.3 reshape包
+
+reshape包是一套重构和整合数据集的绝妙的万能工具。reshape2包是对reshape包的重写，实际应用中可使用reshape2包。\
+**1.融合**    
+数据集的融合是将它重构为这样一种格式：每个测量变量独占一行，行中带有要唯一确定这个测量所需的标识符变量。\
+melt(data, id.vars, measure.vars, variable.name = "variable", ..., na.rm = FALSE, value.name = "value", factorsAsStrings = TRUE)\
+data：需要处理的数据；  id.vars：设置融合后单独显示的变量，可以用变量位置及名称表示，没写表示使用所有非measure.vars值；    
+measure.vars：通常根据id.vars设置的变化而变化；    
+na.rm：缺失值处理办法；    
+variable.name：melt后为新列变量取名。    
+value.name：新列对应值的变量名[<sup>30</sup>](#refer-anchor)
+
+```{r}
+library(reshape2) # 调用reshape包。
+rep <- rep(1:2,4) # 构建rep列。
+year <- c("2020","2020","2020","2020","2021","2021","2021","2021") #构建Year列。
+var1 <- sample(13:20) # 构建var1列。
+var2 <- sample(1:8) # 构建var2列。
+df1 <- data.frame(rep, year, var1, var2) # 构建新的数据框df1。
+df1 # 显示数据df1。
+df2 <- melt(df1, id = c("rep","year"), variable.name = "var", value.name = "values") # 融合数据集df1。
+df2 # 显示数据。
+```
+
+**2.重铸**\
+dcast(data, formula, fun.aggregate = NULL, ..., margins = NULL, subset = NULL, fill = NULL, drop = TRUE, value.var = guess_value(data))\
+data：要处理的数据集；\
+formula：处理公式，描述了想要的最后结果；其接受的公式形如：rowvar1 + rowvar2 + ... \~ colvar1 + colvar2 +...;    
+在这一公式中，rowvar1 + rowvar2 +...定义了要划掉的变量集合，以确定各行的内容，而colvar1 + colvar2 + ...则定义了要划掉的、确定各列内容的变量集合。 fun.aggregate：数据整合函数，如求均值等。 [<sup>31</sup>](#refer-anchor)
+
+![](D:/documents/5.6.3.png)
+
+```{r}
+library(reshape2) # 调用reshape2包。
+head(df2) # 显示数据df2.
+dcast(df2, year+rep~var, value.var = "values", fun.aggregate = sum) # 将df2重铸，rep，year确定保留的行，var确定了列的集合，整合的变量是value，整合函数是求和。
+```
+
+## 5.7 小结
+
+# **第二部分 基本方法**
+
+# 第6章 基本图形
+
+## 6.1 条形图    
+条形图通过垂直的或水平的条形展示了类别型变量的分布（频数）。    
+
+### 6.1.1 简单的条形图
+
+barplot(height,....)   
+height：向量或矩阵，用来构成条形图中各条的数值。 ....：用于设置图形的参数。 若height是一个向量，则它的值就确定了各条形的高度，并将绘制一幅垂直的条形图。使用选项horiz=TRUE则会生成一幅水平条形图。
+
+```{r}
+barplot(df$v1) # 绘制数据集df中v1列条形图。
+barplot(df$v1, horiz = T) # 将图形变为水平。
+barplot(df$v1, main = "This is a barplot",xlab = "v1", ylab = "The value of v1") # 给条形图添加图形标题和轴标题。
+```
+
+### 6.1.2 堆砌条形图和分组条形图
+
+如果height是一个矩阵而不是一个向量，则绘图结果将是一幅堆砌条形图或分组条形图。\
+若beside=FALSE（默认值），则矩阵中的每一列都将生成图中的一个条形，各列中的值将给出堆砌的"子条"的高度。\
+若beside=TRUE，则矩阵中的每一列都表示一个分组，各列中的值将并列而不是堆砌。
+
+```{r}
+b # 以之前创建的矩阵b为例。
+barplot(b, main = "Stacked Bar Plot", xlab = "Treatment", ylab = "Frequency", col = c("red", "yellow", "blue"), legend = rownames(b)) # 绘制堆砌条形图。
+barplot(b, main = "Stacked Bar Plot", xlab = "Treatment", ylab = "Frequency", col = c("red", "yellow", "blue"), legend = rownames(b), beside = TRUE) # 绘制分组条形图。
+```
+
+![](D:/Documents/6.1.2.png)
+
+### 6.1.3 均值条形图
+
+```{r}
+head(df) # 显示数据df前6行。
+df3 <- aggregate(df$v1, by=list(df$year), FUN=mean) # 对df数据v1列变量按year进行分组统计平均值。
+df3 # 显示结果。
+barplot(df3$x, col = c("red", "blue"), main = "均值条形图", xlab = "Group", ylab = "x的值") # 绘制均值条形图。
+```
+
+
+### 6.1.4 条形图的微调
+
+```{r}
+barplot(df$v1, main = "example plot", sub = "I am an example", col = rainbow(8), border = "blue", width = 0.8, space = 0.5, xlab = "vector", ylab = "vector values", cex.lab = 0.8, ylim = c(0,2), cex.axis = 0.8,  cex.main = 3, col.main = "grey", cex.sub = 1.5, col.sub = "orange", tck=-0.08, col.lab = "red", col.axis = "brown", font.main = 1, font.sub = 2, font.lab = 3, font.axis = 4, cex.names = 0.6, names.arg = c("A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X")) # 主标题main，副标题sub，设置颜色col，设置边线颜色border，设置柱子宽度width，设置柱子间距space，x轴y轴标题设定xlab和ylab，坐标轴标签字体大小cex.lab，y轴取值范围ylim，坐标轴刻度字体大小cex.axis，主标题大小设定cex.main，主标题颜色col.main，副标题大小设定cex.sub，副标题颜色col.sub，刻度线长度tck，坐标轴标签颜色col.lab，坐标轴刻度文字颜色col.axis，主标题字体font.main，副标题字体font.sub，坐标轴标签字体font.lab，坐标轴刻度字体font.axis，柱子标签字大小cex.names，每个柱子添加 标签名names.arg。
+```
+
+### 6.1.5 棘状图    
+棘状图（spinogram）：棘状图对堆砌条形图进行了重缩放，这样每个条形的高度均为1，每一段的高度即表示比例。    
+```{r}
+b # 显示数据b。
+library(vcd) # 调用vcd包。
+spine(b) # 绘制棘状图。
+```
+
+
+
+## 6.2 饼图
+
+相对于面积，人们对长度的判断更精确。所以，统计学中更推荐条形图或点图。\
+pie(x, labels = names(x), edges = 200, radius = 0.8,clockwise = FALSE, init.angle = if(clockwise) 90 else 0,density = NULL, angle = 45, col = NULL, border = NULL,lty = NULL, main = NULL, ...)\
+x：一个非负数值向量，表示每个扇形的面积；\
+labels：表示各扇形标签的字符型向量；   
+edges：绘制饼图时，饼图的外轮廓是由多边形近似表示的。理论上，edges的数值越大，饼图看上去越圆；\
+radius：R中的饼图绘制以radius为边的正方形中，取值范围为-1到1。取值-1时，默认0角度是从正左边逆时针开始，否则是从正右边逆时针开始；\
+clockwise：逻辑值。指示绘制扇区时是逆时针方向排列（FALSE），还是顺时针方向排列（TRUE）。默认为逆时针；
+init.angle：开始绘制扇区时的初始角度。默认情况下，逆时针时，第一个扇区的开始边为0度（3点钟方向），并向逆时针方向展开。如果clockwise取值为TRUE时，第1个扇区的开始边为90度（12点钟方向），并向顺时针方向展开；  
+density：阴影线的密度。如果设置该参数，且为正值，则饼图以阴影线进行填充，如为负值，且未指定每个扇区的颜色时，则整体为黑色，不能体现出分区来，如是0值，则没有填充色，也没有阴影线；\
+angle：阴影线的斜率。默认为45度。\
+col：一个颜色向量，用于给出扇区的填充色或阴影线的颜色（当设置了density参数时，就是阴影线的颜色）；\
+border：每个扇区的边框颜色；\
+lty：每个扇区的线型（0：无，1：实线；2：短划线；3：点线；4：点划线；5：长划线；6：双划线;）；\
+main：绘图的标题。 [<sup>32</sup>](#refer-anchor)
+
+**1.基础饼图绘制**  
+```{r}
+area <- c(10, 30, 20, 40) # 构建向量area。 
+country <- c("Japan", "Mongolia", "Vietnam", "China") # 构建向量country。
+pie(area, labels = country, col = c("grey", "pink", "green", "red"), main = "Example pie") # 基础饼图。
+pie(area, labels = country, col = c("grey", "pink", "green", "red"), main = "Example pie", edges = 5) # edges值小，则外轮廓不是圆形。
+pie(area, labels = country, col = c("grey", "pink", "green", "red"), main = "Example pie", edges = 500) # edges值越大，越接近圆。
+pie(area, labels = country, col = c("grey", "pink", "green", "red"), main = "Example pie", radius = -1) # radius参数变化。
+pie(area, labels = country, col = c("grey", "pink", "green", "red"), main = "Example pie", clockwise = T) # clockwise参数变化，默认是逆时针，这里指定clockwise为true，则为顺时针。
+pie(area, labels = country, col = c("grey", "pink", "green", "red"), main = "Example pie", init.angle = 90) # init.angle=90，将起始角度逆时针旋转了90度。
+pie(area, labels = country, col = c("grey", "pink", "green", "red"), main = "Example pie", density = 30) # density值越大，阴影线越密。
+pie(area, labels = country, col = c("grey", "pink", "green", "red"), main = "Example pie", density = 30, angle = 90) # angle=90，将阴影线的角度调整为90度，垂直。
+pie(area, labels = country, col = c("grey", "pink", "green", "red"), main = "Example pie", border = c("grey", "pink", "green", "red")) # 设置扇区边框颜色。
+pie(area, labels = country, col = c("grey", "pink", "green", "red"), main = "Example pie", lty = c(1, 2, 3, 4))
+```
+
+**2.各类饼图绘制**
+
+```{r}
+par(mfrow=c(2,3)) # 设置拼图参数。
+pie1 <- pie(area, labels = country, col = c("grey", "pink", "green", "red"), main = "Example pie") # 绘制pie1。
+pie2 <- pie(area, labels = country, edges = 500, radius = 0.8, clockwise = TRUE, init.angle = 0, density = 8, angle = 180, col = "grey", border = "blue", lty = 3, main = "Changing parameter for pie") # pie1参数调整，各参数都尝试一遍，形成pie2。
+pct <- round(area/sum(area)*100) # 计算比例。
+countrypct <- paste(country, " ", pct, "%", sep = "") # 设定标签countrypct。
+pie3 <- pie(area,labels = countrypct, col = rainbow(4), main = "Adding percentage for pie") # 绘制pie3。
+library(plotrix) # 调用plotrix包。
+pie4 <- pie3D(area, labels=country, height=0.1, explode=0.1, main="3D pie example")
+head(df) # 以df数据为例。
+df_means <- aggregate(df$v1, by=list(df$variety), FUN=mean) # 对df数据v1列变量按variety进行整合，整合结果平均值，传递给df_means。
+pie5 <- pie(df_means$x, labels=df_means$Group.1, main = "Pie plot by table") # 绘制pie5。
+library(plotrix) # 调用plotrix包。
+fan.plot(area, labels = country, main = "Fan plot example") # 绘制扇图。
+```
+
+## 6.3 直方图
+
+直方图通过在X 轴上将值域分割为一定数量的组，在Y轴上显示相应值的频数，展示了连续型变量的分布。\
+hist(x)\
+其中的x是一个由数据值组成的数值向量。参数freq=FALSE表示根据概率密度而不是频数绘制图形。参数breaks用于控制组的数量。\
+**涉及的函数学习**[<sup>33-36</sup>](#refer-anchor)
+
+-   rug(x,....)\
+    rug用于生成地毯图。x是一个向量，....是各种参数。\
+-   jitter(x, factor=1, amount = NULL)\
+    jitter是抖动参数设置，其中x为数值向量。
+-   lines(x, y = NULL,...)\
+    lines用于生成连点的线图，x和y是数值型向量，....代表其它的参数。   
+-   density(x,....)\
+    density用于求数据密度的函数，其中x为数据，....代表其它的参数。
+-   seq(from = 1, to = 1, by = ((to - from)/(length.out - 1)), length.out = NULL, along.with = NULL, ...)\
+    from：生成向量的起点。to：生成向量的终点。by：序列的增量，默认步长为1（可修改）。length.out：这个序列的输出长度。\
+-   dnorm(x, mean = 0, sd = 1, log = FALSE)\
+    返回值是正态分布概率密度函数值，比如dnorm(z)则表示：标准正态分布密度函数f(x)在x=z处的函数值。
+
+```{r}
+head(df) # 以df数据为例。
+hist(df$v1) # 绘制数据df中v1列直方图。
+hist(df$v1, freq=F) # 参数freq=FALSE表示根据概率密度而不是频数绘制图形。
+hist(df$v1, freq=F, breaks = 30) # 参数breaks用于控制组的数量。
+hist(df$v1, breaks = 20, col="green", xlab="Freq hist for v1", main = "Simple hist") # 指定数组，颜色，主标题。
+rug(jitter(df$v1)) # 添加地毯线。
+lines(density(df$v1), col = "red", lwd = 3, lty = 2) # 添加密度曲线。
+hist <- hist(df$v1, breaks = 20, col="green", xlab="Freq hist for LER", main = "Simple hist add normal distribution line and frame")  # 绘制直方图hist。
+fit <- seq(min(df$v1), max(df$v1), length=40) # 生成一个序列，数值范围是从v1的最小值到最大值，序列宽度40。
+fit1 <- dnorm(fit, mean=mean(df$v1), sd=sd(df$v1)) # 生成正态分布密度函数值。
+fit1 <- fit1*diff(hist$mids[1:2])*length(df$v1) # mids是直方图各条形中点的。频数=频率/组距∗组距∗样本总数=密度∗组距∗样本总数。
+lines(fit, fit1, col="blue", lwd=3) # 添加正态曲线。
+box() # 给图形加边框。
+```
+
+## 6.4 核密度图
+
+Plot(density(x))\
+其中的x是一个数值型向量。
+
+**涉及的函数学习**[<sup>37,38</sup>](#refer-anchor)
+
+-   polygon(x, y = NULL, density = NULL, angle = 45,border = NULL, col = NA, lty = par("lty"), ..., fillOddEven = FALSE)\
+    x：向量；  
+    density：填充的阴影线的密度；  
+    angle：阴影线的斜率(角度)；  
+    border：边界颜色；  
+    col：填充的颜色，当需要纯色填充时，density和angle可以忽略不写；  
+    lty：线型设置。
+-   sm.density.compare(x, factor)\
+    x是一个数值型向量，factor是一个分组变量。\
+-   factor(x=charactor(), levels, labels=levels, exclude = NA, ordered = is.ordered(x), namax = NA)\
+    x：创建因子的向量；   
+    levels：因子数据的水平，默认是x中不重复的值；  
+    labels：标识某水平的名称，与levels一一对应，以方便识别，默认取levels的值；  
+    exclude：从x中剔除的水平值，默认为NA值；  
+    ordered：逻辑值，因子水平是否有顺序（编码次序），若有取TRUE，否则取FALSE；  
+    nmax：水平个数的限制。
+    
+
+```{r}
+plot(density(df$v1)) # 绘制简单密度图。
+```
+
+```{r}
+plot(density(df$v1)) # 绘制基础核密度图。
+polygon(density(df$v1), col = "grey", border = "blue") # 添加多边形。
+rug(df$v1, col="red") # 添加轴须图。
+```
+
+```{r}
+head(df) # 查看数据。
+df$nitrogen <- as.factor(df$nitrogen) # 将nitrogen转为因子。
+library(sm) # 调用sm包。
+sm.density.compare(df$v1, df$nitrogen, xlab="Density", col=c("red", "blue")) # 绘制可比较密度图。
+title(main = "Compared density plot") # 添加标题。
+legend("topleft", legend = c("N1", "N2"), fill = c("red", "blue")) # 添加图例。
+```
+
+## 6.5 箱线图
+
+箱线图（又称盒须图）通过绘制连续型变量的五数总括，即最小值、下四分位数（第25百分位数） 、中位数（第50百分位数）、上四分位数（第75百分位数）以及最大值，描述了连续型变量的分布。\
+箱线图能够显示出可能为离群点（范围±1.5\*IQR以外的值，IQR表示四分位距，即上四分位数与下四分位数的差值）的观测。
+
+boxplot(x, ...)\
+x：用于绘制箱线图的向量。....：用于调整箱线图的各参数。
+
+![](D:/documents/6.5.png)
+
+### 6.5.1 使用并列箱线图进行跨组比较
+
+箱线图可以展示单个变量或分组变量。\
+boxplot(formula, data=dataframe)\
+formula：一个公式，dataframe：提供数据的数据框（或列表）。\
+varwidth=TRUE，将使箱线图的宽度与其样本大小的平方根成正比。\
+horizontal=TRUE，可以反转坐标轴的方向。\
+notch=TRUE，可以得到含凹槽的箱线图。
+y ~ A，这将为类别型变量A的每个值并列地生成数值型变量y的箱线图。公式y ~ A*B则将为类别型变量A和B所有水平的两两组合生成数值型变量y的箱线图。    
+
+```{r}
+str(df) # 查看数据结构。
+df$nitrogen <- as.factor(df$nitrogen) # 将nitrogen转换为因子。
+df$year <- as.factor(df$year) # 将year转换为因子。
+str(df) # 查看数据结构。
+boxplot(df$v1) # 单个变量箱线图。
+boxplot(df$v1, col = "green", varwidth = TRUE, notch = TRUE) # 参数调整，col指定填充颜色，varwidth指定宽度与样本大小的平方根成正比，指定是否显示凹槽。
+boxplot(df$v1 ~ df$year, data = df, col = c("blue", "red")) # 分组变量箱线图，分组依据为df数据集year。
+boxplot(df$v1 ~ df$year*df$nitrogen, data = df, col = c("green", "grey")) # 绘制以year和nitrogen为分组变量的箱线图。
+boxplot(df$v1 ~ df$year*df$nitrogen*df$variety, data = df,col = c("blue", "red", "green")) # 绘制以year和nitrogen及variety为分组变量的箱线图。
+```
+
+### 6.5.2 小提琴图  
+
+小提琴图是箱线图与核密度图的结合。你可以使用vioplot包中的vioplot()函数绘制它。      
+Vioplot(x1,x2,...,names=,col=)\
+x1, x2, ...：表示要绘制的一个或多个数值向量(将为每个向量绘制一幅小提琴图)。    
+names：小提琴图中标签的字符向量；  
+col：一个为每幅小提琴图指定颜色的向量。
+
+```{r}
+library(vioplot) # 调用vioplot包。
+vioplot(df$v1) # 单变量小提琴图。
+vioplot(df$v1, df$v2, names=c("v1", "v2"), col = c("red", "gold")) # 多变量小提琴图。
+```
+
+## 6.6 点图
+
+dotchart(x, labels=)\
+x：一个数值向量；  
+labels：由每个点的标签组成的向量。  
+你可以通过添加参数groups来选定一个因子，用以指定x中元素的分组方式。如果这样做，则参数gcolor可以控制不同组标签的颜色，cex可控制标签的大小。    
+
+```{r}
+dotchart(df$v1, labels = 1:24, cex = 0.5, pch = 19, main = "点图", xlab = "value of v1") # 绘制df数据v1点图。
+df$year <- as.factor(df$year) # 将year转换为因子。
+df$gcol[df$year=="2020"] <- "blue" # 给df数据添加新列，条件是df数据中year列年份为2020，赋值蓝色。
+df$gcol[df$year=="2021"] <- "red" # 给df数据添加新列，条件是df数据中year列年份为2021，赋值红色。
+dotchart(df$v1, labels = 1:24, color = df$gcol, gcolor = "black", pch=19, cex = .5, groups = df$year, xlab = "v1", main = "Example for dotchart") # 绘制分组点图。
+```
+
+## 6.7 小结  
+ 
+```{r}
+par(mfrow = c(3, 2)) # 构建2行3列的布局。
+barplot(df$v1, main = "条形图", xlab = "v1", ylab = "value of v1", col = rainbow(7)) # 条形图。
+pie(df$v1, radius = 1.2, labels = rownames(df), main = "饼图") # 饼图。
+hist(df$v1, main = "直方图", xlab = "v1", col = "lightblue") # 直方图。
+plot(density(df$v1), main = "密度图", xlab = "v1") # 核密度图。
+boxplot(df$v1, main = "箱线图", xlab = "v1", notch = T, col = "yellow") # 箱线图。
+dotchart(df$v1, main = "点图", col = "blue", labels = rownames(df), cex = 0.5) # 点图。
+```
+
+```{r}
+layout(matrix(c(1, 1, 2, 3), 2, 2, byrow = T), widths = c(1, 1), heights = c(3, 2)) # 构建绘图布局。
+boxplot(df$v1 ~ df$year*df$nitrogen, data = df) # 第1幅图箱线图。
+plot(density(df$v1)) # 第2幅图核密度图。
+barplot(df$v2) # 第3幅图条形图。
+```
+
+```{r}
+layout(matrix(c(1, 2, 1, 3), 2, 2, byrow = T), widths = c(2, 1), heights = c(1, 1)) # 构建绘图布局。
+boxplot(df$v1 ~ df$year*df$nitrogen, data = df) # 第1幅图箱线图。
+plot(density(df$v1)) # 第2幅图核密度图。
+plot(df$v2) # 第3幅图点图。
+```
+
+
+# 第7章 基本统计分析
+
+## 7.1 描述性统计分析
+
+### 7.1.1 方法云集
+
+对于基础安装，你可以使用summary()函数来获取描述性统计量。  
+summary()函数提供了最小值、最大值、四分位数和数值型变量的均值，以及因子向量和逻辑型向量的频数统计。
+
+```{r}
+summary(df[,5:8]) # summary函数计算df数据集5到8列的描述性统计量。
+```
+
+sapply(x, FUN, options)\
+x：数据框（或矩阵）；  
+FUN为一个任意的函数。如果指定了options，它们将被传递给FUN。
+
+```{r}
+## 通过sapply函数计算描述性统计。 
+mystats <- function(x, na.omit=FALSE){
+  if(na.omit)
+    x <- x[!is.na(x)]
+   n <- length(x)
+   m <- mean(x)
+   s <- sd(x)
+   skew <- sum((x-m)^3/s^3)/n
+   kurt <- sum((x-m)^4/s^4)/n-3
+   return(c(n=n, mean=m, stdev=s, skew=skew, kurtosis=kurt))
+} # 定义描述性统计的函数，n为样本量，m为平均值，s为标准差，skew为偏度，kurt为峰度。
+sapply(df[5:8], mystats) # sapply函数描述性统计。
+```
+
+**扩展学习-偏度和峰度**  
+**1 偏度**  
+偏度（Skewness）可以用来度量随机变量概率分布的不对称性。公式如下：  
+$$ S = \frac {1}n \sum_{i=1}^{n} [(\frac {X_i-\mu}{\sigma})^3 ] $$
+其中$\mu$是均值，$\sigma$是标准差。      
+偏度的取值范围为(-∞,+∞)  
+当偏度<0时，概率分布图左偏。  
+当偏度=0时，表示数据相对均匀的分布在平均值两侧，不一定是绝对的对称分布。  
+当偏度>0时，概率分布图右偏。      
+
+**2 峰度**     
+峰度（Kurtosis）可以用来度量随机变量概率分布的陡峭程度。公式：    
+$$ K = \frac {1}n \sum_{i=1}^{n} [(\frac {X_i-\mu}{\sigma})^4 ] $$    
+其中$\mu$ 是均值，$\sigma$是标准差。    
+峰度的取值范围为[1,+∞)，完全服从正态分布的数据的峰度值为3，峰度值越大，概率分布图越高尖，峰度值越小，越矮胖。    
+通常我们将峰度值减去3，也被称为超值峰度（Excess Kurtosis），这样正态分布的峰度值等于0，当峰度值>0，则表示该数据分布与正态分布相比较为高尖，当峰度值<0，则表示该数据分布与正态分布相比较为矮胖。[<sup>54</sup>](#refer-anchor)    
+
+
+**扩展**
+
+Hmisc包中的describe()函数可返回变量和观测的数量、缺失值和唯一值的数目、平均值、分位数，以及五个最大的值和五个最小的值。
+
+```{r}
+library(Hmisc) # 调用Hmisc包，调用前请安装。
+describe(df$v1) # 显示结果。
+```
+
+pastecs包中有一个名为stat.desc()的函数，它可以计算种类繁多的描述性统计量。 stat.desc(x, basic=TRUE, desc=TRUE, norm=FALSE, p=0.95)\
+x是一个数据框或时间序列。若basic=TRUE（默认值），则计算其中所有值、空值、缺失值的数量，以及最小值、最大值、值域，还有总和。若desc=TRUE（同样也是默认值），则计算中位数、平均数、平均数的标准误、平均数置信度为95%的置信区间、方差、标准差以及变异系数。最后，若norm=TRUE（不是默认的），则返回正态分布统计量，包括偏度和峰度（以及它们的统计显著程度）和Shapiro--Wilk正态检验结果。这里使用了p值来计算平均数的置信区间（默认置信度为0.95）。
+
+```{r}
+library(pastecs) # 调用pastecs包。
+stat.desc(df$v1, norm=TRUE, p=0.95) # 返回结果。
+```
+
+psych包也拥有一个名为describe()的函数，它可以计算非缺失值的数量、平均数、标准差、中位数、截尾均值、绝对中位差、最小值、最大值、值域、偏度、峰度和平均值的标准误。
+
+```{r}
+library(psych) # 调用psych包。
+describe(df$v1) # 返回结果。
+```
+
+
+### 7.1.2 分组计算描述性统计量
+
+aggregate(x, by=list, FUN)      如果有多个分组变量，使用by=list(name1=groupvar1, name2=groupvar2, ... ,groupvarN)这样的语句。
+
+```{r}
+aggregate(df$v1, by=list(df$year, df$nitrogen, df$variety), FUN=mean) # 分组统计v1。
+```
+
+by(data, INDICES, FUN)\
+data：一个数据框或矩阵；  
+INDICES：一个因子或因子组成的列表，定义了分组；    
+FUN是任意函数。
+
+```{r}
+myfun <- function(x) {
+  c(mean = mean(x), sd = sd(x))
+} # 定义函数myfun。
+by(df$v1, df$year, myfun) # 对df数据的v1以year进行平均值和标准差的统计。
+by(df[,5:8], df[,1:3], summary) # 对df数据的5到8列进行描述性统计，以前3列分分组依据。
+```
+
+**扩展**
+
+doBy包中summaryBy()函数分组计算描述性统计量。\
+summaryBy(formula, data=dataframe, FUN=function)\
+formula可接受的格式var1 + var2 + var3 +....+ varN \~ groupvar1 + groupvar2 + groupvar3 +....+ groupvarN.\
+在\~左侧的变量是需要分析的数值型变量，而右侧的变量是类别型的分组变量。function可为任何内建或用户自编的R函数。
+
+```{r}
+myfun <- function(x) {
+  c(mean = mean(x), sd = sd(x))
+} # 定义函数myfun。
+library(doBy) # 调用doBy包。
+summaryBy(v1 + v2 ~ year + nitrogen + variety, data = df, FUN = myfun) # 返回结果。
+```
+
+psych包中的describe.by()函数分组计算概述统计量。 一个以上的分组变量时可以list(groupvar1, groupvar2, ... , groupvarN)
+
+```{r}
+library(psych) # 调用psych包。
+describe.by(df, df$year) # 返回结果，计算df数据集5到8列的描述性统计量，分组变量是year。
+describe.by(df$v1, list(df$year, df$nitrogen, df$variety)) # 返回结果，计算df数据v1的描述性统计量，分组变量是year,nitrogen,variety。
+```
+
+
+### 7.1.3 结果的可视化
+
+## 7.2 频数表和列联表
+
+频数表是数理统计中由于所观测的数据较多，为简化计算，将这些数据按等间隔分组，然后按选举唱票法数出落在每个组内观测值的个数，称为(组)频数。这样得到的表称“频数表”或“频数分布表”。[<sup>55</sup>](#refer-anchor)
+
+列联表（contingency table）是观测数据按两个或更多属性（定性变量）分类时所列出的频数表。它是由两个以上的变量进行交叉分类的频数分布表。列联表可以告诉你组成表格的各种变量组合的频数或比例。列联表分析的基本问题是：观察各属性之间是否独立，做简单的描述性统计。[<sup>56</sup>](#refer-anchor)   
+
+按两个变量交叉分类的，该列联表称为两维列联表；若按3个变量交叉分类，所得的列联表称为3维列联表，依次类推。一维列联表就是频数分布表。频数就是各个分组中属性出现的次数。[<sup>57</sup>](#refer-anchor)    
+
+
+### 7.2.1 生产频数表
+
+![](D:/documents/7.2.1.png)
+
+**1.一维列联表**
+
+```{r}
+head(df) # 以df数据为例。
+mytable <- with(df, table(year)) # 使用table()生成简单频数统计表。
+mytable # 返回结果。
+prop.table(mytable) # 将频数转化为比例值。
+prop.table(mytable)*100 # 将频数转化为百分比。
+```
+
+**2.二维列联表**
+
+table(A, B)\
+其中，A是行变量，B是列变量。
+xtabs(~ A + B, data = mydata)    
+其中的mydata是一个矩阵或数据框。总的来说，要进行交叉分类的变量应出现在公式的右侧（即~符号的右方），以+作为分隔符。    
+
+```{r}
+mytable1 <- xtabs(~ year + nitrogen, data = df) # 创建二维列联表。
+mytable1 # 返回结果。
+margin.table(mytable1, 1) # 生成行边际频数，即行和。下标1指代table()语句中的第一个变量。
+prop.table(mytable1, 1) # 生成行边际频数比例，即行比例。
+margin.table(mytable1, 2) # 生成列边际频数，即列和。下标2指代table()语句中的第二个变量。
+prop.table(mytable1, 2) #  生成列边际频数比例，即列比例。
+addmargins(mytable1) # 为表格添加边际和。
+addmargins(prop.table(mytable1)) # 为表格添加比例边际和。
+addmargins(prop.table(mytable1, 1), 2) # 为表格添加行比例边际和。
+addmargins(prop.table(mytable1, 2), 1) # 为表格添加行比例边际和。
+```
+
+gmodels包CrossTable()
+
+```{r}
+library(gmodels) # 调用gmodels包。
+CrossTable(df$year, df$nitrogen) # CrossTable包生成二维列联表。
+```
+
+**3.多维列联表**
+
+```{r}
+mytable2 <- xtabs(~ year + nitrogen + variety, data = df) # 生成三维列联表。
+mytable2 # 返回结果。
+ftable(mytable2) # 更为紧凑和吸引人的表格。
+margin.table(mytable2, 1) # 调出year列联表。
+margin.table(mytable2, 2) # 调出nitrogen列联表。
+margin.table(mytable2, 3) # 调出variety列联表。
+margin.table(mytable2, c(1,3)) # 调出year和pattern列联表。
+ftable(prop.table(mytable2, c(1,2))) # year和nitrogen的边际频数。
+ftable(prop.table(mytable2, c(1,2)), 3) # year和nitrogen的边际频数，以variety统计。
+ftable(addmargins(prop.table(mytable2, c(1,2)), 3))*100 # year和nitrogen的边际频数，以variety统计，并显示百分比。
+```
+
+### 7.2.2 独立性检验    
+     
+独立性检验通常对两个变量进行检验，查看这两个类别变量之间是否存在某种联系。它是根据次数资料判断两类因子彼此相关或相互独立的假设检验。也就是分析列联表中行变量和列变量是否相互独立。
+由联表中的数据算出随机变量$\chi^2$的值，$\chi^2$的值越大，说明“X与Y有关系”成立的可能性越大。 [<sup>58</sup>](#refer-anchor)        
+
+**1.卡方独立性检验**   
+
+
+卡方检验(chi square test)主要应用于定类变量和定类变量之间的关系，也称独立性检验，是一种非参数假设检验。其测定两个分类变量之间的相关程度，是利用类别变量的观测值频数与期望值频数进行构建的，公式如下：  
+$$\chi^2 = \sum  \frac{(f_o - f_e)^2} {f_e} $$
+其中，$f_o$ 为观测值频数，$f_e$ 为期望值频数。可以看到， $\chi^2$ 统计量其实反映了观察值频数和期望值频数之间的差距，当差距较小时，统计量的值也会变小。所以 $\chi^2$检验正是通过计算 $\chi^2$统计量与临界值进行比较来确定相关的显著性的。[<sup>59</sup>](#refer-anchor)     
+
+假设检验问题由两个互斥的假设构成，其中一个叫做原假设，用H0表示；另一个叫做备择假设，用H1表示。在卡方检验中两个假设即为：H0：两个分类变量间独立；H1：两个分类变量间不独立。  
+结果的P-值小则代表拒绝原假设，即存在一定的关系；当P-值比较大时代表接受原假设，即不存在联系。例如：p = 0.05，代表变量之间无关的可能性小于5%，反过来，就是两者相关的概率大于95%，即拒绝原假设。[<sup>60</sup>](#refer-anchor)  
+
+
+在R中使用chisq.test()函数对二维表的行变量和列变量进行卡方独立性检验。
+
+```{r}
+library(vcd) # 调用vcd包。
+mytable3 <- xtabs(~ year + nitrogen, data = df) # 构建year和nitrogen的列联表。
+chisq.test(mytable3) # 检验独立性。这里p>0.05，表明year和nitrogen是相互独立的。
+mytable4 <- xtabs(~ nitrogen + variety, data = df) # 构建nitrogen和variety的列联表。
+chisq.test(mytable4) # 检验独立性。这里p>0.05，表明nitrogen和variety是相互独立的。
+```
+*p值表示从总体中抽取的样本行变量与列变量是相互独立的概率。*
+
+**2.Fisher精确检验**
+
+fisher.test()函数进行Fisher精确检验。Fisher精确检验的原假设是：边界固定
+的列联表中行和列是相互独立的。其调用格式为fisher.test(mytable)，其中的mytable是
+一个二维列联表。fisher.test()函数可以在任意行列数大于等于2的二维列联表上使用，但不能用于2×2的列联表。    
+
+
+```{r}
+mytable5 <- xtabs(~ year + nitrogen, data = df) # 构建year和nitrogen的列联表。
+fisher.test(mytable5) # 精确检验独立性。
+```
+
+**3.Cochran-Mantel-Haenszel检验**
+
+mantelhaen.test()函数可用来进行Cochran—Mantel—Haenszel卡方检验，其原假设是，两
+个名义变量在第三个变量的每一层中都是条件独立的。    
+```{r}
+mytable6 <- xtabs(~ year + nitrogen + variety, data = df) # 构建三变量的列联表。
+mantelhaen.test(mytable6) # 检验独立性。
+```
+
+### 7.2.3 相关性的度量    
+显著性检验评估了是否存在充分的证据以拒绝变量间相互独立的原假设。如果可
+以拒绝原假设，那么你的兴趣就会自然而然地转向用以衡量相关性强弱的相关性度量。vcd包中的assocstats()函数可以用来计算二维列联表的phi系数、列联系数和Cramer’s V系数。  
+Phi系数适用于2×2列联表，列联系数和Cramer’s V系数适用于大于2×2列联表。
+
+Phi系数：phi =1，表明变量完全相关；phi = 0，表明变量相互独立；越接近1，越相关；越接近0，越不相关。  
+列联系数：适用于大于2×2列联表，当表中两变量相互独立时，系数为0。其最大值依赖于行数和列数，但是不可能大于1。  
+Cramer’s V系数：两个变量相互独立时，等于0；两个变量完全相关时，等于1。[<sup>60</sup>](#refer-anchor)    
+总体来说，较大的值意味着较强的相关性。  
+
+```{r}
+library(vcd) # 调用vcd包。
+mytable7 <- xtabs(~ year + nitrogen, data = df) # 构建year和nitrogen的列联表。
+assocstats(mytable7) # 相关性度量。较大的值意味着较强的相关性。
+```
+
+### 7.2.4 结果的可视化
+
+### 7.2.5 将表转换为扁平格式
+
+## 7.3 相关  
+
+相关性分析是指对两个或多个具备相关性的变量元素进行分析，从而衡量两个变量因素的相关密切程度。[<sup>61</sup>](#refer-anchor)    
+相关系数可以用来描述定量变量之间的关系。相关系数的符号（$\pm$）表明关系的方向（正相关+或负相关-），其值的大小表示关系的强弱程度（完全不相关时为0，完全相关时为1）。  
+**相关性强弱程度判定**  [<sup>62</sup>](#refer-anchor)    
+
+|r|>0.95：显著性相关；  
+|r|≥0.8：高度相关；  
+0.5≤|r|<0.8：中度相关；  
+0.3≤|r|<0.5：低度相关；  
+|r|<0.3：弱相关。  
+
+### 7.3.1 相关的类型
+
+**1.Pearson、Spearman和Kendall相关**  
+
+Pearson积差相关系数衡量了两个定量变量之间的线性相关程度。数据符合正态分布时使用。  
+Spearman等级相关系数则衡量分级定序变量之间的相关程度。数据不符合正态分布时使用。  
+Kendall’s Tau相关系数也是一种非参数的等级相关度量。  
+
+cor()函数可以计算这三种相关系数，而cov()函数可用来计算协方差。  
+cor(x, use= , method=)   
+默认参数为use="everything"和method="pearson"。  
+
+![](D:/documents/7.3.1.png)
+```{r}
+cov(df[, 5:9]) # 计算df数据5到9列方差和协方差。
+cor(df[, 5:9]) # 计算df数据5到9列的Pearson积差相关系数。
+cor(df[, 5:9], method = "spearman") # 计算df数据5到9列的 Spearman等级相关系数。
+cor(df[, 5:9], method = "kendall") # 计算df数据5到9列的Kendall’s Tau相关系数
+```
+在默认情况下得到的结果是一个方阵（所有变量之间两两计算相关） 。你同样可以计算非方形的相关矩阵。当你对某一组变量与另外一组变量的关系感兴趣时，可以选择感兴趣的变量在cor函数中进行相关系数的计算。  
+```{r}
+cor(df[,c(5, 7)], df[,c(6, 8)]) # 计算df中v1和v3与v2和v3的相关系数。
+```
+**2.偏相关**  
+
+偏相关(partial correlation)是指在控制一个或多个定量变量时，另外两个定量变量之间的相互关系。ggm包中的pcor()函数计算偏相关系数。偏相关系数常用于社会科学的研究中。      
+pcor(u, S)  
+其中的u是一个数值向量，前两个数值表示要计算相关系数的变量下标，其余的数值为条件变量（即要排除影响的变量）的下标。S为变量的协方差阵。  
+```{r}
+df2 <- df[5:9] # 构建数据集df2.
+df2 # 显示数据集df2
+library(ggm) # 调用ggm包。
+pcor(c(1,5,4), cov(df2)) # 控制了第4列变量，也就是v4列，对v1和v3列求算偏相关系数。
+```
+
+
+**3.其他类型的相关**  
+
+polycor包中的hetcor()函数可以计算一种混合的相关矩阵，其中包括数值型变量的Pearson积差相关系数、数值型变量和有序变量之间的多系列相关系数、有序变量之间的多分格相关系数以及二分变量之间的四分相关系数。多系列、多分格和四分相关系数都假设有序变量或二分变量由潜在的正态分布导出。
+
+### 7.3.2 相关性的显著性检验
+
+常用的原假设为变量间不相关（即总体的相关系数为0）。你可以使用cor.test()函数对单个的Pearson、Spearman和Kendall相关系数进行检验。  
+cor.test(x, y, alternative = , method = )  
+x和y：要检验相关性的变量；  
+alternative：用来指定进行双侧检验或单侧检验（取值为"two.side"、"less"或"greater"）；当研究的假设为总体的相关系数小于0时，请使用alternative="less"。在研究的假设为总体的相关系数大于0时，应使用alternative="greater"。在默认情况下，假设为alternative="two.side"（总体相关系数不等于0）。     
+method：指定要计算的相关类型（"pearson"、"kendall"或"spearman"）。
+```{r}
+cor.test(df2$v1, df2$v4) # 检验df2数据集v1和v4列相关显著性。
+```
+结果解释：原假设为v1和v4不相关，相关系数为0，检验结果显示p值小于0.05，推翻原假设，表明v1和v4相关。  
+
+遗憾的是，cor.test每次只能检验一种相关关系。但幸运的是，psych包中提供的
+corr.test()函数可以一次做更多事情。corr.test()函数可以为Pearson、Spearman或Kendall相关计算相关矩阵和显著性水平。  
+corr.test(x, use)  
+参数use=的取值可为"pairwise"或"complete"（分别表示对缺失值执行成对删除或行删除）。参数method=的取值可为"pearson"（默认值）、"spearman"或"kendall"。
+
+```{r}
+library(psych) # 调用psych包。
+corr.test(df2, use ="complete") # 各指标相关性显著性。
+```
+  
+**其他显著性检验**  
+在多元正态性的假设下，psych包中的pcor.test()函数可以用来检验在控制一个或多个额外变量时两个变量之间的条件独立性。  
+pcor.test(r, q, n)  
+其中的r是由pcor()函数计算得到的偏相关系数，q为要控制的变量数（以数值表示位置），n为样本大小。
+```{r}
+pcor.test(pcor(c(1,5,4), cov(df2)), 4, n=24) # 检验df2数据集v1和v3的条件独立性，控制变量v4。
+```
+
+### 7.3.3 相关关系的可视化
+
+以相关系数表示的二元关系可以通过散点图和散点图矩阵进行可视化，而相关图（correlogram）则为以一种有意义的方式比较大量的相关系数提供了一种独特而强大的方法。  
+利用corrgram包中的corrgram()函数，你可以以图形方式展示该相关系数矩阵。  
+```{r}
+library(corrgram) # 调用corrgram包。
+corrgram(df2) # 绘制基本相关关系矩阵图。
+```
+
+## 7.4 t检验
+
+t检验，亦称student t检验（Student's t test），主要用于样本含量较小（例如n < 30），总体标准差σ未知的正态分布。t检验是用t分布理论来推论差异发生的概率，从而比较两个平均数的差异是否显著。    
+**t检验的适用条件为样本分布符合正态分布。**  
+R中检验正态分布的函数：
+shapiro.test()  
+结果p值要是小于0.05，样本分布是非正态分布，如果大于0.05，样本分布是正态分布。  
+t检验可分为单总体检验和双总体检验，以及配对样本检验。[<sup>63</sup>](#refer-anchor)    
+单总体t检验是检验一个样本平均数与一个已知的总体平均数的差异是否显著。  
+*个人理解的应用实例：已知一个玉米品种的产量是8000 kg/ha，在一个田间试验中测定这个玉米品种的产量，单样本t检验要做的就是检验田间试验测定的产量与已知产量是否相等。*   
+单样本t检验的假设：  
+H0：样本均值与已知的总体均值相等。  
+H1：样本均值与已知的总体均值不相等。   
+t统计量的计算：  
+$$t = \frac{m - \mu } {S / \sqrt{n}} $$   
+m：样本平均值；  
+$\mu$：已知总体的均值；  
+S：样本标准差，自由度df=n-1。
+n：样本量。  
+单样本t检验R调用函数：
+t.test(x, mu, alternative = "two.sided")  
+x：数据向量；  
+mu：理论平均值。默认为0，可根据自己统计计算需求更改； 
+alternative：备择假设。允许值为“two.sided”（默认），也可以根据需要设置为“greater”或“less”之一。[<sup>64</sup>](#refer-anchor)    
+
+```{r}
+t.test(df$v1, mu = 1.5) # 单样本t检验，检验df数据集中v1平均值与理论值1.5间的差异。
+```
+*结果解释：p值小于0.05，结论是v1的平均值与理论值1.5有显著差异。*  
+
+### 7.4.1 独立样本的t检验
+检验两个样本平均数与其各自所代表的总体的差异是否显著。  
+*个人理解的应用实例：检验两个玉米品种产量是否存在差异。*    
+t.test(y ~ x, data)  
+其中的y是一个数值型变量，x是一个二分变量。  
+t.test(y1, y2)  
+其中的y1和y2为数值型向量（即各组的结果变量）。可选参数data的取值为一个包含了这些变量的矩阵或数据框。  
+t检验默认假定方差不相等，并使用Welsh的修正自由度。你可以添加一个参数var.equal=TRUE以假定方差相等，并使用合并方差估计。默认的备择假设是双侧的（即均值不相等，但大小的方向不确定）。你可以添加一个参数alternative="less"或alternative="greater"来进行有方向的检验。  
+
+```{r}
+t.test(v1 ~ variety, data = df) # 检验a品种和b品种v1平均值的差异。
+```
+
+### 7.4.2 非独立样本的t检验
+非独立样本的t检验假定组间的差异呈正态分布。  
+*个人理解的应用实例：一个玉米品种接受两个施氮处理，两个施氮处理下玉米的产量是否存在差异。*    
+t.test(y1, y2, paired=TRUE)  
+其中的y1和y2为两个非独立组的数值向量。  
+```{r}
+head(df) # 以df为例。
+t.test(df[1:6,5], df[7:12,5], paired = TRUE) # 检验2020年N1处理下v1平均值和N2处理下v1平均值间差异。同一指标不同氮水平处理下差异。
+t.test(df[1:6,5], df[13:18,5], paired = TRUE) # 检验在2020年和2021年N1处理下v1平均值间差异。同一指标年际间差异。
+```
+
+
+### 7.4.3 多于两组的情况
+
+如果想在多于两个的组之间进行比较，应该怎么做？如果能够假设数据是从正态总体中独立抽样而得的，那么你可以使用方差分析（ANOVA）。ANOVA是一套覆盖了许多实验设计和准实验设计的综合方法。
+
+## 7.5 组间差异的非参数检验
+
+### 7.5.1 两组的比较
+
+若两组数据独立，可以使用Wilcoxon秩和检验（更广为人知的名字是Mann–Whitney U检验）来评估观测是否是从相同的概率分布中抽得的（即，在一个总体中获得更高得分的概率是否比另一个总体要大）。  
+wilcox.test(y ~ x, data)  
+其中的y是数值型变量，而x是一个二分变量。
+wilcox.test(y1, y2)  
+其中的y1和y2为各组的结果变量。 可选参数data的取值为一个包含了这些变量的矩阵或数据框。默认进行一个双侧检验。你可以添加参数exact来进行精确检验，指定alternative="less"或alternative="greater"进行有方向的检验。  
+Wilcoxon符号秩检验是非独立样本t检验的一种非参数替代方法。它适用于两组成对数据和无法保证正态性假设的情境。[<sup>65</sup>](#refer-anchor)    
+```{r}
+df3 <- data.frame(group = rep(c("2020","2021"),each = 6), yield = c(10.2,9.5,8.8,1.4,1.0,1.8,7.9,6.6,8.7,1.0,1.1,0.9)) # 构建数据集df3。
+with(df3, shapiro.test(yield[group == "2020"])) # p值小于0.05，数据分布不符合正态分布。
+with(df3, shapiro.test(yield[group == "2021"])) # p值小于0.05，数据分布不符合正态分布。
+wilcox.test(yield ~ group, data = df3) # 两个年份yield秩检验。
+```
+
+### 7.5.2 多于两组的比较
+
+如果各组独立，则Kruskal—Wallis检验将是一种实用的方法。如果各组不独立（如重复测量设计或随机区组设计），那么Friedman检验会更合适。  
+kruskal.test(y ~ A, data)  
+其中的y是一个数值型结果变量，A是一个拥有两个或更多水平的分组变量（grouping variable）。（若有两个水平，则它与Mann–Whitney U检验等价。）  
+friedman.test(y ~ A | B, data)  
+其中的y是数值型结果变量，A是一个分组变量，而B是一个用以认定匹配观测的区组变量（blocking variable）。  
+```{r}
+df4 <- data.frame(group = rep(c("2019","2020","2021"),each = 6), yield = c(15.0,14.2,16.5,2.5,2.8,2.7,10.2,9.5,8.8,1.4,1.0,1.8,7.9,6.6,8.7,1.0,1.1,0.9)) # 构建数据集df4。
+with(df4, shapiro.test(yield[group == "2019"])) # p值小于0.05，数据分布不符合正态分布。
+with(df4, shapiro.test(yield[group == "2020"])) # p值小于0.05，数据分布不符合正态分布。
+with(df4, shapiro.test(yield[group == "2021"])) # p值小于0.05，数据分布不符合正态分布。
+kruskal.test(yield ~ group, data = df4) # group下三个年份的产量比较，p值小于0.05，说明三组之间差异显著。
+```
+
+## 7.6 组间差异可视化  
+
+R中提供了许多比较组间数据的图形方法，其中包括6.5节中讲解的箱线图（简单箱线图、含凹槽的箱线图、小提琴图）、6.4.1节中叠加的核密度图，以及在第9章中讨论的评估检验假定的图形方法。  
+
+## 7.7 小结                                                                      
+**描述性统计**  
+```{r}
+summary(df) # 描述性统计。
+aggregate(df$v1, by = list(df$year), FUN = mean) # 分组统计v1平均值，分组依据是year。
+aggregate(df$v1, by = list(df$year, df$nitrogen), FUN = mean) # 分组统计v1平均值，分组依据是year和nitrogen。
+aggregate(df$v1, by = list(df$year, df$nitrogen, df$variety), FUN = mean) # 分组统计v1平均值，分组依据是year, nitrogen和variety。
+aggregate(df$v1, by = list(df$year, df$nitrogen, df$variety, df$block), FUN = mean) # 分组统计v1平均值，分组依据是year, nitrogen, variety和block。
+```
+
+**相关**  
+```{r}
+cor(df$v1, df$v3) # 求算df数据集v1和v3列的相关系数。
+cor.test(df$v1, df$v3) # 检验v1和v3两变量相关性显著性。
+```
+
+**t检验**  
+
+```{r}
+shapiro.test(df$v1) # v1正态性检验。p值大于0.05，意味着数据符合正态性。
+```
+
+```{r}
+t.test(df$v1, mu = 1.8) # 单样本t检验。
+```
+结果解读：  
+H0：v1的平均值与已知样本理论中1.8之间无差异；  
+H1：v1平均值和1.8之间差异显著。  
+结果为p值小于0.05，因此，拒绝原假设，接受备择假设，也就是v1和1.8之间差异显著。  
+
+```{r}
+shapiro.test(df[1:12, 5]) # N1条件下v1数据集数据正态性检验，p大于0.05，符合正态性。
+shapiro.test(df[13:24, 5]) # N2条件下v1数据集数据正态性检验，p大于0.05，符合正态性。
+```
+
+```{r}
+t.test(v1 ~ nitrogen, data = df) # 两组样本t检验。
+```
+结果解读：  
+H0：N1和N2两个氮水平下v1的平均值无差异；  
+H1：N1和N2两个氮水平下v1的平均值差异显著。  
+结果为p值小于0.05，因此，拒绝原假设，接受备择假设，也就是N1和N2两个氮水平下v1的平均值差异显著。
+
+# **第三部分 中级方法**
+
+# 第8章 回归
+
+在统计学中，回归分析（regression analysis)指的是确定两种或两种以上变量间相互依赖的定量关系的一种统计分析方法。回归分析按照涉及的变量的多少，分为一元回归和多元回归分析；按照因变量的多少，可分为简单回归分析和多重回归分析；按照自变量和因变量之间的关系类型，可分为线性回归分析和非线性回归分析。[<sup>68</sup>](#refer-anchor)    
+
+## 8.1 回归的多面性
+
+![](D:/documents/8.1.png)
+
+### 8.1.1 OLS 回归的适用情境  
+ols 全称ordinary least squares，是回归分析（regression analysis）最根本的一个形式。OLS回归是通过预测变量的加权和来预测量化的因变量，其中权重是通过数据估计而得的参数。  
+
+### 8.1.2 基础回顾
+
+## 8.2 OLS回归  
+普通最小二乘法（OLS）是一种用于在线性回归模型中估计未知参数的线性最小二乘法。  
+最小二乘法的主要思想是通过确定未知参数（通常是一个参数矩阵），来使得真实值和预测值的误差（也称残差）平方和最小。 [<sup>66</sup>](#refer-anchor) 
+  
+![](D:/documents/8.2.png)    
+为了能够恰当地解释OLS模型的系数，数据必须满足以下统计假设。 
+ 正态性  对于固定的自变量值，因变量值成正态分布。    
+ 独立性 Yi值之间相互独立。   
+ 线性  因变量与自变量之间为线性相关。    
+ 同方差性  因变量的方差不随自变量的水平不同而变化。也可称作不变方差，但是说同方差性感觉上更犀利。      
+
+### 8.2.1 用 lm()拟合回归模型
+myfit <- lm(formula, data)  
+myfit：结果对象（本例中是myfit）存储在一个列表中，包含了所拟合模型的大量信息；  
+formula：要拟合的模型形式；  
+data：一个数据框，包含了用于拟合模型的数据。
+表达式（formula）形式为Y ~ X1 + X2 + ... +Xk。~左边为响应变量，右边为各个预测变量，预测变量之间用+符号分隔。
+
+![](D:/documents/8.2.1-1.png)
+![](D:/documents/8.2.1-2.png)
+*当回归模型包含一个因变量和一个自变量时，我们称为简单线性回归。当只有一个预测变量，但同时包含变量的幂（比如，$X$、$X^2$ 、$X^3$）时，我们称之为多项式回归。当有不止一个预测变量时，则称为多元线性回归。*    
+
+### 8.2.2 简单线性回归  
+线性回归使用最佳拟合直线（也称为回归线）在因变量（Y）和一个或多个自变量（X）之间建立关系。  
+Y = a + b * X + e  
+其中a是截距，b是线的斜率，e是误差项。该等式可用于基于给定的变量预测结果。[<sup>67</sup>](#refer-anchor)
+
+```{r}
+fit <- lm(v1 ~ v3, data = df) # 数据框df中v1和v3线性拟合。
+summary(fit) # 显示分析结果。
+df$v1 # 显示数据框df中v1的数据。
+fitted(fit) # 显示拟合值。
+residuals(fit) # 显示残差。
+plot(df$v3, df$v1, xlab = "v3", ylab = "v1") # 绘制两个变量的关系图。
+abline(fit) # 添加拟合线。
+text(x = 4.0, y = 1.4, labels = expression(v1 == 0.93854 + 0.07325 %*% v3))
+```
+    
+得到拟合公式：$$v1 = 1.25 + 0.047\times v3$$
+结果解读：相关系数为0.4000157，p值为0.954，回归模型无统计意义，截距为1.2537，残差标准误为0.047，表示模型用v3预测v1的平均误差。模型拟合公式反映出来的信息是，v3每增加1，v1将增加0.0047。
+
+### 8.2.3 多项式回归   
+多项式回归，回归函数是回归变量多项式的回归。多项式回归模型是线性回归模型的一种，此时回归函数关于回归系数是线性的。研究一个因变量与一个或多个自变量间多项式的回归分析方法，称为多项式回归（Polynomial Regression）。如果自变量只有一个时，称为一元多项式回归；如果自变量有多个时，称为多元多项式回归。在一元回归分析中，如果依变量y与自变量x的关系为非线性的，但是又找不到适当的函数曲线来拟合，则可以采用一元多项式回归。  
+多项式回归的最大优点就是可以通过增加x的高次项对实测点进行逼近，直至满意为止。[<sup>69</sup>](#refer-anchor)    
+
+添加一个二次项（即X2）来提高回归的预测精度。
+```{r}
+fit1 <- lm(v4 ~ v3, data = df) # v4和v3的简单线性回归。
+fit2 <- lm(v4 ~ v3 + I(v3^2), data = df) # 加入v3的平方项提高拟合精度。
+summary(fit2) # 返回二次项拟合结果。从结果看，二次项不显著，表明这个二次项没有提供拟合度，可以从图上看出，二次拟合的直线与简单线性拟合的直线基本快重合了。
+plot(df$v3, df$v4, xlab = "v3", ylab = "v4") # 绘制两个变量的关系图。
+abline(fit1, col = "red") # 添加简单线性拟合线。
+lines(df$v3, fitted(fit2), col = "blue") # 添加二次项拟合线。
+```
+
+一般来说，n次多项式生成一个n-1个弯曲的曲线。  
+添加一个三次项（即X3）来提高回归的预测精度。
+```{r}
+fit3 <- lm(v4 ~ v3 + I(v3^2) + I(v3^3), data = df) # 加入v3的平方项提高拟合精度。
+summary(fit3) # 返回分析结果。
+library(car) # 调用car包。
+scatterplot(v4 ~ v3, data = df, pch = 1, xlab = "v3", ylab = "v4") # 绘制三次项拟合线。
+abline(fit1, col = "red") # 添加简单线性拟合线。
+```
+
+### 8.2.4 多元线性回归
+
+在回归分析中，如果有两个或两个以上的自变量，就称为多元回归。[<sup>70</sup>](#refer-anchor)从技术上来说，多项式回归可以算是多元线性回归的特例：二次回归有两个预测变量（$X$和$X^2$），三次回归有三个预测变量（$X$、$X^2$和$X^3$）。    
+多元线性回归的方程形式：  
+$$ \widehat Y = b_0 + b_1X_1 + b_2X_2 + ...+b_mX_m + \varepsilon $$    
+$ \widehat Y $ 是因变量，也就是估计值，$X$ 是自变量，也就是预测变量，$b_0$ 为截距，$b_1$-$b_m$为自变量系数，m表示有m个自变量，$\varepsilon$ 为残差。
+当预测变量不止一个时，回归系数的含义为，一个预测变量增加一个单位，其他预测变量保持不变时，因变量将要增加的数量。    
+cor()函数提供了二变量之间的相关系数，car包中scatterplotMatrix()函数则会生成散点图矩阵；scatterplotMatrix()函数默认在非对角线区域绘制变量间的散点图，并添加平滑（loess）和线性拟合曲线。对角线区域绘制每个变量的密度图和轴须图。
+```{r}
+cor(df[5:9]) # 变量v1到v3列间的相关性。
+library(car) # 调用car包。
+scatterplotMatrix(df[5:9]) # 绘制散点图矩阵。
+```
+
+```{r}
+fit4 <- lm(v1 ~ v2 + v4, data = df) # v1与v2和v4间的多重线性回归。
+summary(fit4) # 显示回归分析结果。
+fit4$coefficients # 可以通过coefficients直接调出截距和回归系数。
+```
+
+结果解读：
+Residuals：残差的最小值，最大值和四分位数；  
+Estimate：截距和自变量系数；
+Std. Error：标准误；  
+t value：统计检验t值；
+Pr：统计检验p值；  
+Signif. codes：显著性标注符号；  
+Residual standard error：残差标准误与自由度。  
+Multiple R-squared：模型$R^2$（本例中为1），Adjusted R-squared：模型校正$R^2$（本例中为1）；  
+F-statistic：模型总体F值和p值。    
+
+结果解读：  
+本例中v1与v2，v1与v3回归的p值显著小于0.05，表明v1和v2，v1和v3线性回归显著，也就意味着存在线性关系。
+
+### 8.2.5 有交互项的多元线性回归   
+
+交互作用（interaction）是指一个因素各个水平之间反应量的差异随其他因素的不同水平而发生变化的现象。它的存在说明同时研究的若干因素的效应非独立。交互作用的效应可度量一个因素不同水平的效应变化依赖于另一个或几个因素的水平的程度。[<sup>71</sup>](#refer-anchor)    
+有交互项多元线性回归的方程形式（以二元回归为例）：   
+
+$$ \widehat Y = b_0 + b_1X_1 + b_2X_2 +b_3X_1X_2 + \varepsilon $$     
+公式中$\widehat Y$是因变量，也就是估计值，$X_1$和$X_2$ 是自变量1和自变量2，$b_0$ 为截距，$b_1$到$b_3$为自变量系数，$X_1X_2$是自变量1和自变量2的交互作用，$\varepsilon$为残差。       
+ 
+```{r}
+df2 # 以df2为例。
+fit5 <- lm(v1 ~ v2 + v3 + v2:v3, data = df2) # v1和v2、v3间的回归。
+summary(fit5) # 显示回归分析结果。
+```
+      
+若两个预测变量的交互项显著，说明响应变量与其中一个预测变量的关系依赖于另外一个预测变量的水平。  
+
+结果解读：  
+v1和v2，v1和v3线性回归不显著，v2和v3交互项不显著。说明v1变量的确定不依赖于v2和v3的交互作用。  
+
+通过effects包中的effect()函数，你可以用图形展示交互项的结果。格式为：   
+plot(effect(term, mod, xlevels), multiline = TRUE)
+term即模型要画的项，mod为通过lm()拟合的模型，xlevels是一个列表，指定变量要设定的
+常量值，multiline=TRUE选项表示添加相应直线。     
+```{r}
+library(effects) # 调用effects包。
+plot(effect("v2:v3", fit5, xlevels=list(v3=c(3.3,4.3,5.3))),multiline=TRUE)
+```
+
+结果解读：  
+不管v3的水平怎么变化都改变不了v1和v2的关系，v2越大，v1越大。    
+
+
+## 8.3 回归诊断    
+
+回归诊断主要用于检验关于回归假设是否成立，以及检验模型形式是否错误，否则我们通过最小二乘法求得的回归方程就缺乏理论依据。这些检验主要探究的问题为：
+1） 残差是否为随机性、是否为正态性、是否不为异方差；  
+2）高度相关的自变量是否引起了共线性；  
+3）模型的函数形式是否错误或在模型中是否缺少重要的自变量；  
+4）样本数据中是否存在异常值。[<sup>76</sup>](#refer-anchor)  
+
+回归模型假设检验：  
+H0：总体回归方程不成立或总体中自变量X对因变量Y没有贡献。  
+H1：总体回归方程成立或总体中自变量X对因变量Y有贡献。  
+
+### 8.3.1 标准方法
+
+最常见的方法就是对lm()函数返回的对象使用plot()函数，可以生成评价模型拟合情况的四幅图形。    
+```{r}
+fit <- lm(v1 ~ v3, data = df) # 数据框df中v1和v3线性拟合。  
+par(mfrow = c(2,2)) # 设置放置图的布局。
+plot(fit) # 返回模型评价图。Residuals vs Fitted图中显示拟合值怎么变化，残差值基本维持不变，两者之间无相互关系，说明模型不准确度可以，Normal Q-Q图数据点均在45度的直线附近，说明符合正态分布；Scale-Location方差值基本维持在1左右，方差确定，符合同方差假设；Residuals vs Leverage图中点都在0.5等高线内，说明没有离群点。
+```
+
+为理解这些图形，我们来回顾一下OLS回归的统计假设。    
+ 线性  若因变量与自变量线性相关，那么残差值与预测（拟合）值就没有任何系统关联。
+换句话说，除了白噪声，模型应该包含数据中所有的系统方差。   
+*扩展学习*  
+数据噪声(Noise)：数据集中的干扰数据（对场景描述不准确的数据），即测量变量中的随机误差或方差。[<sup>72</sup>](#refer-anchor)  
+残差(Residuals)在数理统计中是指实际观察值与估计值（拟合值）之间的差。  
+
+ 正态性  当预测变量值固定时，因变量成正态分布，则残差值也应该是一个均值为0的正
+态分布。正态Q-Q图（Normal Q-Q，右上）是在正态分布对应的值下，标准化残差的概率
+图。若满足正态假设，那么图上的点应该落在呈45度角的直线上；若不是如此，那么就
+违反了正态性的假设。 
+
+ 同方差性  若满足不变方差假设，那么在位置尺度图（Scale-Location Graph，左下）中，水平线周围的点应该随机分布。
+
+ 独立性  你无法从这些图中分辨出因变量值是否相互独立，只能从收集的数据中来验证。  
+    
+**四幅图解读**    
+1、残差图与拟合图(Residuals vs Fitted)：如果残差的分布比较均匀，万亩就认为误差分布符合Guaasian-Markov Condition。如果残差随着y值的增大而有增大或减小的趋势，或者残差的分布更近似于一个二次曲线，那么就意味着可能原本的数据并不是线性关系。[<sup>73</sup>](#refer-anchor)    
+2、QQ图(Normal QQ-plot)：用来检测其残差是否是正态分布的。如果符合正态分布，图上的点应该是贴近y=x这条直线。    
+3、位置尺度图(Scale-Location Graph)：用来检查等方差假设。若水平线周围的点随机分布，则认为满足不变方差假设。  
+4、残差与杠杆图(Residuals vs Leverage)：用来鉴别出离群点、高杠杆值点和强影响点。    
+ 一个观测点是离群点，表明拟合回归模型对其预测效果不佳（产生了巨大的或正或负的
+残差）。    
+
+ 一个观测点有很高的杠杆值，表明它是一个异常的预测变量值的组合。也就是说，在预
+测变量空间中，它是一个离群点。因变量值不参与计算一个观测点的杠杆值。    
+
+ 一个观测点是强影响点（influential observation），表明它对模型参数的估计产生的影响过
+大，非常不成比例。强影响点可以通过Cook距离即Cook’s D统计量来鉴别。在线性模型里用Cook距离分析一个点是否非常influential（极端点）。一般来说距离大于0.5的点就需要引起注意了。图中1和0.5分别就是Cook距离为1和0.5的等高线。    
+
+### 8.3.2 改进的方法    
+
+car包提供了大量函数，大大增强了拟合和评价回归模型的能力。    
+
+![](D:/documents/8.3.2.png)  
+**1.正态性**  
+car包中的qqPlot()函数提供了更为精确的正态假设检验方法，它画出了在n-p-1个自由度的t分布下的学生化残差（studentized residual，也称学生化删除残差或折叠化残差）图形，其中n是样本大小，p是回归参数的数目（包括截距项）。   
+若满足正态假设，那么图上的点应该落在呈45度角的直线周围的置信区间内；若不是如此，那么就违反了正态性的假设。
+
+```{r}
+library(car) # 调用car包。
+qqPlot(fit) # car包qq图。
+```
+
+residplot()函数生成学生化残差柱状图（即直方图），并添加正态曲线、核密度曲线和轴须图。 
+```{r}
+residplot <- function(fit, nbreaks=10) {  
+     z <- rstudent(fit) 
+     hist(z, breaks=nbreaks, freq=FALSE, 
+          xlab="Studentized Residual", 
+          main="Distribution of Errors") 
+     rug(jitter(z), col="brown") 
+     curve(dnorm(x, mean=mean(z), sd=sd(z)), 
+           add=TRUE, col="blue", lwd=2) 
+     lines(density(z)$x, density(z)$y, 
+           col="red", lwd=2, lty=2) 
+     legend("topright", 
+            legend = c( "Normal Curve", "Kernel Density Curve"), 
+            lty=1:2, col=c("blue","red"), cex=.7) 
+}
+residplot(fit)
+```
+
+**2.误差的独立性**   
+car包提供了一个可做Durbin-Watson检验的函数，能够检测误差的序列相关性。该检验适用于时间独立的数据，对于非聚集型的数据并不适用。  
+Durbin-Watson 检验，又称 DW检验，是用来检验回归分析中残差的一阶自相关性的(尤其针对时间序列数据)。Durbin-Watson 统计量通过确定两个相邻误差项的相关性是否为零来检验回归残差是否存在自相关。  
+该统计量值越接近 2 越好，一般在 1~3 之间说明没问题，小于 1 说明残差存在自相关性。 [<sup>75</sup>](#refer-anchor)   
+
+```{r}
+durbinWatsonTest(fit) # 检验误差独立性，结果中p值大于0.05，说明不显著，意味着误差项之间独立。
+```
+**3.线性**  
+car包中的crPlots()函数绘制成分残差图（component plus residual plot）也称偏残差图（partial residual plot），可以看看因变量与自变量之间是否呈非线性关系，也可以看看是否有不同于已设定线性模型的系统偏差。    
+若图形存在非线性，则说明你可能对预测变量的函数形式建模不够充分，那么就需要添加一些曲线成分，比如多项式项，或对一个或多个变量进行变换（如用log(X)代替X），或用其他回归变体形式而不是线性回归。
+```{r}
+crPlots(fit) # 绘制偏残差图，判断因变量与自变量间是否呈非线性关系。
+```
+  
+
+**4.同方差性**  
+ncvTest()函数生成一个计分检验，零假设为误差方差不变，备择假设为误差方差随着拟合值水平的变化而变化。若检验显著，则说明存在异方差性（误差方差不恒定）。  
+spreadLevelPlot()函数创建一个添加了最佳拟合曲线的散点图，展示标准化残差绝对值
+与拟合值的关系。如果违反同方差假设，你将会看到一个非水平的曲线。    
+```{r}
+ncvTest(fit) # 判断是否同方差。
+spreadLevelPlot(fit) # 
+```
+    
+### 8.3.3 线性模型假设的综合验证   
+gvlma()函数由Pena和Slate（2006）编写，能对线性模型假设进行综合验证，同时还能做偏斜度、峰度和异方差性的评价。换句话说，它给模型假设提供了一个单独的综合检验（通过/不通过）。  
+```{r}
+library(gvlma) # 调用gvlma包。
+summary(gvlma(fit)) # 综合判断模型的合理性。Global Stat的p值大于0.05，表示数据满足回归模型的所有统计假设。
+```
+
+
+### 8.3.4 多重共线性    
+在多元回归中，多重共线性（Multicollinearity）是指线性回归模型中的解释变量之间由于存在精确相关关系或高度相关关系而使模型估计失真或难以估计准确。   
+多重共线性可用统计量VIF（V ariance Inflation Factor，方差膨胀因子）进行检测。一般认为，当0<VIF<10，不存在多重共线性；当10≤VIF<100，存在较强的多重共线性，当VIF>=100，多重共线性非常严重，理想中的线性模型VIF=1，表完全不存在共线性。[<sup>74</sup>](#refer-anchor)      
+car包中的vif()函数提供VIF值。一般原则下，$ \sqrt {vif} > 2 $ 就表明存在多重共线性问题。VIF的平方根表示变量回归参数的置信区间能膨胀为与模型无关的预测变量的程度。  
+```{r}
+library(car) # 调用car包。
+vif(fit4) # 判断多重共线性。v2和v4的值大于5，表示有多重共线性。
+sqrt(vif(fit4)) > 2 # 判断多重共线性。
+cor(df[5:9]) # 查看各变量的相关性。
+```
+
+## 8.4 异常观测值  
+
+### 8.4.1 离群点  
+
+离群点(Outlier)是指那些模型预测效果不佳的观测点。它们通常有很大的、或正或负的残差 $(Y_i - \widehat Y_i)$。正的残差说明模型低估了响应值，负的残差则说明高估了响应值。离群点是针对因变量而言。     
+在回归分析中，测定值与按回归方程预测的值之差，以$δ$表示。残差δ遵从正态分布N(0，σ2)。（$δ$-残差的均值）/残差的标准差，称为标准化残差，以$δ^*$表示。$δ^*$遵从标准正态分布N(0，1)。实验点的标准化残差落在(-2，2)区间以外的概率≤0.05。若某一实验点的标准化残差落在(-2，2)区间以外，可在95%置信度将其判为异常实验点，不参与回归直线拟合。[<sup>77</sup>](#refer-anchor)
+
+鉴别离群点的方法：  
+1) Q-Q图：落在置信区间带外的点即可被认为是离群点。  
+2)另外一个粗糙的判断准则：标准化残差值大于2或者小于-2的点可能是离群点，需要特别关注。   
+3) car包也提供了一种离群点的统计检验方法。outlierTest()函数可以求得最大标准化残差
+绝对值Bonferroni调整后的p值。该函数只是根据单个最大（或正或负）残差值的显著性来判断是否有离群点。若不显著，则说明数据集中没有离群点；若显著，则你必须删除该离群点，然后再检验是否还有其他离群点存在。 
+```{r}
+outlier <- data.frame(A = c(0.8,1.5,1.6,1.5,1.7,1.6,1.4,1.9,1.8,1.7), B = c(1.1,1.2,1.7,1.3,1.0,2.1,2.5,2.8,3.1,6.5)) # 数据导入。
+outlier # 查看数据。
+fit7 <- lm(B~A,data = outlier)
+library(car) # 调用car包。
+outlierTest(fit7) # 判断是否是离群点。bonferroni p值小于0.05，显著，说明数据集有离群点，即10号点。
+```
+
+
+### 8.4.2 高杠杆值点  
+高杠杆值观测点(high leverage)，即是与其他预测变量有关的离群点。换句话说，它们是由许多异常的预测变量值(x)组合起来的，与响应变量值(y)没有关系。高杠杆点是针对自变量而言。     
+高杠杆值的观测点可通过帽子统计量（hat statistic）判断。对于一个给定的数据集，帽子均值为p/n，其中p是模型估计的参数数目（包含截距项），n 是样本量。一般来说，若观测点的帽子值大于帽子均值的2或3倍，即可以认定为高杠杆值点。高杠杆值点可能会是强影响点，也可能不是，这要看它们是否是离群点。      
+在图形中，水平线标注的即帽子均值2倍和3倍的位置。
+```{r}
+hat.plot <- function(fit7) {
+  p <- length(coefficients(fit7)) # 定义模型估计参数数目。
+  n <- length(fitted(fit7)) # 定义样本量。
+  plot(hatvalues(fit7), main = "Index Plot of Hat Values", ylim = c(0,0.8)) # 绘制样点图
+  abline(h=c(2,3)*p/n, col="red", lty=2) # 添加帽子均值2和3倍的参考线。
+  identify(1:n, hatvalues(fit7), names(hatvalues(fit7))) # 交互式绘图函数。
+}
+hat.plot(fit7) # 运行自定义函数，从结果看，有一个点落在参考线外，说明有高杠杆点。
+```
+
+
+### 8.4.3 强影响点  
+强影响点(influential points)，即对模型参数估计值影响有些比例失衡的点。例如，若移除模型的一个观测点时模型会发生巨大的改变，那么你就需要检测一下数据中是否存在强影响点了。如果某点既是离群点又是高杠杆点，则该点很有可能是强影响点。    
+检测强影响点的方法：  
+1. Cook距离  
+Cook距离，或称D统计量，一般来说，Cook’s D值大于4/(n-k-1)，则表明它是强影响点，其中n为样本量大小，k是预测变量数目。   
+```{r}
+cutoff <- 4/(nrow(outlier) - length(fit7$coefficients) - 2) # 定义D统计量，nrow给处理outlier数据集样本数，length给出了fit7中预测变量数目（其中包含了截距），因此最后是减去了2。
+plot(fit7, which = 4, cook.levels = cutoff) # 绘制Cook's D图。
+abline(h=cutoff, lty=2, col="blue") # 添加参考线。
+```
+    
+Cook’s D图有助于鉴别强影响点，但是并不提供关于这些点如何影响模型的信息。变量添加
+图弥补了这个缺陷。    
+2.变量添加图（added variable plot）  
+所谓变量添加图，即对于每个预测变量$X_k$，绘制$X_k$在其他k-1个预测变量上回归的残差值相对于响应变量在其他k-1个预测变量上回归的残差值的关系图。   
+图中的直线表示相应预测变量的实际回归系数。    
+
+```{r}
+library(car) # 调用car包。
+avPlots(fit7) # 绘制变量添加图。从图中可以看出1，5，8，10有可能是强影响点。
+```
+
+**综合判别**  
+利用car包中的influencePlot()函数，你还可以将离群点、杠杆值和强影响点的信息整合到一幅图形中。  
+纵坐标超过+2或小于-2的可被认为是离群点，水平轴超过0.2或0.3的点有高杠杆值（通常为预测值的组合）。圆圈大小与影响成比例，圆圈很大的点可能是对模型参数的估计造成的不成比例影响的强影响点。     
+
+```{r}
+library(car) # 调用car包。
+influencePlot(fit7, main = "Influence Plot", sub = "Circle size is proportional to cook's distance", ylim = c(-8,8), xlim=c(0,0.9)) # 绘制influence图。从图中看出，点10是离群点，点1是高杠杆点，点1，5，10都可能是强影响点。
+```
+
+
+## 8.5 改进措施
+
+### 8.5.1 删除观测点
+删除离群点通常可以提高数据集对于正态假设的拟合度，而强影响点会干扰结果，通常也会
+被删除。删除最大的离群点或者强影响点后，模型需要重新拟合。若离群点或强影响点仍然存在，重复以上过程直至获得比较满意的拟合。  
+
+### 8.5.2 变量变换  
+当模型不符合正态性、线性或者同方差性假设时，一个或多个变量的变换通常可以改善或调
+整模型效果。  
+当模型违反了正态假设时，通常可以对响应变量尝试某种变换。car包中的powerTransform()函数通过λ 的最大似然估计来正态化变量$X^λ$。   
+```{r}
+library(car) # 调用car包。
+summary(powerTransform(outlier$B)) # 估计正态化变量。
+```
+
+当违反了线性假设时，对预测变量进行变换常常会比较有用。car包中的boxTidwell()函数通过获得预测变量幂数的最大似然估计来改善线性关系。    
+
+### 8.5.3 增删变量  
+改变模型的变量将会影响模型的拟合度。  
+删除变量在处理多重共线性时是一种非常重要的方法。如果你仅仅是做预测，那么多重共线
+性并不构成问题，但是如果还要对每个预测变量进行解释，那么就必须解决这个问题。最常见的方法就是删除某个存在多重共线性的变量（某个变量$\sqrt {vif}>2$）。另外一个可用的方法便是岭回归——多元回归的变体，专门用来处理多重共线性问题。
+
+### 8.5.4 尝试其他方法  
+处理多重共线性的一种方法是拟合一种不同类型的模型（本例中是岭回归）。其实，如果存在离群点和/或强影响点，可以使用稳健回归模型替代OLS回归。如果违背了正态性假设，可以使用非参数回归模型。如果存在显著的非线性，能尝试非线性回归模型。如果违背了误差独立性假设，还能用那些专门研究误差结构的模型，比如时间序列模型或者多层次回归模型。最后，你还能转向广泛应用的广义线性模型，它能适用于许多OLS回归假设不成立的情况。 
+## 8.6 选择"最佳"的回归模型
+
+### 8.6.1 模型比较  
+用基础安装中的anova()函数可以比较两个嵌套模型的拟合优度。所谓嵌套模型，即它的一
+些项完全包含在另一个模型中。    
+```{r}
+fit8 <- lm(v1 ~ year + nitrogen + variety + block, data = df) # 拟合v1与year，nitrogen，variety，block之间的多元回归。
+fit9 <- lm(v1 ~ year + nitrogen, data = df) # 构建嵌套模型fit9。
+anova(fit8, fit9) # 比较拟合优度。
+```
+*结果解读：fit9为fit8的嵌套模型，相比fit8，fit9删除了变量variety和block，检验结果p值大于0.05，因此认为，两个变量添加与否对模型拟合结果影响不大。*    
+
+
+AIC（Akaike Information Criterion，赤池信息准则）也可以用来比较模型，它考虑了模型的统计拟合度以及用来拟合的参数数目。AIC值越小的模型要优先选择，它说明模型用较少的参数获得了足够的拟合度。  
+扩展学习：  
+AIC信息准则（Akaike information criterion），是用来衡量统计模型拟合优良性的一个标准，是由日本统计学家赤池弘次创立和发展的，因此也称为赤池信息量准则，它建立在熵的概念基础上，可以权衡所估计模型的复杂度和模型拟合数据的优良性。
+在一般情况下，AIC可以表示为：$$ AIC=(2k-2l)/n $$
+
+假设条件是模型的误差服从独立正态分布。其中：k是所拟合模型中参数的数量，L是对数似然值,n是观测值数目。k小意味着模型简洁，L大意味着模型精确。因此在评价模型是兼顾了简洁性和精确性。  
+
+```{r}
+AIC(fit8, fit9) # 比较模型。
+```
+*结果解读：可以看出，fit8的AIC值更小，表明fit8模型更佳。*
+
+### 8.6.2 变量选择  
+从大量候选变量中选择最终的预测变量有以下两种流行的方法：逐步回归法（stepwise 
+method）和全子集回归（all-subsets regression）。  
+**1. 逐步回归**
+逐步回归中，模型会一次添加或者删除一个变量，直到达到某个判停准则为止。例如，向前
+逐步回归（forward stepwise）每次添加一个预测变量到模型中，直到添加变量不会使模型有所改进为止。向后逐步回归（backward stepwise）从模型包含所有预测变量开始，一次删除一个变量直到会降低模型质量为止。而向前向后逐步回归（stepwise stepwise，通常称作逐步回归，以避免听起来太冗长），结合了向前逐步回归和向后逐步回归的方法，变量每次进入一个，但是每一步中，变量都会被重新评价，对模型没有贡献的变量将会被删除，预测变量可能会被添加、删除好几次，直到获得最优模型为止。   
+```{r}
+library(MASS) # 调用MASS包。
+stepAIC(fit8, direction = "backward") # 向后逐步回归。
+```
+**2. 全子集回归**  
+全子集回归，顾名思义，即所有可能的模型都会被检验。分析员可以选择展示所有可能的结
+果，也可以展示n 个不同子集大小（一个、两个或多个预测变量）的最佳模型。  
+全子集回归可用leaps包中的regsubsets()函数实现。   
+R平方含义是预测变量解释响应变量的程度；调整R平方与之类似，但考虑了模型的参数数
+目。R平方总会随着变量数目的增加而增加。当与样本量相比，预测变量数目很大时，容易导致过拟合。R平方很可能会丢失数据的偶然变异信息，而调整R平方则提供了更为真实的R平方估计。另外，Mallows Cp统计量也用来作为逐步回归的判停规则。广泛研究表明，对于一个好的模型，它的Cp统计量非常接近于模型的参数数目（包括截距项）。   
+```{r}
+library(leaps) # 调用leaps包。
+leaps <- regsubsets(v1 ~ year + nitrogen + variety + block, data = df, nbest = 3) # regsubsets函数构建模型对比变量leaps。
+plot(leaps, scale = "adjr2") # scale选择的校正R2，越大表示模型越好。
+```
+解读：可以看到，包含nitrogen，variety和block3项的回归模型是最优的。
+
+
+## 8.7 深层次分析
+
+### 8.7.1 交叉验证
+所谓交叉验证，即将一定比例的数据挑选出来作为训练样本，另外的样本作保留样本，先在
+训练样本上获取回归方程，然后在保留样本上做预测。由于保留样本不涉及模型参数的选择，该样本可获得比新数据更为精确的估计。 
+在k 重交叉验证中，样本被分为k个子样本，轮流将k-1个子样本组合作为训练集，另外1个子
+样本作为保留集。这样会获得k个预测方程，记录k个保留样本的预测表现结果，然后求其平均值。[当n 是观测总数目，k 为n 时，该方法又称作刀切法（jackknifing）。]   
+bootstrap包中的 crossval()函数可以实现 k 重交叉验证。
+
+### 8.7.2 相对重要性
+评价预测变量相对重要性的方法一直在涌现。最简单的莫过于比较标准化的回归系数，它表
+示当其他预测变量不变时，该预测变量一个标准差的变化可引起的响应变量的预期变化（以标准差单位度量）。在进行回归分析前，可用scale()函数将数据标准化为均值为0、标准差为1的数据集，这样用R回归即可获得标准化的回归系数。（注意，scale()函数返回的是一个矩阵，而lm()函数要求一个数据框，你需要用一个中间步骤来转换一下。）
+## 8.8 小结
+**数据准备**  
+```{r}
+df6 <- read.table(file = "D:/Documents/R wd/df6.csv", header = T, sep = ",") # 数据导入。
+df6 # 查看数据。
+```
+
+### 1 回归模型
+   
+```{r}
+fit10 <- lm(B1 ~ B2, data = df6) # 简单线性回归。
+summary(fit10) # 返回fit10结果。
+fit11 <- lm(B1 ~ B2 + I(B2^2), data = df6) # 多项式回归。
+summary(fit11) # 返回fit11结果。
+fit12 <- lm(B1 ~ B2 + B3, data = df6) # 多元线性回归。
+summary(fit12) # 返回fit12的结果。
+fit13 <- lm(B1 ~ B2 + B3 + B2:B3, data = df6) # 有交互作用线性回归。
+summary(fit13) # 返回fit13的结果。
+```
+
+### 2 回归诊断
+
+```{r}
+library(gvlma) # 调用gvlma包。
+summary(gvlma(fit10)) # fit10的OLS模型统计假设检验。
+summary(gvlma(fit11)) # fit11的OLS模型统计假设检验。
+summary(gvlma(fit12)) # fit12的OLS模型统计假设检验。
+summary(gvlma(fit13)) # fit13的OLS模型统计假设检验。
+```
+*fit10到fit13的Global Stat对应的p值均大于0.05，说明均符合原假设，即都满足OLS回归模型的所有统计假设。*
+
+### 3 优选模型  
+```{r}
+AIC(fit10, fit11, fit12, fit13) # 比较模型。
+```
+*结果解读：可以看出，fit10模型最佳，AIC值最小。*
+
+# 第9章 方差分析
+
+## 9.1 术语速成   
+
+为便于理解方差分析的相关名词，我构建一个案例：假如我们研究氮肥用量和玉米品种对玉米产量影响。设置一个田间试验，试验包括氮肥用量两个N1（200 kg/ha）和N2（300 kg/ha），玉米品种两个先玉335（XY335）和郑单958（ZD958），3次重复，测定指标为玉米产量。  
+
+**1、田间试验相关概念**
+
+**试验处理(experimental treatments)**：事先设计好的实施在试验单位上的具体项目称为试验处理，简称处理。  
+在单因素试验中，实施在试验单位上的具体项目就是试验因素的某一水平。假设我们的试验是两个氮水平对某一玉米品种产量的影响，那么试验处理就是N1和N2，所以进行单因素试验时，试验因素的一个水平就是一个处理。  
+在多因素试验中，实施在试验单位上的具体项目是各因素的某一水平组合。例如本例中的品种郑单958下N1或者品种郑单958下N2；所以，在多因素试验时，试验因素的一个水平组合就是一个处理。   
+
+**试验指标(experimental index)**：为衡量试验结果的好坏或处理效应的高低，在试验中具体测定的性状或观测的项目称为试验指标。由于试验项目的不同，选择的试验指标也不相同。农业试验中许多数量性状和质量性状都可以作为试验指标，例如本例中的试验指标为玉米产量。  
+
+**试验因素(experimental factor)**：试验中人为控制的、影响试验指标的原因称为试验因素。当试验中考察的因素只有一个时，称为单因素试验；假如我们的例子中只用一个玉米品种，那么就是单因素试验，因素为氮肥；若同时研究两个或两个以上的因素对试验指标的影响时，则称为两因素或多因素试验。例如本例中的氮肥用量和玉米品种，为两因素试验，加入此试验再增设了覆地膜和不覆膜两种栽培措施，那么就是三因素试验，依此类推，再增加就是多因素试验。  
+
+**因素水平(factor level)**：对试验因素所设定的量的不同级别或质的不同状态称为因素的水平，简称水平。例如本例中的N1和N2就是因素氮肥的两个水平，或者郑单958和先玉335就是玉米品种的两个水平。   
+
+**重复(repetition)**：试验中将一个处理实施在两个或两个以上的试验单位上，称为重复，一处理实施的试验单位数称为处理的重复数。如本例中的重复3次。
+
+**试验小区(experimental plot)**：安排一个试验处理的小块地段称为试验小区，简称小区。
+
+**试验单位(experimental unit)**：亦称试验单元，指施加试验处理的材料单位，例如可以是一个小区，一株玉米等，如本例中郑单958下N1。  
+
+**试验误差(experimental error)**：受非处理因素的影响使观测值与试验处理真值之间产生的差异。试验误差可分为系统误差和随机误差。    
+系统误差(systematic error)：试验过程中产生的误差，系统误差影响试验的准确性。如本例中玉米种植地块肥力的差异；
+随机误差(random error)：由多种偶然的、无法控制的因素引起的误差；随机误差影响试验的精确性。如本例产量测定时，测定的方法不同，结果不同。   
+
+
+**2、统计相关概念**
+
+**自变量(independent variable)**：自变量是指研究者主动操纵，而引起因变量发生变化的因素或条件。自变量被看作是因变量的原因。如本例中氮肥或者品种是自变量。  
+
+**因变量(dependent variable)**：在试验中，由于试验变量而引起试验对象的变化和结果叫做因变量。本例中玉米产量是因变量。
+
+**因子设计(factorial design)**：几个自变量分别由几个水平构成的多因素的实验设计称为因子设计（或因素设计）。当一个变量的每一个水平都包含另一个变量的所有水平时，即是一个因子设计。  
+
+**组间因子**：本例中氮肥用量即为组间因子，影响产量的来源于一个组别，即氮肥；  
+
+**均衡设计(balance design)和非均衡设计(inbalance design)**：如果在一个实验设计中任一因素各水平在所有单元格中出现的次数相同，且每个单元格内的元素数均相同，则该试验是均衡的，否则，就被称为不均衡。如本例中产量观测在各处理下均为3次，观测数相等，所以为均衡设计；假如先玉335下两个氮水平下的产量均测定了5次，那么就是非均衡设计了；   
+
+**主效应(main effect)**：各试验因素的相对独立作用。在多因素实验研究中，主效应就是在考察一个变量是否会对因变量的变化发生影响的时候，不考虑其他研究变量的变化，或者说将其他变量的变化效应平均掉。也就是其他研究变量都不变化的情况下，单独考察一个自变量对因变量的变化效应。如本例中氮肥或品种为主效应。  
+
+**交互效应(interaction effect)**：在多因素试验中，一个因素对试验结果的影响依赖于另一个因素所取的水平，称两因素有交互作用，如本例中氮肥和品种为交互效应。  
+
+**多重比较(multiple comparisons)**：要明确不同处理平均数两两间差异的显著性，每个处理的平均数都要与其他处理进行比较，这种差异显著性检验就叫多重比较。  
+
+**协变量(Covariates)**：指对因变量可能有影响，需要在分析时对其作用加以控制的连续性变量，实际上，可以简单的把因素和协变量分别理解为分类自变量和连续性自变量，当模型中存在协变量时，一般是通过找出它与因变量的回归关系来控制其影响。   
+
+
+**3、方差分析的概念和原理**  
+
+**方差分析(analysis of variance)**：又称“变异数分析”或“F检验”，是由罗纳德·费雪爵士发明的，用于两个及两个以上样本均数差别的显著性检验。  
+方差分析的基本原理是认为不同处理组的均数间的差别基本来源有两个：  
+(1) 实验条件，即不同的处理造成的差异，称为组间差异。用变量在各组的均值与总均值之偏差平方和的总和表示，记作$SS_b$，组间自由度$df_b$。  
+(2) 随机误差，如测量误差造成的差异或个体间的差异，称为组内差异，用变量在各组的均值与该组内变量值之偏差平方和的总和表示，记作$SS_w$，组内自由度$df_w$。  
+           $$SS_t = SS_b + SS_w$$
+$SS_t$是总偏差平方和，组内$SS_w$、组间$SS_b$除以各自的自由度(组内$df_w=n-m$，组间$df_b=m-1$，其中$n$为样本总数，$m$为组数)，得到其均方$MS_w$和$MS_b$，一种情况是处理没有作用，即各组样本均来自同一总体，$MS_b/MS_w≈1$。另一种情况是处理确实有作用，组间均方是由于误差与不同处理共同导致的结果，即各样本来自不同总体。那么，$MS_b>>MS_w$(远远大于)。  
+$MS_b/MS_w$比值构成$F$分布。用$F$值与其临界值比较，推断各样本是否来自相同的总体。   
+
+**4、方差分析的类型**  
+
+**单因素方差分析(One-way ANOVA)**：研究一个控制变量的不同水平是否对观测变量产生了显著影响。
+
+**多因素方差分析**：多因子方差分析为考虑了多分类自变量影响的方差分析，这种分析会涉及到多因子交互的问题。  
+
+**协方差分析(analysis of covariance,ANCOVA)**：协方差分析将那些人为很难控制的控制因素作为协变量，并在排除协变量对观测变量影响的条件下，分析控制变量（可控）对观测变量的作用，从而更加准确地对控制因素进行评价。  
+
+**多元方差分析(multivariate analysis of variance,MANOVA)**：在统计学中，多元方差分析（MANOVA）是一种比较多变量样本均值的程序。作为一个多变量过程，它在有两个或多个因变量时使用，并且通常后面是分别涉及各个因变量的显着性检验。
+
+**多元协方差分析(multivariate analysis of covariance,MANCOVA)**：当因变量不止一个时，
+设计被称作多元方差分析（ MANOV A），若协变量也存在，那么就叫多元协方差分析
+（MANCOV A）。 
+
+
+
+## 9.2 ANOVA模型拟合  
+
+虽然ANOVA和回归方法都是独立发展而来，但是从函数形式上看，它们都是广义线性模型
+的特例。    
+### 9.2.1 aov()函数  
+
+aov(formula, data = dataframe)  
+
+![](D:/documents/9-4.png)
+表中y是因变量，字母A、B、C代表因子。  
+
+
+![](D:/documents/9-5.png)
+表中小写字母表示定量变量，大写字母表示组别因子，Subject是对被试者独有的标识变量。
+
+### 9.2.2 表达式中各项的顺序  
+
+表达式中效应的顺序在两种情况下会造成影响：  
+(a)因子不止一个，并且是非平衡设计；
+(b)存在协变量。出现任意一种情况时，等式右边的变量都与其他每个变量相关。此时，我们无法清晰地划分它们对因变量的影响。  
+R默认类型I（序贯型）方法计算ANOVA效应（参考补充内容“顺序很重要！”）。可以这样写：y ~ A + B + A:B。R中的ANOVA表的结果将评价：  
+ A对y的影响；  
+控制A时，B对y的影响；  
+控制A和B的主效应时，A与B的交互效应。  
+
+![](D:/documents/9.2.png)
+样本大小越不平衡，效应项的顺序对结果的影响越大。一般来说，越基础性的效应越需要放在表达式前面。具体来讲，首先是协变量，然后是主效应，接着是双因素的交互项，再接着是三因素的交互项，以此类推。对于主效应，越基础性的变量越应放在表达式前面，因此性别要放在处理方式之前。有一个基本的准则：若研究设计不是正交的（也就是说，因子和/或协变量相关），一定要谨慎设置效应的顺序。  
+
+**方差分析的假设**     
+
+>  原假设H0：不同组的均值相等。  
+>  备择假设H1：至少一个样本均值与其他均值不相等。  
+
+**进行方差分析前的3个假定条件**   
+
+>  独立性：每个样本的个体相互独立且随机从总体中获得。  
+>  正态性：每个组的值均服从正态分布。  
+>  方差齐性：每个组的样本的方差之间没有差异。  
+
+**方差分析的基本思路**  
+
+方差分析的基本思路是将数据波动（变异）分解为若干部分，除了有一部分代表随机误差，其余每个部分的变异分别代表了某个影响因素的作用(包括交互作用形成的因素)。通过比较因素所致的变异与随机误差的大小，借助F分布和F统计量做出推断：该因素对因变量的影响是否显著存在。F统计量=组间方差/组内方差。    
+
+当F统计量<1时，表示比较的样本平均值之间没有显著差异，F统计量>1时，表示组间至少存在一组均值与其他组均值间的差异很大。    
+
+在判断是否显著时，常常给定显著性水平$\alpha$，$F$分布对应的临界值为$F_\alpha$ ，当$F>F_\alpha$时，拒绝$H0$。[<sup>80,81</sup>](#refer-anchor)   
+
+根据方差分析原理，总误差可分解为组间误差和组内误差，即：  
+$$ SS_T = SS_A + SS_E $$  
+$SS_T$：总误差，总离差平方和，其值越大，表示测定指标值之间的差异越大； 
+$SS_A$：组间误差，组间离差平方和，各个水平下样本平均值与数据总平均差异的平方和，反映的是试验因素的水平理论平均值不同而带来的影响；  
+$SS_E$：组内误差，组内离差平方和，各个水平下，样本观察值与样本均值差异的平方和。   
+$$ MS_A =\frac {SS_A}{(k-1)}$$  
+式中，$MS_A$是因素的平均平方和，k-1是因素对应的自由度，k为因素设定的水平数。  
+
+$$ MS_E =\frac {SS_E}{(n-k)} $$
+式中，$MS_E$是随机误差的平均平方和，n-k是对应的自由度，n为样本数，k为因素设定的水平数。
+
+F统计量的计算。  
+
+$$ F =\frac {MS_A}{MS_E} $$
+当$F\leqslant F_{k-1,n-k}(\alpha)$ 时，接受原假设$H_0$，否则接受备择假设$H_1$。$\alpha$是给定的显著水平。
+
+
+**方差分析推导**  
+以数据集df为例。 df数据集中nitrogen包含两个水平，N1和N2，试验中测定变量v1，在两个水平下分别测定12次，现在我们来检验试验测定的变量v1在N1和N2条件下的均值是否差异显著？  
+
+|nitrogen|v1($x_{ij}$)|合计$x_{i.}$|平均$\bar x_{i.}$|   
+|:----:|:----:|:----:|:----:|
+|$N_1$|1.26 1.20 1.30 1.08 1.05 1.15 1.19 1.21 1.24 1.09 1.28 1.35|14.40|1.20|  
+|$N_2$|1.32 1.28 1.35 1.33 1.28 1.30 1.45 1.40 1.37 1.28 1.15 1.24|15.75|1.31| 
+|||合计 $x_{..}$=30.15||
+
+**1、提出假设**  
+
+H0：v1在N1和N2条件下的均值相等。
+H1：v1在N1和N2条件下的均值不相等。  
+
+**2、计算各组平均值**  
+
+```{r}
+df7 <- df[order(df$nitrogen),] # 先对df以nitrogen进行排序。
+xT <- mean(df7$v1) # v1总平均值。
+xA <- mean(df7$v1[1:12]) # N1条件下v1的平均值。
+xE <- mean(df7$v1[13:24]) # N2条件下v1的平均值。
+```
+
+**3、计算各误差平方和**  
+
+```{r}
+SST <- sum((df7$v1-xT)^2) # 总平方和SST。
+SSA <- 12*(xA-xT)^2+12*(xE-xT)^2 # 组间平方和。
+SSE <- sum((df7$v1[1:12]-xA)^2)+sum((df7$v1[13:24]-xE)^2)# 组内平方和。
+```
+
+**4、计算F统计量**  
+
+SST的自由度为n-1，n为观测值的个数；  
+SSA的自由度为k-1，k为因素水平的个数；  
+SSE的自由度为n-k。  
+
+```{r}
+MSA <- SSA/(2-1) # 组间均方误差。
+MSE <- SSE/(24-2) # 组内均方误差。
+F <- MSA/MSE # 计算统计量F。
+```
+
+经查表，$F_{0.05}(1,22)=7.94$，本例中计算得10.28552，大于临界值，因此拒绝原假设，接受备择假设，说明v1在N1和N2条件下的平均值是有显著差异的。
+
+**5、p值计算**   
+
+网上搜寻了一下，办法如下：
+```{r}
+library(stats) # 调用stats包，这个包应该是集成在R基础包中的吧。
+1-pf(10.29,1,22) # pf中第一项填计算得的F值，第2项为组间自由度，第3项为组内差异的自由度。
+```
+
+可以看出，p值小于0.05，说明v1在N1和N2条件下的平均值间差异显著。  
+
+下面按照《R语言实战》中的操作步骤再来分析一下。
+
+## 9.3 单因素方差分析 
+
+单因素方差分析中，你感兴趣的是比较分类因子定义的两个或多个组别中的因变量均值。  
+对于完全随机设计试验且处理数大于2时可以用单因素方差分析（等于2 时用t检验）。   
+
+```{r}
+df # 显示数据df。
+str(df) # 查看数据结构。
+df$nitrogen <- as.factor(df$nitrogen) # 设置nitrogen为因子。
+table(df$nitrogen) # 显示nitrogen各组样本大小。
+aggregate(df$v1, by=list(df$nitrogen), FUN=mean) # nitrogen各组的均值。
+aggregate(df$v1, by=list(df$nitrogen), FUN=sd) # nitrogen各组的标准差。
+fit10 <- aov(df$v1 ~ df$nitrogen) # 检验组间差异。
+summary(fit10) # 显示结果。
+```
+
+*这里可以看到，前面小编一步一步核算的结果，只用一行代码就得到了，df为自由度，组间自由度为1，组内自由度为22；组间离均差平方和Sum Sq中df-nitrogen为0.07594，对应前面单独核算的SSA，组内离均差平方和Sum Sq中Residuals为0.16243，对应前面单独核算的SSE；组间均平方和Mean Sq中df-nitrogen为0.07594，对应前面单独核算的MSA，组内均平方和Mean Sq中Residuals为0.00738，对应前面单独核算的MSE，F value为10.29，对应前面单独核算的F；Pr(>F)为0.00406，对应前面单独核算的1-pf(10.29,1,22) 结果。*  
+
+可视化    
+gplots包中的plotmeans()可以用来绘制带有置信区间的组均值图形。  
+```{r}
+library(gplots) # 调用gplots包。
+plotmeans(df$v1 ~ df$nitrogen, xlab = "nitrogen", ylab = "v1", main = "Mean Plot\nwith 95% CI") # 绘制各组均值及置信区间。
+```
+
+
+### 9.3.1 多重比较  
+
+多重比较（multiple comparisons）是指方差分析后对各样本平均数间是否有显著差异的假设检验的统称。方差分析只能判断各总体平均数间是否有差异，多重比较可用来进一步确定哪两个平均数间有差异，哪两个平均数间没有差异。比较方法有N－K（Newman－Keuls）检验、邓肯（DunCan）检验、图基（Tukey）检验邓尼特（Dunnett）检验、最小显著差检验及谢费（Scheffé）检验等它们的理论依据和应用条件都有所不同。[<sup>82</sup>](#refer-anchor)    
+
+多重比较的方法很多，根据试验设计的目的不同有不同的应用。  
+若试验设计之初，便明确要比较某几个组均数间是否有差异，称为事前比较。常用的事前比较方法有LSD、Bonferroni和Dunnett法。  
+若研究目的是方差分析有统计学差异后，想知道哪些组间的均数有差异，便是事后比较。事后比较的常用方法有SNK、Turkey、Scheffe 和Bonferroni法。[<sup>83</sup>](#refer-anchor)  
+
+LSD检验适用于在专业上有特殊意义的样本均数间的比较，是在设计之初，就已明确要比较某几个组均数间是否有差异。  
+Bonferroni检验用途最广，几乎可用于任何多重比较的情形。一般认为Bonferroni法是最为保守的。  
+Dunnett-t检验由multcomp包中glht()函数实现，适用于k-1个试验组与一个对照组均数差异的多重比较。 
+SNK-q检验适用于多个样本均数两两之间的全面比较，与LSD-t检验相似，可能存在假阳性。  
+Tukey法较LSD法保守，即较LSD不易发现显著差异。Tukey法要求比较的样本容量相差不大，一般用于样本容量相同的组之间均数的比较。  
+Scheffe检验在各组样本数相等或不等均可以使用，但是以各组样本数不相等时使用较多。  
+Duncan法的全称为Duncan's new multiple range test (MRT)，也称为新复极差法。该方法是对SNK法的修正，但是提高了一类错误概率，降低了二类错误的概率，通常用于农业研究。[<sup>84,85</sup>](#refer-anchor)   
+
+  
+注意TukeyHSD()函数与本章使用的HH包存在兼容性问题：若载入HH包，TukeyHSD()函数将会失效。使用detach("package::HH")将它从搜寻路径中删除，然后再调用TukeyHSD()。  
+```{r}
+TukeyHSD(fit10) # 成对组间比较。
+par(las = 2) # 扭转轴标签。
+plot(TukeyHSD(fit10), xlim=c(0,0.2)) # 成对比较图形。
+```
+
+图形中置信区间包含0的疗法说明差异不显著（p>0.05）。    
+
+multcomp包中的glht()函数提供了多重均值比较更为全面的方法，既适用于线性模型，也适用于广义线性模型。  
+```{r}
+df # 显示数据。
+attach(df)
+fit10 <- aov(v1 ~ nitrogen) # 差异显著性检验。
+library(multcomp) # 调用multcomp包。
+par(mar=c(5,4,6,2)) # 扩展图形边界。
+tuk <- glht(fit10, linfct=mcp(nitrogen="Tukey")) # 多重比较。
+plot(cld(tuk, level=0.05), col = "red")
+```
+有相同字母的组（用箱线图表示）说明均值差异不显著。  
+*结果解读：本研究中N1和N2标注分别为a和b，无相同字母，说明差异显著。*
+
+### 9.3.2 评估检验的假设条件  
+
+我们对于结果的信心依赖于做统计检验时数据满足假设条件的程度。单因素方差分析中，我们假设因变量服从正态分布，各组方差相等。   
+
+**正态性检验**  
+
+```{r}
+library(car) # 调用car包。
+qqPlot(lm(v1 ~ nitrogen), data = df, simulate=TRUE, main="Q-Q Plot", labels=FALSE) # 绘制QQ图判断数据正态性。
+```
+数据落在95%的置信区间范围内，说明满足正态性假设。    
+*结果解读：所有数据点均落在置信区间内，说明数据符合正态分布。*
+
+**方差齐性检验**  
+```{r}
+bartlett.test(v1 ~ nitrogen, data = df) # 方差齐性检验。
+```
+*结果解读：p值为0.56，说明N1和N2之间的方差并没有显著不同。*
+
+**离群点检测**  
+```{r}
+library(car) # 调用car包。
+outlierTest(fit10) # 离群点检测。
+```
+*结果解读：（当p>1时将产生NA），说明本研究中无离群点。*  
+
+实际应用中，还可以用lm进行差异分析。
+```{r}
+summary(lm(v1~nitrogen,data = df)) # 用lm函数进行方差分析。
+```
+*可以看出结果是一致的*
+
+
+因为本例中只有两个处理，因此也可以用t检验。
+```{r}
+t.test(v1~nitrogen,data = df) # 用t检验检测结果。
+```
+*虽然p值不同，但结果都是差异显著的*
+
+
+## 9.4 单因素协方差分析 
+
+协方差分析是建立在回归分析和方差分析基础之上的一种分析方法。用于在检验两组或多组修正均数之间有无差异时，消除混杂因素（协变量）对于分析指标影响的一种分析方法。其中，协变量是指会对因变量产生影响，但是却不被研究者关心的非自变量的影响变量。  
+在统计分析阶段，将这些难以控制的随机变量作为协变量，在扣除协变量的影响后，再对修正的主效应进行方差分析，达到准确的分析评价控制变量对观察变量影响的目的。  
+
+单因素协方差分析（ANCOVA）扩展了单因素方差分析（ANOVA），包含一个或多个定量的
+协变量。  
+```{r}
+attach(df) # 添加df到搜索路径。
+table(nitrogen) # 查看分组变量信息。
+aggregate(v1, by = list(nitrogen), FUN = mean) # 分组统计v1，按nitrogen分组。
+fit14 <- aov(v1 ~ block + nitrogen, data = df) # 协方差分析，协变量为block。
+summary(fit14) # 返回分析结果。
+```
+*结果解读：block对应的p值大于0.05，说明block与v1不相关，v1的值显著受nitrogen的影响。*  
+
+由于使用了协变量，你可能想要获取调整的组均值——即去除协变量效应后的组均值。可使
+用effects包中的effects()函数来计算调整的均值：
+```{r}
+library(effects) # 调用effects包。
+effect("nitrogen", fit14) # 计算调整后的均值。
+```
+```{r}
+library(multcomp) # 调用multcomp包。
+contrast <- rbind("N1 vs N2" = c(1,-1)) # N1和N2组的比较。
+summary(glht(fit14, linfct=mcp(nitrogen=contrast))) # 返回比较结果。
+```
+
+
+### 9.4.1 评估检验的假设条件
+
+ANCOVA与ANOVA相同，都需要正态性和同方差性假设，ANCOVA还假定回归斜率相同。ANCOVA模型包含block*nitrogen的交互项时，可对回归斜率的同质性进行检验。交互效应若显著，则意味着block和v1间的关系依赖于nitrogen的水平。若不显著，支持了斜率相等的假设。
+```{r}
+library(multcomp) # 调用multcomp包。
+fit15 <- aov(v1 ~ block*nitrogen, data = df) # 检验斜率相等的假设。
+summary(fit15) # 返回结果。
+```
+
+### 9.4.2 结果可视化
+
+```{r}
+library(HH) # 调用HH包。
+ancova(v1 ~ block + nitrogen, data = df) # 可视化结果。
+```
+
+*图形解读：用block预测v1的回归线相互平行，N2下截距较N1大。*
+
+
+## 9.5 双因素方差分析
+
+```{r}
+attach(df) # 将df加入搜索路径。
+df$variety <- as.factor(df$variety) # 将variety转为因子。
+table(nitrogen,variety) # 查看因子基本信息。
+aggregate(v1, by = list(nitrogen, variety), FUN = mean) # 分组统计平均值。
+fit15 <- aov(v1 ~ nitrogen*variety) # 双因素方差分析。
+summary(fit15) # 返回fit15结果。
+```
+
+**结果可视化**[<sup>86</sup>](#refer-anchor)
+方法1：interaction.plot()函数来展示双因素方差分析的交互效应。  
+```{r}
+interaction.plot(nitrogen,variety,v1) # 结果可视化。
+```
+
+*图形解读：无论哪个品种，v1值均是N2显著高于N1，品种来看，a品种显著高于b品种。*
+
+方法2：gplots包中的plotmeans()函数来展示交互效应。  
+```{r}
+library(gplots) # 调用gplots包。
+plotmeans(v1 ~ interaction(nitrogen, variety, sep = "")) # 绘图。
+```
+
+*图形解读：每个样点都显示了置信区间，对应横坐标上方显示了样本量。本例中，同一品种下，均是N2显著高于N1*  
+
+
+方法3：HH包中的interaction2wt()函数来可视化结果。  
+```{r}
+library(HH) # 调用HH包。
+interaction2wt(v1 ~ nitrogen*variety) # 绘图。
+```
+
+*图形解读：两个箱图（左下角和右上角）是主效应图，左下角图，单就nitrogen看，N2显著高于N1；右上角图，单就variety看，a品种显著高于b品种；两个线图（左上角和右下角）为交互效应图，左上图，nitrogen应用在不同variety下的影响，即不同品种下，都是N2显著高于N1，同时a品种显著高于b品种；右下图，不同品种在不同nitrogen下的影响，即不同nitrogen下，都是a品种显著高于b品种，同时N2显著高于N1。*
+
+## 9.6 重复测量方差分析
+
+所谓重复测量方差分析，即受试者被测量不止一次。本节重点关注含一个组内和一个组间因子的重复测量方差分析（这是一个常见的设计）。  
+以下为R语言实战示例。基础安装包中的CO2数据集包含了北方和南方牧草类植物Echinochloa crus-galli（Potvin，Lechowicz，Tardif，1990）的寒冷容忍度研究结果，在某浓度二氧化碳的环境中，对寒带植物与非寒带植物的光合作用率进行了比较。研究所用植物一半来自于加拿大的魁北克省，另一半来自美国的密西西比州。因变量是二氧化碳吸收量（uptake），单位为ml/L，自变量是植物类型Type（魁北克VS密西西比州）和七种水平（95~1000 umol/m^2 sec）的二氧化碳浓度（conc）。另外，Type是组间因子，conc是组内因子。
+
+```{r}
+CO2
+CO2$conc <- as.factor(CO2$conc)
+w1b1 <- subset(CO2, Treatment == 'chilled')
+fit16 <- aov(uptake ~ (conc*Type) + Error(Plant/conc), w1b1)
+summary(fit16)
+```
+```{r}
+par(las=2)
+par=(mar=c(10, 4, 4, 2))
+with(w1b1, interaction.plot(conc, Type, uptake, type="b", col=c("red", "blue"), pch=c(16, 18), main="Interaction Plot for Plant Type and Concentraction"))
+boxplot(uptake ~ Type*conc, data=w1b1, col=(c("gold", "green")), main = "Chilled Quebec and Mississippi Plants", ylab = "Carbon dioxide uptake rate (umol/m^2 sec)")
+```
+
+百度学习了一下，**重复测量方差分析的R格式：model=aov(Y ~ B * W + Error(Subject/W))，其中B是组间因子，W是组内因子，subject是实验对象的ID。**
+
+下面自己构建一个数据集df7演示学习，数据包括两个N水平(N200,N300)，每个氮水平下分别在5个时期测定两个品种5株的biomass。这里N是组间因子，T是组内因子。
+
+```{r}
+df7 <- read.table(file = "D:/Documents/R wd/df7.csv", header = T, sep = ",") # 数据导入。
+df7 # 查看数据。
+attach(df7) # 将数据集df7加入搜索路径。
+library(reshape2) # 调用reshape2包。
+w2b2 <- melt(df7,id = c("N","Plant"),variable.name = "T", value.name="Biomass") # 宽格式数据变为长格式。
+w2b2 # 查看数据。
+str(w2b2) # 查看数据结构。
+w2b2$N <- as.factor(w2b2$N) # df7数据集中N转为因子。
+w2b2$T <- as.factor(w2b2$T) # df7数据集中T转为因子。
+fit17 <- aov(Biomass ~ T*N + Error(Plant/T), w2b2) # 构建模型。
+summary(fit17)  # 返回结果。
+```
+
+可视化
+```{r}
+par(las=2) # las 参数控制x轴和y轴的刻度线上的标签与两条轴的方向，可选值为0,1,2,3，默认值0表示总是平行于坐标轴；1表示总是水平方向；2表示总是垂直于坐标轴；3表示总是垂直方向。
+par(mar=c(10,4,4,2)) # 设置图形空白边界行数，mar=c(bottom,left,top,right)，缺省为mar=c(5.1,4.1,4.1,2.1)
+with(w2b2, interaction.plot(T,N,Biomass, type = "b", col = c("red","blue"), pch = c(16,18), main = "Interaction Plot for Nitrogen and Time")) # 结果可视化。
+boxplot(Biomass ~ N*T, data=w2b2, col=(c("gold","green")),
+        main="Nitrogen and Time", 
+        ylab="Biomass") # 结果可视化。
+```
+
+
+## 9.7 多元方差分析
+
+多元方差分析（ multivariate analysis of variance ，MANOVA），亦称为多变量方差分析，即表示多元数据的方差分析，是一元方差分析的推广。作为一个多变量过程，多元方差分析在有两个或多个因变量时使用，并且通常后面是分别涉及各个因变量的显着性检验。  
+当因变量（结果变量）不止一个时，可用多元方差分析（MANOVA）对它们同时进行分析。当因子变量只有一组时，称为单因素多元方差分析，因子变量有多组时，称为多因素多元方差分析。    
+```{r}
+df # 以df数据集为例。
+attach(df) # 将数据集df加入搜索路径。
+fit18 <- manova(cbind(v1,v2,v3) ~ nitrogen) # 多元方差分析。
+summary(fit18) # 返回结果。
+summary.aov(fit18) # 输出单变量结果。
+```
+
+*结果解读：可以看出v1，v2和v3在nitrogen之间存在很大的不同（P值均小于0.05）。*
+
+
+### 9.7.1 评估假设检验
+
+单因素多元方差分析有两个前提假设，一个是多元正态性，一个是方差—协方差矩阵同质性。
+第一个假设即指因变量组合成的向量服从一个多元正态分布。可以用Q-Q图来检验该假设条
+件。  
+```{r}
+y <- cbind(df$v1, df$v2, df$v3) # 组合因变量。
+coord <- qqplot(qchisq(ppoints(nrow(y)), df = ncol(y)), mahalanobis(y, colMeans(y), cov(y))) # 绘制qq图。
+abline(a = 0, b = 1) # 添加参考线。
+```
+
+*若数据服从多元正态性，则点将落在直线上。我的例子，点并未落在直线上。*
+
+方差—协方差矩阵同质性即指各组的协方差矩阵相同，通常可用Box’s M检验来评估该假设。[<sup>87</sup>](#refer-anchor)   
+
+```{r}
+library(biotools)
+boxM(df[ ,c('v1', 'v2', 'v3')], df[ ,'nitrogen']) # Box's M 检验验证方差-协方差矩阵同质性（p 值大于 0.05 即说明各组的协方差矩阵相同）
+```
+
+最后，还可以使用mvoutlier包中的ap.plot()函数来检验多元离群点。
+```{r}
+library(mvoutlier) # 调用mvoutlier包。
+aq.plot(y) 
+```
+
+
+### 9.7.2 稳健多元方差分析  
+
+如果多元正态性或者方差—协方差均值假设都不满足，又或者你担心多元离群点，那么可以
+考虑用稳健或非参数版本的 MANOVA检验。稳健单因素 MANOVA可通过 rrcov包中的
+Wilks.test()函数实现。vegan包中的adonis()函数则提供了非参数MANOVA的等同形式。  
+```{r}
+library(rrcov) # 调用rrcov包。
+Wilks.test(nitrogen~., data = df[c("v1", "v2", "v3")], method = "c") # 稳健多元方差分析。
+```
+*稳健检验对离群点和违反MANOVA假设的情况不敏感，结果说明在nitrogen的两个水平下，v1、v2、v3的值均存在显著不同。*
+
+## 9.8 用回归来做ANOVA  
+
+ANOVA和回归都是广义线性模型的特例。  
+```{r}
+CO2 # 以R内置数据集CO2为例。
+summary(aov(uptake ~ conc, data = CO2)) # 使用aov函数进行方差分析。
+```
+
+```{r}
+summary(lm(uptake ~ conc, data = CO2)) # 使用lm函数进行方差分析。
+```
+
+因为线性模型要求预测变量是数值型，当lm()函数碰到因子时，它会用一系列与因子水平相对应的数值型对照变量来代替因子。如果因子有k个水平，将会创建k-1个对照变量。R提供了五种创建对照变量的内置方法（见表9-6），你也可以自己重新创建（此处不做介绍）。默认情况下，对照处理用于无序因子，正交多项式用于有序因子。
+
+![](D:/documents/9-6.png)
+
+## 9.9 小结
+
+数据
+```{r}
+mtcars # 以内置数据集mtcars为例。
+str(mtcars) # 查看数据结构。
+mtcars$cyl <- as.factor(mtcars$cyl) # 将cyl转为因子。
+mtcars$gear <- as.factor(mtcars$gear) # 将gear转为因子。
+mtcars$carb <- as.factor(mtcars$carb) # 将carb转为因子。
+str(mtcars) # 在此查看数据结构。
+```
+
+
+方差分析的前提假设
+
+>  独立性：每个样本的个体相互独立且随机从总体中获得。  
+>  正态性：每个组的值均服从正态分布。  
+>  方差齐性：每个组的样本的方差之间没有差异。 
+
+前提假设检验
+```{r}
+shapiro.test(mtcars$mpg) # 正态性检验。
+shapiro.test(mtcars$disp) # 正态性检验。
+shapiro.test(mtcars$wt) # 正态性检验。
+bartlett.test(mpg~cyl,data=mtcars) # 方差齐性检验。
+```
+
+单因素方差分析
+```{r}
+fit2 <- aov(mpg~cyl,data = mtcars) # 单因素方差分析，自变量mpg，分类变量为cyl。
+summary(fit2) # 返回结果。
+```
+
+多重比较
+```{r}
+TukeyHSD(fit2) # 多重比较。
+```
+```{r}
+plot(TukeyHSD(fit2)) # 图形均未包含0，说明各组之间差异显著。
+```
+
+```{r}
+library(multcomp) # 调用multcomp包。
+par(mar=c(5,4,6,2)) # 设置绘图区域边界。
+tuk1 <- glht(fit2,linfct = mcp(cyl="Tukey")) # glht()函数提供了多重均值比较更为全面的方法
+plot(cld(tuk1,level=0.05)) # cld()函数中的level选项设置了使用的显著水平（0.05，即本例中的95%的置信区间）
+```
+
+
+协方差分析
+```{r}
+summary(aov(mpg~hp+cyl,data = mtcars)) # 协方差分析，自变量mpg，分类变量为cyl，协变量hp。
+library(HH) # 调用HH包。
+ancova(mpg~hp+cyl,data = mtcars) # 协方差分析结果可视化。
+```
+
+双因素方差分析
+```{r}
+summary(aov(mpg~cyl+gear,data = mtcars)) # 无交互作用双因素方差分析，自变量mpg，分类变量为cyl和gear。
+summary(aov(mpg~cyl*gear,data = mtcars)) # 交互作用双因素方差分析，自变量mpg，分类变量为cyl和gear。
+library(HH) # 调用HH包。
+interaction2wt(mpg~cyl*gear, data = mtcars) # 双因素方差分析结果可视化。
+```
+
+三因素方差分析
+```{r}
+summary(aov(mpg~cyl*gear*carb,data = mtcars)) # 交互作用三因素方差分析，自变量mpg，分类变量为cyl、gear和carb。
+```
+
+多元方差分析
+```{r}
+summary(manova(cbind(mpg,disp,wt)~cyl, data=mtcars)) # 多元方差分析。
+summary.aov(manova(cbind(mpg,disp,wt)~cyl, data=mtcars)) # 针对每一个变量的方差分析。
+```
+
+
+
+# 第10章 功效分析  
+
+功效分析（power analysis）是心理统计学术语。在假设检验中，根据影响功效的因素，改变和控制某些变量，以提高功效值，使研究更有效、更科学的过程。
+与如下四个因素有关：（1）显著性水平（）。在假设检验中，越小，第二类错误就越容易发生，功效值也就越低。（2）样本容量（N）。样本容量与在统计检验中标准误差的大小有关。在其他条件一定的情况下，样本容量增加，可使标准误差下降，而使统计功效值提高。（3）总体效果量（）。指对虚无假设的否定程度。在其他条件一定的情况下，若总体效果量增长，功效也就会提高。若包括功效在内的其他条件一定时，总体效果量越大，在一定的显著水平所需样本容量就越小。（4）功效（1一）（是虚无假设H0为假时，接受它所犯错误的概率）。是功效分析的主体。以上四个因素是相互联系、相互制约的，在进行功效分析时要同时考虑。[<sup>88</sup>](#refer-anchor) 
+
+
+功效分析可以帮助在给定置信度的情况下，判断检测到给定效应值时所需的样本量。反过来，它也可以帮助你在给定置信度水平情况下，计算在某样本量内能检测到给定效应值的概率。如果概率低得难以接受，修改或者放弃这个实验将是一个明智的选择。  
+
+## 10.1 假设检验速览  
+
+在统计假设检验中，首先要对总体分布参数设定一个假设（零假设H0），然后从总体分布中
+抽样，通过样本计算所得的统计量来对总体参数进行推断。假定零假设为真，如果计算获得观测样本的统计量的概率非常小，便可以拒绝原假设，接受它的对立面（称作备择假设或者研究假设H1）。  
+预先约定的阈值（0.05）称为检验的显著性水平（significance level）。 
+![](D:/documents/10.1.png)
+
+
+
+在研究过程时，研究者通常关注四个量：样本大小、显著性水平、功效和效应值（见图10-1）。
+
+样本大小指的是实验设计中每种条件/组中观测的数目。  
+显著性水平（也称为alpha）由I型错误的概率来定义。也可以把它看做是发现效应不发生
+的概率。  
+功效通过1减去II型错误的概率来定义。我们可以把它看做是真实效应发生的概率。  
+效应值指的是在备择或研究假设下效应的量。效应值的表达式依赖于假设检验中使用的
+统计方法。  
+![](D:/documents/10.1.1.png)
+
+四个量（样本大小、显著性水平、功效和效应值）紧密相关，给定其中任意三个量，便可推
+算第四个量。
+
+
+
+## 10.2 用pwr包做功效分析
+
+![](D:/documents/10-1.png)
+
+### 10.2.1 t 检验
+
+Pwr.t.test(n=, d= , sig.level=, power=, type = c("two.sample","one.sample", "paired"), alternative =c("two.sided", "less", "greater"))  
+n：样本大小。  
+d：效应值，即标准化的均值之差。  
+
+$$d = \frac {\mu_1 - \mu_2 }{\sigma}$$
+其中 $\mu_1$：组1均值；  
+$\mu_2$：组2均值；  
+$\sigma^2$：误差方差；  
+
+sig.level：显著性水平（默认为0.05）；  
+power：功效水平；  
+type：检验类型：双样本t检验（two.sample）、单样本t检验（one.sample）或相依样
+本t检验（paired）。默认为双样本t检验；  
+alternative：统计检验是双侧检验（two.sided）还是单侧检验（less或greater）。
+默认为双侧检验。  
+
+```{r}
+library(pwr) # 调用pwr包。
+pwr.t.test(d=0.8, sig.level = 0.05, power = 0.9, type = "two.sample", alternative = "two.sided") # 效应值设0.8，希望90%的把握检测到两组的差异，显著性水平设0.05，计算所需的样本量。
+```
+*每组中需要34个受试者(总共68人)，才能保证有90%的把握检测到0.8的效应值，并且最多5%的可能性会误报差异存在。*
+
+
+如果两组中样本大小不同，使用pwr.t2n.test()函数。   
+
+```{r}
+library(pwr) # 调用包。
+pwr.t2n.test(n1=20, d=0.8, sig.level = 0.05, power = 0.9,  alternative = "two.sided") # 样本1容量为20，效应值设0.8，效应水平设0.9，显著水平设0.05。
+```
+*给定1组样本量为20，计算得第2组样本量应为101。*  
+
+### 10.2.2 方差分析
+
+pwr.anova.test()函数可以对平衡单因素方差分析进行功效分析。格式为：
+
+pwr.anova.test(k = NULL, n = NULL, f = NULL, sig.level =0.05, power = NULL)  
+其中，k是组的个数，n是各组中的样本大小
+对于单因素方差分析，效应值可通过f来衡量：  
+$$f=\sqrt {\frac {\sum_{i=1}^k p_i\times(\mu_i-\mu)^2}{\sigma^2}}$$
+
+其中，$p_i=\frac{n_i}{N}$；  
+
+$n_i$：组i的观测数目；  
+
+N：总观测数目；  
+
+$\mu_i$：组i均值；  
+
+$\mu$：总体均值；  
+
+$\sigma^2$：组内误差方差；  
+
+```{r}
+pwr.anova.test(k=5,f=.25,sig.level=.05,power=.8) # k=5表示5组观测值，效应值设0.25，效应水平0.8，显著水平0.05。
+```
+
+### 10.2.3 相关性
+
+pwr.r.test(n=, r=, sig.level=, power=, alternative=)
+
+n：观测数目；
+
+r：效应值（通过线性相关系数衡量）；
+
+sig.level：显著性水平；
+
+power：功效水平；
+
+"alternative"：统计检验是双侧检验（"two.sided"）还是单侧检验（"less"或"greater"）。默认为双侧检验。
+
+```{r}
+library(pwr) # 调用pwr包。
+pwr.r.test(r = .25, sig.level = 0.05, power = .90,alternative = "greater") # 效应值0.25，功效水平0.9，显著水平0.05。
+```
+*要研究抑郁与孤独的关系，样本容量为134个，以便在零假设为假的情况下有90%的信心拒绝它。*
+
+### 10.2.4 线性模型
+
+对于线性模型(比如多元回归)，pwr.f2.test()函数可以完成相应的功效分析，格式为:
+
+pwr.f2.test(u=, v=, f2=, sig.level=, power=)   
+
+其中，u和v分别是分子自由度和分母自由度，f2是效应值。  
+$f^2=\frac{R^2}{1-R^2}$ 其中，R2 =多重相关性的总体平方值；  
+$f^2=\frac{R_{AB}^{2} -R^2_A}{1-R_{AB}^{2}}$ 其中，$R^2_A$=集合A中变量对总体方差的解释率
+      $R_{AB}^2$=集合A和B中变量对总体方差的解释率；    
+      
+当要评价一组预测变量对结果的影响程度时，适宜用第一个公式来计算f2；当要评价一组预
+测变量对结果的影响超过第二组变量（协变量）多少时，适宜用第二个公式。
+
+```{r}
+pwr.f2.test(u=3, f2=0.0769, sig.level=0.05, power=0.90) 
+```
+*多元回归中，分母的自由度等于N–k–1，N是总观测数，k是预测变量数；本例中，N–7–1=185，即需要样本大小N=185+7+1=193。*  
+
+### 10.2.5 比例检验
+
+当比较两个比例时，可使用pwr.2p.test()函数进行功效分析。格式为:
+
+pwr.2p.test(h=, n=, sig.level=, power=)  
+
+其中，h是效应值，可用ES.h(p1, p2)函数进行计算，n是各组相同的样本量。
+
+$h=2arcsin(\sqrt{p_1})-2arcsin(\sqrt{p_2})$  
+
+当各组中n不相同时，则使用函数:
+
+pwr.2p2n.test(h=, n1=, n2=, sig.level=, power=)
+
+alternative=选项可以设定检验是双尾检验("two.sided")还是单尾检验("less"或"greater")。默认是双尾检验。
+
+```{r}
+pwr.2p.test(h=ES.h(.65, .6), sig.level=.05, power=.9, alternative="greater")
+```
+例：假定对某流行药物能缓解60%使用者的症状感到怀疑，一种更贵的新药如果能缓解65%使用者的症状，就会被投放到市场中。
+
+假设想有90%的把握得出新药更有效的结论：power=0.9  
+希望有95%的把握不会误得结论：显著性水平0.05  
+只对评价新药是否比标准药物更好感兴趣，因此只需用单边检验：alternative=”greater”  
+为满足以上要求，在本研究中需要1605个人试用新药，1605个人试用已有药物。
+
+### 10.2.6 卡方检验
+
+卡方检验常常用来评价两个类别型变量的关系。典型的零假设是变量之间独立，备择假设是不独立。
+
+pwr.chisq.test()函数可以评估卡方检验的功效、效应值和所需的样本大小。格式为:
+
+pwr.chisq.test(w=, N=, df=, sig.level=, power=)
+
+其中，w是效应值，N是总样本大小，df是自由度。  
+效应值w定义如下：  
+$w=\sqrt{\sum_{i-1}^m \frac{(p0_i-pl_i)^2}{p0_i}}$  
+其中，$p0_i=H0$时第i单元格中的概率；  
+      $pl_i=H1$时第i单元格中的概率；  
+      此处从1到m进行求和，连加号上的m指的是列联表中单元格的数目。  
+
+函数ES.w2(P)可以计 算双因素列联表中备择假设的效应值，P是一个假设的双因素概率表。
+
+```{r}
+prob <- matrix(c(.42, .28, .03, .07, .10, .10), byrow=TRUE, nrow=3)
+ES.w2(prob)
+```
+
+```{r}
+pwr.chisq.test(w=.1853, df=3 , sig.level=.05, power=.9)
+```
+
+
+
+### 10.2.7 在新情况中选择合适的效应值
+
+![](D:/documents/10-3.png) 
+
+```{r}
+es <- seq(.1, .5, .01)
+nes <- length(es)
+samsize <- NULL
+for (i in 1:nes){
+  result <- pwr.anova.test(k=5, f=es[i], sig.level=.05, power=.9)
+  samsize[i] <- ceiling(result$n)
+}
+plot(samsize,es, type="l", lwd=2, col="red",
+     ylab="Effect Size",
+     xlab="Sample Size (per cell)",
+     main="One Way ANOVA with Power=.90 and Alpha=.05")
+```
+
+
+## 10.3 绘制功效分析图形
+
+```{r}
+library(pwr)
+# 生成一系列相关系数和功效值
+r <- seq(.1,.5,.01)
+nr <- length(r)
+p <- seq(.4,.9,.1)
+np <- length(p)
+
+# 获取样本大小
+samsize <- array(numeric(nr*np), dim=c(nr,np))
+for (i in 1:np){
+  for (j in 1:nr){
+    result <- pwr.r.test(n = NULL, r = r[j],
+                         sig.level = .05, power = p[i],
+                         alternative = "two.sided")
+    samsize[j,i] <- ceiling(result$n)
+  }
+}
+# 创建图形
+xrange <- range(r)
+yrange <- round(range(samsize))
+colors <- rainbow(length(p))
+plot(xrange, yrange, type="n",
+     xlab="Correlation Coefficient (r)",
+     ylab="Sample Size (n)" )
+# 添加功效曲线
+for (i in 1:np){
+  lines(r, samsize[,i], type="l", lwd=2, col=colors[i])
+}
+
+# 添加网格线
+abline(v=0, h=seq(0,yrange[2],50), lty=2, col="grey89")
+abline(h=0, v=seq(xrange[1],xrange[2],.02), lty=2, col="gray89")
+# 添加注释
+title("Sample Size Estimation for Correlation Studies\n
+Sig=0.05 (Two-tailed)")
+legend("topright", title="Power", as.character(p),
+       fill=colors)
+```
+
+
+
+## 10.4 其他软件包
+
+表10-4列出了其他与功效分析有关的软件包。  
+
+![](D:/documents/10-4.png) 
+
+
+## 10.5 小结
+
+本章主要内容是pwr包中函数的使用方法。这些函数可以对常见的统计方法（包括t检验、卡
+方检验、比例检验、ANOVA和回归）进行功效和样本量的计算。  
+典型的功效分析是一个交互性的过程。研究者会通过改变样本量、效应值、预期显著性水平
+和预期功效水平这些参数，来观测它们对于其他参数的影响。这些结果对于研究的筹备是非常有意义的。过去研究的信息（特别是效应值）可以帮助你在未来设计更有效和高效的研究。  
+
+# 第11章 中级绘图
+
+## 11.1 散点图
+
+R中创建散点图的基础函数是plot(x, y)，其中，x和y是数值型向量，代表着图形中的(x, y)
+点。 
+
+1、Graphics散点图 
+
+```{r}
+attach(df) # 将df数据集添加到搜索路径。
+plot(v1, v2) # 绘制散点图，v1为x，v3为y。
+abline(lm(v2 ~ v1), col="blue", lwd=2, lty=2) # 最佳拟合线。
+lines(lowess(v1,v2), col="red", lwd=2, lty=1) # 添加平滑曲线。
+```
+
+2、car包散点图
+
+car包中的scatterplot()函数增强了散点图的许多功能，它可以很方便地绘制散点图，并
+能添加拟合曲线、边界箱线图和置信椭圆，还可以按子集绘图和交互式地识别点。  
+
+```{r}
+library(car) # 调用car包。
+scatterplot(v2 ~ v1|nitrogen, data = df, main="Scatter Plot of v2 vs v1 by nitrogen", xlab = "v1", ylab = "v2", boxplot="xy") # 表达式v2 ~ v1|nitrogen表示按条件绘图（即按nitrogen的水平分别绘制v2和v1的关系图）。
+```
+
+3、基础包绘制分类散点图
+```{r}
+attach(df) # 将df加入搜索路径。
+with(df[nitrogen=="N1"|nitrogen=="N2",],plot(v1,v2,col=c("red","blue"))) # 分类散点图。
+abline(lm(df$v2[nitrogen=="N1"]~df$v1[nitrogen=="N1"]),col="red") # 添加N1分类变量下v2和v1的拟合线。
+abline(lm(df$v2[nitrogen=="N2"]~df$v1[nitrogen=="N2"]),col="blue") # 添加N2分类变量下v2和v1的拟合线。
+lines(lowess(df$v1[nitrogen=="N1"],df$v2[nitrogen=="N1"]),col="red") # 添加N1分类变量下v2和v1的平滑曲线。
+lines(lowess(df$v1[nitrogen=="N2"],df$v2[nitrogen=="N2"]),col="blue") # 添加N2分类变量下v2和v1的平滑曲线。
+```
+
+### 11.1.1 散点图矩阵
+
+1、Graphics散点图矩阵  
+pairs()函数可以创建基础的散点图矩阵。
+
+```{r}
+pairs(~v1+v2+v3+v4, data = df, main="Basic scatter plot matrix") # 散点图矩阵。
+pairs(~v1+v2+v3+v4, data = df, main="Basic scatter plot matrix", upper.panel = NULL) # 散点图矩阵。只显示下三角图形。
+```
+
+2、car包散点图矩阵  
+car包中的scatterplotMatrix()函数也可以生成散点图矩阵。并有以下可选操作：  
+以某个因子为条件绘制散点图矩阵；  
+包含线性和平滑拟合曲线；  
+在主对角线放置箱线图、密度图或者直方图；  
+在各单元格的边界添加轴须图；[<sup>89</sup>](#refer-anchor)   
+
+```{r}
+library(car) # 调用car包。
+scatterplotMatrix(~ v1 + v2 + v3 + v4, data = df, smooth=list(lty.smooth=2, spread = F), main="Scatter plot matrix via car package") # spread = FALSE选项表示不添加展示分散度和对称信息的直线，lty.smooth =2设定平滑（loess）拟合曲线使用虚线而不是实线。
+```
+
+对角图形变换。  
+
+```{r}
+library(car) # 调用car包。
+scatterplotMatrix(~ v1 + v2 + v3 + v4 | nitrogen, data = df, smooth=list(lty.smooth=2, spread = F), diagonal=list(method="boxplot"), main="Scatter plot matrix via car package") # 散点图矩阵，按nitrogen进行点的分类。
+```
+
+3、gclus包散点图矩阵  
+
+gclus包中的cpairs()函数提供了一个有趣的散点图矩阵变种。它含有可以重排矩阵中变
+量位置的选项，可以让相关性更高的变量更靠近主对角线。该函数还能对各单元格进行颜色编码来展示变量间的相关性大小。  
+
+```{r}
+cor(df[c("v1", "v2", "v3", "v4")]) # 各变量的相关性。
+```
+```{r}
+library(gclus) # 调用gclus包。
+mydat <- df[c(5,6,7,8)] # 选取df数据集5到8列为新数据集mydat。
+mydata.corr <- abs(cor(mydat)) # 计算4个变量相关系数的绝对值。
+mycolors <- dmat.color(mydata.corr) # 使用 dmat.color()函数获取绘图的颜色。
+myorder <- order.single(mydata.corr) # 对图中变量进行排序。通过order.single()函数重排对象，可使得相似的对象更为靠近。
+cpairs(mydat,myorder,panel.colors = mycolors, gap=0.5,main="Variables ordered and colored by correlation") # 绘制散点图矩阵，相关性用颜色区分。
+```
+*相关强的变量对被标为红色，且离主对角线最近，相关性弱的变量对被标为黄色，离主对角线远。*
+
+
+### 11.1.2 高密度散点图
+
+当数据点重叠很严重时，用散点图来观察变量关系就显得“力不从心”了。  
+smoothScatter()函数可利用核密度估计生成用颜色密度来表示点分布的散点图。
+
+```{r}
+set.seed(1234) # 
+n<-10000
+c1<-matrix(rnorm(n,mean=0,sd=0.5), ncol=2) # 矩阵c1。
+c2<-matrix(rnorm(n,mean=3,sd=2),ncol=2) # 矩阵c2。
+mydat1<-rbind(c1,c2) # 构建数据集mydat1。
+mydat1<-as.data.frame(mydat1) # 将数据集mydat1转为数据框。
+names(mydat1)<-c("x","y") # 数据框列重命名。
+with(mydat1, plot(x,y, pch=19, main="scatterplot for 10000 observations")) # 绘制散点图。
+```
+
+```{r}
+with(mydat1, smoothScatter(x,y, main ="scaterplot for 10000 observations")) # 绘制散点图。用颜色密度来表示点分布。
+```
+
+hexbin包中的hexbin()函数将二元变量的封箱放到六边形单元格中（图形比名称更直观）.  
+
+```{r}
+library(hexbin) # 调用hexbin包。
+with(mydat1, {bin<-hexbin(x,y,xbins=50)
+plot(bin, main="Hexagonal Binning with 10000 observations")
+}) # 将二元变量的封箱放到六边形单元格中。
+```
+
+IDPmisc包中的iplot()函数也可通过颜色来展示点的密度（在某特定点上数据点的数目）.  
+
+```{r}
+library(IDPmisc) # 调用IDPmisc包。
+with(mydat1, iplot(x,y, main=" Image scatter plot with 10000 observations")) # 通过颜色来展示点的密度。
+```
+
+
+
+
+### 11.1.3 三维散点图
+
+可用scatterplot3d中的scatterplot3d()函数来对三个定量变量的交互关系进行可视化。
+scatterplot3d(x, y, z)  
+
+```{r}
+library(scatterplot3d) # 调用scatterplot3d包。 
+scatterplot3d(df$v1, df$v2, df$v3) # 绘制基础三维散点图。
+scatterplot3d(df$v1, df$v2, df$v3, pch = 10, highlight.3d = TRUE, type = "h", main = "3D Scatter Plot with Vertical Lines") # 三维散点图参数设置。
+s3d <- scatterplot3d(df$v1, df$v2, df$v3, pch = 10, highlight.3d = TRUE, type = "h", main = "3D Scatter Plot with Vertical Lines") # 三维散点图参数设置。
+s3d$plane3d(lm(df$v3 ~ df$v1 + df$v2)) # 添加回归面。
+```
+
+*平面代表预测值，图中的点是实际值。平面到点的垂直距离表示残差值。若点在平面之上则表明它的预测值被低估了，而点在平面之下则表明它的预测值被高估了。*
+
+**旋转三维散点图**  
+你可用rgl包中的plot3d()函数创建可交互的三维散点图。  
+plot3d(x,y,z)  
+其中x、y和z是数值型向量，代表着各个点。你还可以添加如col和size这类的选项来分别控制点的颜色和大小。  
+```{r}
+library(rgl) # 调用rgl包。
+attach(df) # 将df加入搜索路径。
+plot3d(v1, v2, v3, col="red", size=5) # 绘制旋转三维散点图。  
+```
+
+### 11.1.4 气泡图
+
+气泡图（bubble plot）：在二维散点图的基础上，用点的大小来代表第三个变量的值。  
+symbols()函数来创建气泡图。该函数可以在指定的(x, y)坐标上绘制圆圈图、方形图、星形图、温度计图和箱线图。  
+symbols(x, y, circle=radius)  
+其中x、y和radius是需要设定的向量，分别表示x、y坐标和圆圈半径。  
+你可能想用面积而不是半径来表示第三个变量，那么按照圆圈半径的公式（r = /πA ）变
+换即可:  
+symbols(x, y, circle=sqrt(z/pi))    
+
+```{r}
+attach(df) # 将df加入搜索路径。
+symbols(v1, v2, circles = sqrt(v3/pi), inches = 0.3, fg="white", bg = "lightblue", main="Bubble plot with point size proportional to displacement") # 绘制气泡图。
+```
+
+一般来说，统计人员使用R时都倾向于避免用气泡图，原因和避免使用饼图一样：相比对长
+度的判断，人们对体积/面积的判断通常更困难。  
+
+
+## 11.2 折线图
+
+折线图一般可用下列两个函数之一来创建：  
+plot(x, y, type=)  
+lines(x, y, type=)  
+其中，x和y是要连接的(x, y)点的数值型向量。参数type =的可选值见表11-1。  
+![](D:/documents/11-1.png)
+
+具体样式见下图：  
+![](D:/documents/11-18.png)
+
+
+```{r}
+plot(1:10, 1:10, xlab = "x", ylab = "y", main = "scatter plot") # 散点图
+plot(1:10, 1:10, type = "b", xlab = "x", ylab = "y", main = "lines plot") # 点线图
+```
+
+注意，plot()和lines()函数工作原理并不相同。plot()函数是被调用时即创建一幅新图，
+而lines()函数则是在已存在的图形上添加信息，并不能自己生成图形。  
+
+下面是《R语言实战》中的例子。  
+
+```{r}
+Orange # 查看数据集。
+Orange$Tree <- as.numeric(Orange$Tree) # 将orange数据集中tree因子转为数值型。
+ntrees <- max(Orange$Tree) # tree的最大值赋值给ntree。
+xrange <- range(Orange$age) # age列数值范围赋值给xrange。
+yrange <- range(Orange$circumference) # circumstance列数值范围赋值给yrange。
+plot(xrange, yrange, type="n", xlab="Age (days)", ylab="Circumference (mm)" ) # 绘制空白图形。
+colors <- rainbow(ntrees) # 颜色以rainbow函数生成，赋值colors；rainbow(n)，n表示生成颜色向量的长度，这里是5。
+linetype <- c(1:ntrees) # 线形1到5，赋值linetype。
+plotchar <- seq(18, 18+ntrees, 1) # 点形由seq函数生成，赋值plotchar；seq(from,to,length)生成一组数字，从from开始，到to结束，每两个数间的间隔是length。
+for (i in 1:ntrees) {
+  tree <- subset(Orange, Tree==i)
+  lines(tree$age, tree$circumference, type="b", lwd=2, lty=linetype[i], col=colors[i], pch=plotchar[i] ) 
+}
+# 利用for循环和lines进行取数并画出折线；for循环语法格式：for (i in vector) {statements}，i取值范围1到ntrees，也就是1到5；subset(x, subset, select, drop = FALSE, ...)函数用于条件筛选，x是要处理的数据框，这里是Orange，subset是条件，这里只要Tree等于i就赋值给tree；这里的lines对应for循环语句中的statements，我的理解，只要i对应一个因子水平，就用lines函数画出对应的线图。
+title("Tree Growth", "example of line plot") # 添加标题
+legend(xrange[1], yrange[2], 1:ntrees, cex=0.8, col=colors, pch=plotchar, lty=linetype, title="Tree" ) # 添加图例；legend(x, y, legend, fill, col, bg, lty, cex, title, text.font, bg)函数中x，y是图例放置的x和y坐标，legend是图例图标对应的文字说明。
+```
+
+按照自己的方法试一个例子。  
+
+```{r}
+plot(1:10, 1:10, type = "b", xlab = "x", ylab = "y", main = "lines plot") # 绘制基础图。
+lines(1:10, 2:11, type = "b", col="red") # 添加线high。
+lines(1:10, 0:9, type = "b", col="blue") # 添加线low。
+legend(1,9,c("low","median","high"),col=c("blue","black","red"),lty = 5,pch = 21) # 添加图例。
+```
+
+
+## 11.3 相关图
+
+corrgram包corrgram()函数。  
+corrgram(x, order=, panel=, text.panel=, diag.panel=)  
+其中，x是一行一个观测的数据框。当order = TRUE时，相关矩阵将使用主成分分析法对变量
+重排序，这将使得二元变量的关系模式更为明显。选项panel设定非对角线面板使用的元素类型。你可以通过选项 lower.panel和upper.panel来分别设置主对角线下方和上方的元素类型。而text.panel和diag.panel选项控制着主对角线元素类型。  
+
+![](D:/documents/11-2.png)  
+
+```{r}
+options(digits = 2) # 设置数值保留两位。
+df11 <- df[5:8] # 构建数据集df11。
+cor(df11) # mtcars相关系数。
+library(corrgram) # 调用corrgram包。
+corrgram(df11, order = TRUE, lower.panel = panel.shade, upper.panel = panel.pie, text.panel = panel.txt, main = "Correlogram of df intercorrelations") # 相关系数图。
+```
+
+*下三角部分，默认地，蓝色和从左下指向右上的斜杠表示单元格中的两个变量呈正相关。反过来，红色和从左上指向右下的斜杠表示变量呈负相关。色彩越深，饱和度越高，说明变量相关性越大。相关性接近于0的单元格基本无色。上三角单元格用饼图展示了相同的信息。颜色的功能同上，但相关性大小由被填充的饼图块的大小来展示。正相关性将从12点钟处开始顺时针填充饼图，而负相关性则逆时针方向填充饼图。*  
+
+
+```{r}
+corrgram(df11, lower.panel = panel.shade, upper.panel = NULL, text.panel = panel.txt, main = "Correlogram of df without upper panel") # 相关系数图，下三角使用阴影，保持原变量顺序不变，上三角区域留白。
+```
+
+```{r}
+corrgram(df11, lower.panel = panel.shade, upper.panel = panel.cor, text.panel = panel.txt, main = "Correlogram of df without upper panel") # 相关系数图，下三角使用阴影，上三角显示相关系数。
+```
+
+
+可以使用colorRampPallette()函数来指定四种颜色。  
+colorRampPalette 函数支持自定义的创建一系列的颜色梯度。  
+
+```{r}
+corrgram(df11, order = TRUE, col.regions = colorRampPalette(c("gray", "black","green","pink")), lower.panel = panel.shade, upper.panel = panel.pie, text.panel = panel.txt, main = "Correlogram of df intercorrelations") # 绘制自定义颜色相关性图。
+```
+
+
+## 11.4 马赛克图  
+
+马赛克图（Mosaic Plot）是利用列联表对分类数据进行的图形表示，它可观察两个或多个分类变量之间的关系。   
+整个图形的长、宽概率值均为1，其被划分为多个矩形，每个矩形边长与所关联分类变量的概率分布成比例。[<sup>93</sup>](#refer-anchor)  
+在马赛克图中，嵌套矩形面积正比于单元格频率，其中该频率即多维列联表中的频率。颜色和/或阴影可表示拟合模型的残差值。   
+vcd包mosaic()函数绘制马赛克图  
+mosaic()函数可按如下方式调用  
+mosaic(table)  
+其中table是数组形式的列联表。  
+另外也可用  
+mosaic(formula, data=)  
+其中formula是标准的R表达式，data设定一个数据框或者表格。  
+shade=TRUE将根据拟合模型的皮尔逊残差值对图形上色。
+legend=TRUE 将展示残差的图例。
+
+```{r}
+library(vcd) # 调用vcd包。
+mosaic(~ year + v1, data = df, shade = TRUE, legend = TRUE) # 绘制马赛克图，分类变量为year。
+mosaic(~ year + nitrogen + v1, data = df, shade = TRUE, legend = TRUE) # 绘制马赛克图，分类变量为year和nitrogen。
+mosaic(~ year + nitrogen + variety + v1, data = df, shade = TRUE, legend = TRUE) # 绘制马赛克图，分类变量为year，nitrogen和variety。
+```
+
+*图表解读：图3反映的2021年品种a相对b而言，品种a的v1值大的比例较b高，2020年，两品种v1值大小均衡；2020年v1值在N1条件下数值大的比例较N2高，2021年两氮水平平衡*
+
+## 11.5 小结  
+
+```{r}
+mtcars # mtcars数据集。
+attach(mtcars) # 将mtcars数据集加入搜索路径。
+plot(wt, mpg) # 散点图。
+abline(lm(mpg~wt)) # 散点图添加线性拟合线。
+lines(lowess(wt,mpg), type = "l", col="red") # 散点图添加平滑曲线。
+
+symbols(wt,mpg, circles = sqrt(mpg/pi),inches = 0.1, bg="lightgreen", fg="white") # 气泡图绘制。
+plot(wt,mpg, type="l") # 折线图。
+library(corrgram) # 调用corrgram包。
+corrgram(mtcars, lower.panel = panel.bar, upper.panel = panel.cor) # 相关图。
+mosaic(~cyl + gear,data = mtcars) # 马赛克图。
+```
+
+
+# 第12章 重抽样与自助法
+
+许多实际情况中统计假设（假定观测数据抽样自正态分布或者其他性质较好的理论分布）并不一定满足，比如数据抽样于未知或混合分布、样本量过小、存在离群点、基于理论分布设计合适的统计检验过于复杂且数学上难以处理等情况，这时基于随机化和重抽样的统计方法就可派上用场。
+
+## 12.1 置换检验
+
+**置换检验的定义**  
+
+置换检验(Permutation test)，也称随机化检验或重随机化检验，是Fisher于20世纪30年代提出的一种基于大量计算（computationally intensive），利用样本数据的全（或随机）排列，进行统计推断的方法，因其对总体分布自由，应用较为广泛，特别适用于总体分布未知的小样本资料，以及某些难以用常规方法分析资料的假设检验问题。[<sup>90</sup>](#refer-anchor)  
+
+**置换检验的原理**  
+
+1、提出原假设，比如XX处理后结果没有变化
+2、计算统计量，如两组的均值之差，记作t0
+3、将所有样本放在一起，然后随机排序进行分组，再计算其统计量t1
+4、重复第3步骤，直至所有排序可能性都齐全（比如有A组有n样本，B组有m样本，则总重复次数相当于从n+m中随机抽取n个的次数），得到一系列的统计量（t1-tn）
+5、最后将这些统计量按照从小到大排序，构成抽样分布，再看t0是否落在分布的置信区间内（如95%置信区间），这时候可计算一个P值（如果抽样总体1000次统计量中大于t0的有10个，则估计的P值为10/1000=0.01），落在置信区间外则拒绝原假设
+6、如果第3步骤是将所有可能性都计算了的话，则是精确检验；如果只取了计算了部分组合，则是近似结果，这时一般用蒙特卡罗模拟（Monte Carlo simulation）的方法进行置换检验
+7、置换检验和参数检验都计算了统计量，但是前者是跟置换观测数据后获得的经验分布进行比较，后者则是跟理论分布进行比较[<sup>91</sup>](#refer-anchor)  
+
+请牢记：置换检验都是使用伪随机数来从所有可能的排列组合中进行抽样（当做近似检验时）。因此，每次检验的结果都有所不同。  
+
+## 12.2 用coin包做置换检验 
+
+coin包提供了一个进行置换检验的一般性框架。通过该包，你可以回答如下问题。  
+响应值与组的分配独立吗？  
+两个数值变量独立吗？  
+两个类别型变量独立吗？  
+
+![](D:/documents/12-2.png) 
+
+表12-2列出来的每个函数都是如下形式：
+function_name(formula, data, distribution=)  
+其中：
+ formula描述的是要检验变量间的关系。示例可参见表12-2；  
+ data是一个数据框；  
+ distribution指定经验分布在零假设条件下的形式，可能值有exact，asymptotic和
+approximate。  
+若distribution = "exact"，那么在零假设条件下，分布的计算是精确的（即依据所有可能的排列组合）。当然，也可以根据它的渐进分布（distribution = "asymptotic"）或蒙
+特卡洛重抽样（distribution = "approxiamate(B = #)"）来做近似计算，其中#指所需重复的次数。  
+distribution = "exact"当前仅可用于两样本问题。
+
+### 12.2.1 独立两样本和K样本检验
+
+```{r}
+library(coin) # 调用coin包。
+df9 <- data.frame(score=c(40,57,45,55,58,57,64,55,62,65),treatment=factor(c(rep("A",5),rep("B",5)))) # 构建新数据集df9。
+df9 # 显示数据。
+t.test(score~treatment,data = df9, var.equal = TRUE) # t检验。
+oneway_test(score~treatment,data = df9, distribution = "exact") # 置换检验。
+```
+
+*传统t检验表明存在显著性差异（p < 0.05），而精确检验却表明差异并不显著（p > 0.072）。*   
+
+第7章我用自己的数据进行了t检验，对比一下传统t检验和置换检验，结果如下：  
+```{r}
+t.test(v1 ~ nitrogen, data = df) # 传统t检验。
+library(coin) # 调用coin包。
+oneway_test(v1 ~ nitrogen, data = df, distribution = "exact") # 置换检验。
+```
+*两种检验方式下结果都是显著的*  
+
+Wilcoxon-Mann-Whitney U检验  
+```{r}
+df10 <- data.frame(score1=c(10,27,25,155,158,166,187,174,155,22,25,22),trt1=factor(c(rep("A", 6),rep("B", 6)))) # 构建新数据集df10。
+df10 # 显示数据。
+with(df10, shapiro.test(score1[trt1 == "A"])) # 分类变量A对应的因变量score1数据正态性检验。
+with(df10, shapiro.test(score1[trt1 == "B"])) # 分类变量B对应的因变量score1数据正态性检验
+wilcox.test(score1 ~ trt1, data = df10, paired = TRUE) # 传统检验。
+library(coin) # 调用coin包。
+wilcox_test(score1 ~ trt1, data = df10, distribution = "exact") # 置换检验。
+```
+
+coin包规定所有的类别型变量都必须以因子形式编码。  
+wilcox.test()默认计算的也是精确分布。  
+
+
+**K样本检验的置换检验**  
+
+```{r}
+library(multcomp) # 调用multcomp包。
+set.seed(1234) # 设置种子1234。
+oneway_test(response~trt, data=cholesterol, distribution=approximate(nresample=9999)) # K样本检验。
+```
+
+
+
+### 12.2.2 列联表中的独立性
+
+通过chisq_test()或cmh_test()函数，我们可用置换检验判断两类别型变量的独立性。 当数据可根据第三个类别型变量进行分层时，需要使用后一个函数。若变量都是有序型，可使用lbl_test()函数来检验是否存在线性趋势。  
+
+卡方独立性检验  
+```{r}
+library(vcd) # 调用vcd包。
+mytable8 <- xtabs(~ Treatment + Improved, data = Arthritis) # 构建treatment和improved的列联表。
+chisq.test(mytable8) # 卡方独立性检验。
+```
+
+卡方独立性检验的置换检验  
+
+```{r}
+library(coin) # 调用coin包。
+library(vcd) # 调用vcd包。
+Arthritis <- transform(Arthritis, 
+                       Improved = as.factor(as.numeric(Improved))) # 设置数据集中improved为因子。
+set.seed(1234) # 设置种子。
+chisq_test(Treatment~Improved, data=Arthritis,
+           distribution=approximate(nresample=9999)) # 卡方独立性检验的置换检验。
+```
+
+你可能会有疑问，为什么需要把变量Improved从一个有序因子变成一个分类因子？（好问题！）这是因为，如果你用有序因子，coin()将会生成一个线性与线性趋势检验，而不是卡方检验。  
+
+*结果解读：两种检验下p值都是小于0.05，说明Treatment和Improved之间相互不独立*
+
+自己数据的演示  
+
+```{r}
+mytable3 <- xtabs(~ variety + nitrogen, data = df) # 构建列联表。
+chisq.test(mytable3) # 传统因子间独立性检验。
+```
+
+```{r}
+library(coin) # 调用coin包。
+chisq_test(nitrogen ~ variety, data=df,distribution=approximate(nresample=9999)) # 独立性检验的置换检验。
+```
+*结果解读：p值均为1，表明nitrogen和variety相互独立。*
+
+
+### 12.2.3 数值变量间的独立性
+
+spearman_test()函数提供了两数值变量的独立性置换检验。
+
+```{r}
+states <- as.data.frame(state.x77) # 构建数据集states。
+set.seed(1234) # 设置种子。
+spearman_test(Illiteracy ~ Murder, data=states, 
+              distribution=approximate(nresample=9999)) # 相关性置换检验。
+```
+
+```{r}
+spearman_test(v1 ~ v2, data=df, distribution=approximate(nresample=9999)) # p值小于0.05，表明两个变量间独立性假设不满足。
+```
+
+
+### 12.2.4 两样本和K样本相关性检验
+
+当处于不同组的观测已经被分配得当，或者使用了重复测量时，样本相关检验便可派上用场。
+对于两配对组的置换检验，可使用wilcoxsign_test()函数；多于两组时，使用friedman_
+test()函数。  
+
+
+```{r}
+library(coin) # 调用coin包。
+library(MASS) # 调用MASS包。
+wilcoxsign_test(U1 ~ U2, data=UScrime, distribution="exact") # 样本相关性置换检验。
+```
+
+自己数据演示  
+
+```{r}
+df10 <- data.frame(N=rep(c("N1","N2"),c(5,5)),y=c(1,2,3,4,5,11,12,13,14,15)) # 构建一个数据集df10，y1，y2分别是两个氮水平下的产量，各测定了5次。
+t.test(y~N,data=df10) # 传统检验。结果表明N1和N2条件下产量存在差异。
+library(coin)
+library(MASS)
+wilcoxsign_test(df10$y[1:5] ~ df10$y[6:10], data=df10, distribution="exact") # 精确检验，结果表明N1和N2条件下产量存在差异。
+```
+
+
+### 12.2.5 深入探究
+
+
+## 12.3 lmPerm包做置换检验
+
+lmPerm包可做线性模型的置换检验。比如lmp()和aovp()函数即lm()和aov()函数的修改
+版，能够进行置换检验，而非正态理论检验。  
+lmp()和aovp()函数的参数与lm()和aov()函数类似，只额外添加了perm =参数。
+perm =选项的可选值有"Exact"、"Prob"或"SPR"。Exact根据所有可能的排列组合生成
+精确检验。Prob从所有可能的排列中不断抽样，直至估计的标准差在估计的p值0.1之下，判
+停准则由可选的Ca参数控制。SPR使用贯序概率比检验来判断何时停止抽样。注意，若观测
+数大于10，perm = "Exact"将自动默认转为perm = "Prob"，因为精确检验只适用于小样本问题。  
+
+
+### 12.3.1 简单回归和多项式回归
+
+**简单线性回归的置换检验**  
+
+R语言实战的例子：  
+
+```{r}
+library(lmPerm)
+set.seed(1234)
+fit19 <- lmp(weight ~ height, data=women, perm="Prob")
+summary(fit19)
+```
+
+自己数据演练：
+
+```{r}
+summary(lm(v1 ~ v3, data = df)) # 简单线性回归。
+library(lmPerm) # 调用lmPerm包。
+summary(lmp(v1 ~ v3, data = df, perm="Prob")) # 简单线性回归的置换检验。
+```
+
+
+
+**多项式回归的置换检验**  
+
+R语言实战的例子：  
+
+```{r}
+library(lmPerm)
+set.seed(1234)
+fit20 <- lmp(weight ~ height + I(height^2), data=women, perm="Prob")
+summary(fit20)
+```
+
+自己数据集的例子：
+
+```{r}
+summary(lm(v1 ~ v3 + I(v3^2), data = df)) # 多项式回归。
+library(lmPerm) # 调用lmPerm包。
+summary(lmp(v1 ~ v3 + I(v3^2), data = df, perm="Prob")) # 多项式回归的置换检验。
+```
+
+### 12.3.2 多元回归
+
+R语言实战的例子：  
+
+```{r}
+set.seed(1234)
+states <- as.data.frame(state.x77)
+fit21 <- lmp(Murder ~ Population + Illiteracy+Income+Frost,data=states, perm="Prob")
+summary(fit21)
+```
+
+自己数据集的例子：  
+
+```{r}
+summary(lm(v1 ~ v3 + v4 + v2, data = df)) # 多元回归。
+library(lmPerm) # 调用lmPerm包。
+summary(lmp(v1 ~ v3 + v4 + v2, data = df, perm="Prob")) # 多元回归的置换检验。
+```
+
+当两种方法所得结果不一致时，你需要更加谨慎地审视数据，这很可能是因为违反了正态性假设或者存在离群点。
+
+
+### 12.3.3 单因素方差分析和协方差分析 
+
+R语言实战的例子：
+
+```{r}
+library(lmPerm)
+library(multcomp)
+set.seed(1234)
+fit22 <- aovp(response ~ trt, data=cholesterol, perm="Prob")
+anova(fit22)
+```
+
+自己数据集的例子：
+
+```{r}
+summary(aov(v1 ~ nitrogen, data = df)) # 单因素方差分析。
+library(lmPerm) # 调用lmPerm包。
+summary(aovp(v1 ~ nitrogen, data = df, perm="Prob")) # 单因素方差分析的置换检验。
+```
+
+R语言实战的例子：  
+
+```{r}
+library(lmPerm)
+set.seed(1234)
+fit23 <- lmp(weight ~ gesttime + dose, data=litter, perm="Prob")
+anova(fit23)
+```
+
+自己数据集的例子：  
+
+```{r}
+summary(aov(v1 ~ nitrogen + block, data = df)) # 协方差分析。
+library(lmPerm) # 调用lmPerm包。
+summary(aovp(v1 ~ block + nitrogen , data = df, perm="Prob")) # 协方差分析的置换检验。
+```
+
+
+### 12.3.4 双因素方差分析
+
+R语言实战的例子：  
+
+```{r}
+library(lmPerm)
+set.seed(1234)
+fit24 <- lmp(len ~ supp*dose, data=ToothGrowth, perm="Prob")
+anova(fit24)
+```
+
+自己数据集的例子：  
+
+```{r}
+summary(aov(v1 ~ year*nitrogen, data = df)) # 双因素方差分析。
+library(lmPerm) # 调用lmPerm包。
+summary(aovp(v1 ~ year*nitrogen, data = df, perm="Prob")) # 双因素方差分析的置换检验。
+```
+
+值得注意的是，当将aovp()应用到方差分析设计中时，它默认使用唯一平方和法（SAS也
+称为类型III平方和）。每种效应都会依据其他效应做相应调整。R中默认的参数化方差分析设计使用的是序贯平方和（SAS是类型I平方和）。每种效应依据模型中先出现的效应做相应调整。对于平衡设计，两种方法结果相同，但是对于每个单元格观测数不同的不平衡设计，两种方法结果则不同。不平衡性越大，结果分歧越大。若在aovp()函数中设定seqs = TRUE，可以生成你想要的序贯平方和。  
+
+
+## 12.4 置换检验点评
+
+你可能已经注意到，基于正态理论的检验与上面置换检验的结果非常接近。在这些问题中数
+据表现非常好，两种方法结果的一致性也验证了正态理论方法适用于上述示例。
+当然，置换检验真正发挥功用的地方是处理非正态数据（如分布偏倚很大）、存在离群点、
+样本很小或无法做参数检验等情况。不过，如果初始样本对感兴趣的总体情况代表性很差，即使是置换检验也无法提高推断效果。  
+置换检验主要用于生成检验零假设的p值，它有助于回答“效应是否存在”这样的问题。不过，
+置换方法对于获取置信区间和估计测量精度是比较困难的。幸运的是，这正是自助法大显神通的地方。  
+
+## 12.5 自助法
+
+所谓自助法，即从初始样本重复随机替换抽样，生成一个或一系列待检验统计量的经验分布。 无需假设一个特定的理论分布，便可生成统计量的置信区间，并能检验统计假设。  
+倘若你假设均值的样本分布不是正态分布，该怎么办呢？可使用自助法。  
+(1)从样本中随机选择10个观测，抽样后再放回。有些观测可能会被选择多次，有些可能一
+直都不会被选中。  
+(2)计算并记录样本均值。  
+(3)重复1和2一千次。  
+(4)将1000个样本均值从小到大排序。  
+(5)找出样本均值2.5%和97.5%的分位点。此时即初始位置和最末位置的第25个数，它们就限
+定了95%的置信区间。  
+
+## 12.6 boot包中的自助法
+
+boot包扩展了自助法和重抽样的相关用途。你可以对一个统计量(如中位数)或一个统计量向量(如一列回归系数)使用自助法。 
+
+一般来说，自助法有三个主要步骤。  
+(1)写一个能返回待研究统计量值的函数。如果只有单个统计量（如中位数），函数应该返回
+一个数值；如果有一列统计量（如一列回归系数），函数应该返回一个向量。  
+(2)为生成R中自助法所需的有效统计量重复数，使用boot()函数对上面所写的函数进行处理。  
+(3)使用boot.ci()函数获取第(2)步生成的统计量的置信区间。  
+
+主要的自助法函数是boot()，它的格式为：  
+bootobject <- boot(data=, statistic=, R=, ...)  
+
+参数见下表：  
+
+![](D:/documents/12-3.png) 
+
+boot()函数调用统计量函数R次，每次都从整数1:nrow(data)中生成一列有放回的随机指
+标，这些指标被统计量函数用来选择样本。统计量将根据所选样本进行计算，结果存储在
+bootobject中。  
+
+![](D:/documents/12-4.png) 
+
+
+你可以用bootobject t0和bootobject t来获取这些元素。
+
+一旦生成了自助样本，可通过print()和plot()来检查结果。如果结果看起来还算合理， 使用boot.ci()函数获取统计量的置信区间。格式如下:
+
+boot.ci(bootobject, conf=, type= )
+
+
+![](D:/documents/12-5.png) 
+
+type参数设定了获取置信区间的方法。perc方法（分位数）展示的是样本均值，bca将根据
+偏差对区间做简单调整。  
+
+
+### 12.6.1 对单个统计量使用自助法
+
+回归的R平方值  
+
+```{r}
+rsq <- function(formula, data, indices) {
+  d <- data[indices,]
+  fit25 <- lm(formula, data=d)
+  return(summary(fit25)$r.square)
+}
+```
+
+1000次自助抽样  
+
+```{r}
+library(boot)
+set.seed(1234)
+results1 <- boot(data=mtcars, statistic=rsq, 
+                R=1000, formula=mpg~wt+disp)
+```
+
+输出结果  
+
+```{r}
+print(results1)
+```
+
+结果可视化  
+
+```{r}
+plot(results1)
+```
+
+95%的置信区间获取  
+
+```{r}
+boot.ci(results1, type=c("perc", "bca"))
+```
+
+
+
+### 12.6.2 多个统计量的自助法
+
+回归系数向量函数  
+
+```{r}
+bs <- function(formula, data, indices) {                
+  d <- data[indices,]                                    
+  fit26 <- lm(formula, data=d)                                                 
+  return(coef(fit26))                                    
+}
+```
+
+自助抽样1000次  
+
+```{r}
+library(boot)
+set.seed(1234)
+results2 <- boot(data=mtcars, statistic=bs,             
+                R=1000, formula=mpg~wt+disp) 
+print(results2)
+```
+
+获得车重和发动机排量95%的置信区间  
+
+```{r}
+boot.ci(results2, type="bca", index=2)
+boot.ci(results2, type="bca", index=3)
+```
+
+## 12.7 小结
+
+置换检验和自助法并不是万能的，它们无法将烂数据转化为好数据。当初始样本对于总体情况的代表性不佳，或者样本量过小而无法准确地反映总体情况，这些方法也是爱莫能助。   
+
+
+
+# **第四部分 高级方法**
+
+# 第13章 广义线性模型  
+
+**广义线性模型适用条件**    
+
+假设因变量为正态分布不成立的情况，如：    
+
+结果变量可能是类别型的二值变量（比如：是/否、通过/失败、活着/死亡）和多分类变量（比如差/良好/优秀）都显然不是正态分布。   
+
+结果变量可能是计数型的：（比如，一周交通事故的数目，每日酒水消耗的数量）。这类变
+量都是非负的有限值，而且它们的均值和方差通常都是相关的（正态分布变量间不是如此，而是相互独立）。     
+
+广义线性模型扩展了线性模型的框架，它包含了非正态因变量的分析。
+
+**常见广义线性模型**
+
+1、标准线性模型：是广义线性模型的一个特例，因变量服从正态分布；  
+2、Logistic回归：因变量服从二项分布，相应变量是二值型（0和1）；  
+3、泊松回归：因变量服从泊松分布，相应变量是计数型。[<sup>94</sup>](#refer-anchor)  
+
+**广义线性模型定义：**  
+
+广义线性模型(generalize linear model，GLM)是线性模型的扩展，通过联结函数建立响应变量的数学期望值与线性组合的预测变量之间的关系。其特点是不强行改变数据的自然度量，数据可以具有非线性和非恒定方差结构。是线性模型在研究响应值的非正态分布以及非线性模型简洁直接的线性转化时的一种发展。[<sup>92</sup>](#refer-anchor)   
+  
+线性回归和逻辑回归都是广义线性模型的一种特殊形式。  
+
+
+## 13.1 广义线性模型和glm()函数
+
+广义线性模型拟合的形式为：  
+
+$${\rm{g(}}{\mu _Y}{\rm{)}} = {\beta _0} + {\sum\nolimits_{j = 1}^p \beta  _j}{X_j}$$
+其中$g(μ_Y)$是条件均值的函数（称为连接函数）。另外，你可放松Y为正态分布的假设，改为Y
+服从指数分布族中的一种分布即可。设定好连接函数和概率分布后，便可以通过最大似然估计的
+多次迭代推导出各参数值。
+
+
+### 13.1.1 glm()函数 
+
+R中可通过glm函数（还可用其他专门的函数）拟合广义线性模型。    
+
+glm(formula, family = gaussian, data, weights, subset,
+    na.action, start = NULL, etastart, mustart, offset,
+    control = list(...), model = TRUE, method = "glm.fit",
+    x = FALSE, y = TRUE, singular.ok = TRUE, contrasts = NULL, ...)  
+
+表13-1列出了概率分布（family）和相应默认的连接函数（function）。  
+
+![](D:/documents/13-1.png) 
+
+假设你有一个响应变量（Y）、三个预测变量（X1、X2、X3）和一个包含数据的数据框（mydata）。  
+Logistic回归适用于二值响应变量（0,1）。模型假设Y服从二项分布，线性模型的拟合形式为：  
+$$ln(\frac {\pi}{1-\pi})=\beta_0 + \sum\nolimits_{j = 1}^p{\beta_jX_j}$$
+
+其中$\pi = \mu_Y$是Y的条件均值（即给定一系列X的值时Y = 1的概率），$\frac {\pi}{1-\pi}$为Y = 1时的优势比，$log(\frac {\pi}{1-\pi})$为对数优势比，或logit。本例中，$log(\frac {\pi}{1-\pi})$为连接函数，概率分布为二项分布，可用如下代码拟合Logistic回归模型：
+
+glm(Y~x1+x2+x3,family=binomial(link="logit"),data=mydata)  
+
+泊松回归适用于在给定时间内响应变量为事件发生数目的情形。它假设Y服从泊松分布，线
+性模型的拟合形式为：  
+
+$$ln(\lambda)=\beta_0 + \sum\nolimits_{j = 1}^p{\beta_jX_j}$$
+
+其中λ是Y的均值（也等于方差）。此时，连接函数为log(λ)，概率分布为泊松分布，可用如下
+代码拟合泊松回归模型：  
+glm(Y~x1+x2+x3,family=poisson(link="log"),data=mydata)   
+
+值得注意的是，标准线性模型也是广义线性模型的一个特例。如果令连接函数g(μY) =μY或
+恒等函数，并设定概率分布为正态（高斯）分布，那么：  
+glm(Y~x1+x2+x3,family=gaussian(link="identity"),data=mydata)  
+生成的结果与下列代码的结果相同：  
+lm(Y~x1+x2+x3,data=mydata)  
+总之，广义线性模型通过拟合响应变量的条件均值的一个函数（不是响应变量的条件均值），
+假设响应变量服从指数分布族中的某个分布（并不仅限于正态分布），极大地扩展了标准线性模
+型。模型参数估计的推导依据的是极大似然估计，而非最小二乘法。  
+
+
+
+### 13.1.2 连用的函数
+
+与分析标准线性模型时lm()连用的许多函数在glm()中都有对应的形式，其中一些常见的函
+数见表13-2。  
+
+![](D:/documents/13-2.png) 
+
+
+### 13.1.3 模型拟合和回归诊断   
+
+当评价模型的适用性时，你可以绘制初始响应变量的预测值与残差的图形。例如，如下代码
+可绘制一个常见的诊断图：  
+plot(predict(model,type="response"),residuals(model,type="deviance"))  
+其中，model为glm()函数返回的对象。R将列出帽子值（hat value）、学生化残差值和Cook距离统计量的近似值。  
+
+car包绘制诊断图  
+library(car)  
+influencePlot(model)  
+它可以创建一个综合性的诊断图。在后面的图形中，横轴代表杠杆值，纵轴代表学生化残差
+值，而绘制的符号大小与Cook距离大小成正比。  
+
+
+## 13.2 Logistic回归
+
+当通过一系列连续型和/或类别型预测变量来预测**二值型**结果变量时，Logistic回归是一个非常有用的工具。  
+
+**Logistic回归模型的适用条件**  
+1 因变量为二分类的分类变量或某事件的发生率，并且是数值型变量。但是需要注意，重复计数现象指标不适用于Logistic回归。  
+2 残差和因变量都要服从二项分布。二项分布对应的是分类变量，所以不是正态分布，进而不是用最小二乘法，而是最大似然法来解决方程估计和检验问题。  
+3 自变量和Logistic概率是线性关系。  
+4 各观测对象间相互独立。[<sup>95</sup>](#refer-anchor)   
+
+**logistic回归和线性回归**  
+
+逻辑回归（Logistic Regression）与线性回归（Linear Regression）都是一种广义线性模型（generalized linear model）。  
+逻辑回归假设因变量 y 服从伯努利分布，而线性回归假设因变量 y 服从高斯分布。  
+
+**Sigmoid函数**  
+也称为逻辑函数（Logistic function）  
+$$g(z)=\frac{1}{1+e^{-z}}$$
+![](D:/documents/logistic.png)
+  
+从上图可以看到sigmoid函数是一个s形的曲线，它的取值在[0,1]之间，在远离0的地方函数的值会很快接近0或者1。[<sup>95</sup>](#refer-anchor)   
+
+
+《R语言实战》例子，AER包Affairs数据集为例。  
+
+该数据从601个参与者身上收集了9个变量，包括一年来婚外私通的频率以及参与者性别、年龄、婚龄、是否有小孩、宗教信仰程度（5分制，1分表示反对，5分表示非常信仰）、学历、职业（逆向编号的戈登7种分类），还有对婚姻的自我评分（5分制，1表示非常不幸福，5表示非常幸福）。    
+
+数据的描述统计  
+
+```{r}
+data(Affairs, package="AER") # 调用AER包数据集Affairs。
+head(Affairs) # 显示数据前6行。
+summary(Affairs) # 数据描述。
+table(Affairs$affairs) # 数据集Affairs中affairs列频数统计。
+```
+
+将affairs转化为二值型因子ynaffair  
+
+```{r}
+Affairs$ynaffair[Affairs$affairs > 0] <- 1 # 添加新列ynaffairs，原affairs列中值大于0，赋值1。
+Affairs$ynaffair[Affairs$affairs == 0] <- 0 # 添加新列ynaffairs，原affairs列中值等于0，赋值0。
+Affairs$ynaffair <- factor(Affairs$ynaffair, 
+                           levels=c(0,1),
+                           labels=c("No","Yes")) # 新列转为因子。
+table(Affairs$ynaffair) # 统计因子频数。
+```
+
+*factor函数*
+factor(x, levels = sort(unique(x), na.last = TRUE),labels = levels, exclude = NA, ordered = is.ordered(x), nmax = NA)
+x是要创建因子的向量，levels用来指定因子水平值（不指定时由向量x不同值求得）；labels
+用来指定水平的名字（不指定时由用水平值的对应字符串）；exclude表示从向量x中剔除的水平值；ordered是一个逻辑型选项，用来指定因子的水平是否有次序。nmax是水平的上限数量。
+
+对二值型因子变量进行logistic回归  
+
+```{r}
+fit.full <- glm(ynaffair ~ gender + age + yearsmarried + children + 
+                  religiousness + education + occupation +rating,
+                data=Affairs,family=binomial()) # Logistic回归，响应变量为ynaffair，预测变量为gender，age，yearsmarried，children，religiousness，education，occupation，rating。
+summary(fit.full) # 返回回归结果。
+```
+*结果解读：从回归系数的p值（最后一栏）可以看到，性别、是否有孩子、学历和职业对方程的贡献都不显著（你无法拒绝参数为0的假设）。原假设为所有预测变量对方程均有贡献且相同*
+
+去除不显著因子，重新拟合  
+
+```{r}
+fit.reduced <- glm(ynaffair ~ age + yearsmarried + religiousness + 
+                     rating, data=Affairs, family=binomial()) # 去除不显著预测变量，重新拟合模型。
+summary(fit.reduced) # 返回结果。
+```
+
+两回归模型的比较，对于广义线性回归，可用卡方检验。  
+
+```{r}
+anova(fit.reduced, fit.full, test="Chisq") # 两个拟合模型的对比。
+```
+
+*卡方值不显著（p=0.21），表明四个预测变量的新模型与九个完整预测变量的模型拟合程度一样好。*
+
+### 13.2.1 解释模型参数
+
+在Logistic回归中，响应变量是Y=1的对数优势比（log）。回归系数含义是当其他预测变量不
+变时，一单位预测变量的变化可引起的响应变量对数优势比的变化。    
+对于二值型Logistic回归，某预测变量n单位的变化引起的较高值上优势比的变化为exp(βj)^n，它反映的信息可能更为重要。
+
+*优势比*  
+优势比(odds ratio；OR)是另外一种描述概率的方式。优势比将会告诉我们某种推测的概率比其反向推测的概率大多少。换句话说，优势比是指某种推测为真的概率与某种推测为假的概率的比值。比如下雨的概率为0.25，不下雨的概率为0.75。0.25与0.75的比值可以约分为1比3。因此，我们可以说今天将会下雨的优势比为1:3(或者今天不会下雨的概率比为3:1)。[<sup>95</sup>](#refer-anchor)    
+
+```{r}
+coef(fit.reduced) # 查看fit.reduced模型的回归系数。
+exp(coef(fit.reduced)) # 指数化结果。
+exp(confint(fit.reduced)) # 在优势比尺度上得到系数95%的置信区间。
+```
+
+
+
+
+### 13.2.2 评价预测变量对结果概率的影响  
+使用predict()函数，你可观察某个预测变量在各个水平时对结果概率的影响。  
+
+创建一个虚拟数据集，设定年龄、婚龄和宗教信仰为它们的均值，婚姻评分的范围为1～5。  
+
+```{r}
+testdata <- data.frame(rating = c(1, 2, 3, 4, 5),
+                       age = mean(Affairs$age),
+                       yearsmarried = mean(Affairs$yearsmarried),
+                       religiousness = mean(Affairs$religiousness)) # 虚拟数据集testdata的创建。
+```
+
+
+predict函数预测数据集testdata中rating变量的概率  
+
+```{r}
+testdata$prob <- predict(fit.reduced, newdata=testdata, type="response") # 数据集testdata中rating变量的概率预测。
+testdata # 显示数据集。
+```
+
+predict函数预测数据集testdata中age变量的概率
+
+```{r}
+testdata <- data.frame(rating = mean(Affairs$rating),
+                       age = seq(17, 57, 10), 
+                       yearsmarried = mean(Affairs$yearsmarried),
+                       religiousness = mean(Affairs$religiousness)) # age变量定义。
+testdata$prob <- predict(fit.reduced, newdata=testdata, type="response") # 数据集testdata中age变量的概率预测。
+testdata # 显示结果。
+```
+
+
+### 13.2.3 过度离势
+
+抽样于二项分布的数据的期望方差是σ2 = nπ(1-π)，n为观测数，π为属于Y = 1组的概率。  
+所谓过度离势，即观测到的响应变量的方差大于期望的二项分布的方差。过度离势会导致奇异的
+标准误检验和不精确的显著性检验。    
+当出现过度离势时，仍可使用glm()函数拟合Logistic回归，但此时需要将二项分布改为类二
+项分布（quasibinomial distribution）  
+检测过度离势的一种方法是比较二项分布模型的残差偏差与残差自由度。   
+$$\phi = \frac {残差偏差}{残差自由度}$$  
+当比值比1大很多，你便可认为存在过度离势。   
+
+你还可以对过度离势进行检验。为此，你需要拟合模型两次，第一次使用 family =
+"binomial"，第二次使用family = "quasibinomial"。假设第一次glm()返回对象记为fit，
+第二次返回对象记为fit.od，那么：  
+pchisq(summary(fit.od$dispersion * fit$df.residual, fit$df.residual, lower = F))
+提供的p值即可对零假设H0：Φ = 1与备择假设H1：Φ≠ 1进行检验。若p很小（小于0.05），你
+便可拒绝零假设。
+
+对Affairs数据集过度离势的判断  
+
+```{r}
+fit.aff <- glm(ynaffair ~ age + yearsmarried + religiousness +
+             rating, family = binomial(), data = Affairs) # 模型fit.aff构建。
+fit.od <- glm(ynaffair ~ age + yearsmarried + religiousness +
+                rating, family = quasibinomial(), data = Affairs) # 模型fit.od构建。
+pchisq(summary(fit.od)$dispersion * fit.aff$df.residual,  
+       fit.aff$df.residual, lower = F) # 过度离势检验。
+```
+
+### 13.2.4 扩展 
+
+
+## 13.3 泊松回归  
+
+当通过一系列连续型和/或类别型预测变量来预测**计数型**结果变量时，泊松回归是一个非常
+有用的工具。   
+泊松回归（英语：Poisson regression）是用来为计数资料和列联表建模的一种回归分析。泊松回归假设反应变量Y是泊松分布，并假设它期望值的对数可被未知参数的线性组合建模。泊松回归模型有时（特别是当用作列联表模型时）又被称作对数-线性模型。[<sup>96</sup>](#refer-anchor)       
+泊松回归常用来研究单位时间/单位面积/单位空间内某事件的发生数的影响因素。    
+泊松回归要求响应变量满足泊松分布。Poisson分布的概率密度函数：  
+$$P(y|x=k)=\frac{\lambda^k}{k!}e^{-\lambda}$$
+P表示单位时间/单位面积/单位空间内某事件发生k次的概率。λ是这个分布唯一的参数，λ是该分布的均值，也是该分布的方差，即均值等于方差，λ越大Poisson分布越逼近正态分布。   
+
+泊松回归的模型：  
+
+$$ln\lambda=\beta_0+\beta_1x_1+\beta_2x_2+....\beta_ix_i$$
+
+β0表示各个“自变量取值为0”时观测频数的自然对数值；βi则表示其他自变量取值不变时，自变量xi每改变一个单位，所引起的观测频数λ的自然对数值的改变量，βi为正表示自变量每增加一个单位观测频数λ会增加，βi为负值表示自变量每增加一个单位观测频数λ会减少。[<sup>97</sup>](#refer-anchor)  
+
+《R语言实战》例子  
+遭受轻微或严重间歇性癫痫的病人的年龄和癫痫发病数收集了数据，包含病人被随机
+分配到药物组或者安慰剂组前八周和随机分配后八周两种情况。响应变量为sumY（随机化后八
+周内癫痫发病数），预测变量为治疗条件（Trt）、年龄（Age）和前八周内的基础癫痫发病数
+（Base）。之所以包含基础癫痫发病数和年龄，是因为它们对响应变量有潜在影响。在解释这些
+协变量后，我们感兴趣的是药物治疗是否能减少癫痫发病数。  
+
+
+数据统计汇总信息查询：  
+
+```{r}
+data(breslow.dat, package="robust") # 调用数据集breslow.dat。
+names(breslow.dat) # 查看数据集breslow.dat的列名。
+summary(breslow.dat[c(6, 7, 8, 10)]) # 6，7，8，10列描述性统计。
+```
+
+响应变量图形考察。  
+
+```{r}
+opar <- par(no.readonly=TRUE) # 更改当前变量环境。
+par(mfrow=c(1, 2)) # 图形参数设定。
+attach(breslow.dat) # 数据集加入搜索引擎。
+hist(sumY, breaks=20, xlab="Seizure Count", 
+     main="Distribution of Seizures") # 直方图绘制变量sumY。
+boxplot(sumY ~ Trt, xlab="Treatment", main="Group Comparisons") # 箱线图考察变量sumY。
+par(opar) # 还原默认变量环境。
+```
+
+泊松回归模型拟合  
+
+```{r}
+fit24 <- glm(sumY ~ Base + Age + Trt, data=breslow.dat, family=poisson()) # 泊松回归模型拟合。
+summary(fit24) # 返回拟合结果。
+```
+
+### 13.3.1 解释模型参数
+
+```{r}
+coef(fit24) # 获取模型系数。
+```
+在泊松回归中，因变量以条件均值的对数形式ln(λ)来建模。年龄的回归参数为0.0227，表明
+保持其他预测变量不变，年龄增加一岁，癫痫发病数的对数均值将相应增加0.03。截距项即当预
+测变量都为0时，癫痫发病数的对数均值。由于不可能为0岁，且调查对象的基础癫痫发病数均不
+为0，因此本例中截距项没有意义。    
+
+
+```{r}
+exp(coef(fit24)) # 指数化回归系数。
+```
+
+现在可以看到，保持其他变量不变，年龄增加一岁，期望的癫痫发病数将乘以1.023。这意味着年龄的增加与较高的癫痫发病数相关联。更为重要的是，一单位Trt的变化（即从安慰剂到
+治疗组），期望的癫痫发病数将乘以0.86，也就是说，保持基础癫痫发病数和年龄不变，服药组
+相对于安慰剂组癫痫发病数降低了20%。  
+另外需要牢记的是，与Logistic回归中的指数化参数相似，泊松模型中的指数化参数对响应
+变量的影响都是成倍增加的，而不是线性相加。  
+
+### 13.3.2 过度离势
+
+泊松分布的方差和均值相等。当响应变量观测的方差比依据泊松分布预测的方差大时，泊松
+回归可能发生过度离势。   
+可能发生过度离势的原因有如下几个（Coxe et al.，2009）。  
+遗漏了某个重要的预测变量。  
+可能因为事件相关。在泊松分布的观测中，计数中每次事件都被认为是独立发生的。以
+癫痫数据为例，这意味着对于任何病人，每次癫痫发病的概率与其他癫痫发病的概率相
+互独立。但是这个假设通常都无法满足。对于某个的病人，在已知他已经发生了39次癫
+痫时，第一次发生癫痫的概率不可能与第40次发生癫痫的概率相同。  
+在纵向数据分析中，重复测量的数据由于内在群聚特性可导致过度离势。此处并不讨论
+纵向泊松模型。  
+与Logistic回归类似，此处如果残差偏差与残差自由度的比例远远大于1，那么表明存在过度
+离势。  
+
+残差偏差与残差自由度的比例核算  
+
+```{r}
+deviance(fit24)/df.residual(fit24) # 残差偏差与残差自由度的比例。
+```
+
+泊松模型过度离势的检验  
+
+```{r}
+library(qcc) # 调用qcc包。
+qcc.overdispersion.test(breslow.dat$sumY, type="poisson") # 泊松模型过度离势的检验。
+```
+
+通过用family = "quasipoisson"替换family = "poisson"，你仍然可以使用glm()
+函数对该数据进行拟合。   
+
+泊松回归模型构建  
+
+```{r}
+fit.od1 <- glm(sumY ~ Base + Age + Trt, data=breslow.dat,
+              family=quasipoisson()) # 泊松回归模型。
+summary(fit.od1) # 返回模型结果。
+```
+
+
+
+### 13.3.3 扩展
+
+
+## 13.4 小结
+
+# 第14章 主成分和因子分析
+
+
+**主成分分析**  
+主成分分析（(Principal Component Analysis，PCA）是一种数据降维技巧，它能将大量相关变量转化为一组很少的不相关变
+量，这些无关变量称为主成分（原来变量的线性组合）。整体思想就是化繁为简，抓住问题关键，也就是降维思想。   
+主成分分析法是通过恰当的数学变换，使新变量——主成分成为原变量的线性组合，并选取少数几个在变差总信息量中比例较大的主成分来分析事物的一种方法。主成分在变差信息量中的比例越大，它在综合评价中的作用就越大。[<sup>99</sup>](#refer-anchor)    
+
+**因子分析**  
+探索性因子分析法（Exploratory Factor Analysis，EFA）是一系列用来发现一组变量的潜在结构的方法。它通过寻找一组更小的、潜在的或隐藏的结构来解释已观测到的、显式的变量间的关系。
+
+**PCA与EFA模型间的区别**  
+参见图14-1。主成分（PC1和PC2）是观测变量（X1到X5）的线性组合。形成线性组合的权重都是通过最大化各主成分所解释的方差来获得，同时还要保证个主成分间不相关。相反，因子（F1和F2）被当做是观测变量的结构基础或“原因”，而不是它们的线性组合。  
+![](D:/documents/14-1-1.png) 
+
+
+## 14.1 R中的主成分和因子分析
+
+R的基础安装包提供了PCA和EFA的函数，分别为princomp()和factanal()。  
+**最常见的分析步骤**  
+(1)数据预处理。PCA和EFA都根据观测变量间的相关性来推导结果。用户可以输入原始数据矩阵或者相关系数矩阵到principal()和fa()函数中。若输入初始数据，相关系数矩阵将会被自动计算，在计算前请确保数据中没有缺失值。  
+(2)选择因子模型。判断是PCA（数据降维）还是EFA（发现潜在结构）更符合你的研究目标。如果选择EFA方法，你还需要选择一种估计因子模型的方法（如最大似然估计）。  
+(3)判断要选择的主成分/因子数目。  
+(4)选择主成分/因子。  
+(5)旋转主成分/因子。  
+(6)解释结果。  
+(7)计算主成分或因子得分。  
+
+
+![](D:/documents/14-1.png) 
+
+
+## 14.2 主成分分析
+
+PCA的目标是用一组较少的不相关变量代替大量相关变量，同时尽可能保留初始变量的信
+息，这些推导所得的变量称为主成分，它们是观测变量的线性组合。如第一主成分为：  
+$$PC_1=a_1X_1=a_2X_2+.....+a_kX_k$$
+    它是k个观测变量的加权组合，对初始变量集的方差解释性最大。第二主成分也是初始变量
+的线性组合，对方差的解释性排第二，同时与第一主成分正交（不相关）。后面每一个主成分都
+最大化它对方差的解释程度，同时与之前所有的主成分都正交。理论上来说，你可以选取与变量
+数相同的主成分，但从实用的角度来看，我们都希望能用较少的主成分来近似全变量集。  
+
+主成分与原始变量之间的关系[<sup>100</sup>](#refer-anchor)   
+（1）主成分保留了原始变量绝大多数信息。  
+（2）主成分的个数大大少于原始变量的数目。  
+（3）各个主成分之间互不相关。  
+（4）每个主成分都是原始变量的线性组合。
+
+数据集USJudgeRatings包含了律师对美国高等法院法官的评分。数据框包含43个观测，12
+个变量。  
+```{r}
+USJudgeRatings # 查看数据集。
+str(USJudgeRatings) # 查看数据集结构。
+```
+
+![](D:/documents/14-2.png) 
+
+### 14.2.1 判断主成分的个数
+
+用来判断PCA中需要多少个主成分的准则：  
+根据先验经验和理论知识判断主成分数；  
+根据要解释变量方差的积累值的阈值来判断需要的主成分数；  
+通过检查变量间k × k的相关系数矩阵来判断保留的主成分数。  
+最常见的是基于特征值的方法。每个主成分都与相关系数矩阵的特征值相关联，第一主成分
+与最大的特征值相关联，第二主成分与第二大的特征值相关联，依此类推。
+Kaiser-Harris准则建议保留特征值大于1的主成分，特征值小于1的成分所解释的方差比包含在单个变量中的方差更少。Cattell碎石检验则绘制了特征值与主成分数的图形。这类图形可以清晰地展示图形弯曲状况，在图形变化最大处之上的主成分都可保留。最后，你还可以进行模拟，依据与初始矩阵相同大小的随机数据矩阵来判断要提取的特征值。若基于真实数据的某个特征值大于一组随机数据矩阵相应的平均特征值，那么该主成分可以保留。该方法称作平行分析。  
+
+```{r}
+library(psych) # 调用psych包。
+fa.parallel(USJudgeRatings[,-1], fa = "pc", n.iter = 100, show.legend = FALSE, main = "Scree plot with parallel analysis") # 碎石图判断主成分个数。
+abline(h=1,lwd=1,col="green") # 添加特征值准则线。
+```
+
+图形解读：线段和x符号组成的图（蓝色线）：特征值曲线；  
+          红色虚线：根据100个随机数据矩阵推导出来的平均特征值曲线；  
+          绿色实线：特征值准则线（即：y=1的水平线）
+判别标准：特征值大于平均特征值，且大于y=1的特征值准则线，被认为是可保留的主成分。根据判别标准，保留1个主成分即可。  
+
+
+*fa.parallel函数学习*  
+fa.parallel(data,n.obs=,fa=”pc”/”both”,n.iter=100,show.legend=T/F)  
+data：原始数据数据框；  
+n.obs：当data是相关系数矩阵时，给出原始数据（非原始变量）个数，data是原始数据矩阵时忽略此参数；  
+fa：“pc”为仅计算主成分，“fa”为因子分析，“both”为计算主成分及因子；  
+n.iter：模拟平行分析次数；  
+show.legend：显示图例。  
+
+
+### 14.2.2 提取主成分
+
+principal(r, nfactors = , rotate = , scores = )  
+
+r：相关系数矩阵或原始数据矩阵；  
+nfactors：设定主成分数（默认为1）；  
+rotate：指定旋转的方法，默认最大方差旋转（varimax）。  
+scores：设定是否需要计算主成分得分（默认不需要）。  
+
+```{r}
+library(psych) # 调用psych包。
+pc <- principal(USJudgeRatings[,-1], nfactors = 1) # 提取1个主成分。
+pc # 返回结果。
+```
+
+PC1栏包含了成分载荷，指观测变量与主成分的相关系数。如果提取不止一个主成分，那么
+还将会有PC2、PC3等栏。成分载荷（component loadings）可用来解释主成分的含义，解释主成分与各变量的相关程度。    
+h2栏为成分公因子方差，即主成分对每个变量的方差解释度。  
+u2栏为成分唯一性，即方差无法被主成分解释的部分（1-h2）。  
+SS loadings包含了与主成分相关联的特征值，其含义是与特定主成分相关联的标准化后的方差值，即可以通过它来看90%的方差可以被多少个成分解释，从而选出主成分（即可使用nfactors=原始变量个数来把所有特征值查出，当然也可以直接通过eigen函数对它的相关矩阵进行查特征值）。  
+Proportion Var表示每个主成分对整个数据集的解释程度。  
+Cumulative Var表示各主成分解释程度之和。  
+Proportion Explained及Cumulative Proportion分别为按现有总解释方差百分比划分主成分及其累积百分比。    
+
+*结果解读：第一主成分（PC1）与每个变量都高度相关，也就是说，它是一个可用来进行一般性评价的维度。ORAL变量99.1%的方差都可以被PC1来解释，仅仅有0.91%的方差不能被PC1解释。第一主成分解释了11个变量92%的方差。*  
+
+```{r}
+head(Harman23.cor) # 查看数据集Harman23.cor 
+library(psych) # 调用psych包。
+fa.parallel(Harman23.cor$cov, n.obs=302, fa="pc", n.iter=100, show.legend=FALSE, main="Scree plot with parallel analysis") # 判定主成分数量。
+```
+
+*结果解读：通过碎石图可以判定选择的主成分个数为2个。*
+
+
+```{r}
+library(psych) # 调用psych包。
+pc1 <- principal(Harman23.cor$cov, nfactors=2, rotate="none") # 提取2个主成分。
+pc1 # 返回提取主成分的结果。
+```
+
+*结果解读：从结果Proportion Var： 0.58和0.22可以判定，第一主成分解释了身体测量指标58%的方差，而第二主成分解释了22%，两者总共解释了81%的方差。对于高度变量，两者则共解释了其88%的方差。*
+
+### 14.2.3 主成分旋转
+
+旋转是一系列将成分载荷阵变得更容易解释的数学方法，它们尽可能地对成分去噪。旋转方法有两种：使选择的成分保持不相关（正交旋转），和让它们变得相关（斜交旋转）。旋转方法也会依据去噪定义的不同而不同。最流行的正交旋转是方差极大旋转，它试图对载荷阵的列进行去噪，使得每个成分只是由一组有限的变量来解释（即载荷阵每列只有少数几个很大的载荷，其他都是很小的载荷）。 结果列表中列的名字都从PC变成了RC，以表示成分被旋转。   
+
+```{r}
+library(psych) # 调用psych包。
+rc <- principal(Harman23.cor$cov, nfactors=2, rotate="varimax") # 主成分数判定，采用旋转。
+rc # 返回结果。
+```
+
+
+
+### 14.2.4 获取主成分得分
+
+当scores = TRUE时，主成分得分存储在principal()函数返回对象的scores元素中。  
+
+```{r}
+library(psych) # 调用psych包。
+pc2 <-principal(USJudgeRatings[,-1], nfactors=1, score=TRUE) # 获取成分得分。
+head(pc2$scores) # 查看成分得分。
+```
+
+```{r}
+cor(USJudgeRatings$CONT,pc$scores)  # 获取评分的相关系数。
+```
+
+
+```{r}
+rc <- principal(Harman23.cor$cov, nfactors = 2, rotate = "varimax") # 获取主成分得分的系数。
+round(unclass(rc$weights),2) # 返回结果。
+```
+
+
+
+## 14.3 探索性因子分析
+
+如果你的目标是寻求可解释观测变量的潜在隐含变量，可使用因子分析。  
+EFA的目标是通过发掘隐藏在数据下的一组较少的、更为基本的无法观测的变量，来解释一
+组可观测变量的相关性。这些虚拟的、无法观测的变量称作因子。（每个因子被认为可解释多个
+观测变量间共有的方差，因此准确来说，它们应该称作公共因子。）  
+$$X_i=a_1F_1+a_2F_2+a_3F_3....+a_pF_p+U_i$$
+
+其中$X_i$是第i个可观测变量（i = 1…k），$F_j$是公共因子（j = 1…p），并且p<k。$U_i$是$X_i$变量独有的部分（无法被公共因子解释）。$a_i$可认为是每个因子对复合而成的可观测变量的贡献值。  
+
+
+
+```{r}
+ability.cov # 查看数据集。
+options(digits = 2) # 设置数值显示的小数点位数。
+covariances <- ability.cov$cov # 提取协方差矩阵的cov。
+correlations <- cov2cor(covariances) # 将协方差矩阵转化为相关系数矩阵。
+correlations # 返回转化的结果。
+```
+
+
+### 14.3.1 判断需提取的公共因子数
+
+```{r}
+library(psych) # 调用psych包。
+covariances <- ability.cov$cov # 提取协方差矩阵的cov。
+correlations <- cov2cor(covariances) # 将协方差矩阵转化为相关系数矩阵。
+fa.parallel(correlations,n.obs = 112,fa = "both",n.iter = 100, main = "Scree plots with paralled analysis") # 判断要提取的因子数。
+```
+
+
+**碎石检验的前两个特征值（三角形）都在拐角处之上，并且大于基于100次模拟数据矩阵的特征值均值。对于EFA，Kaiser-Harris准则的特征值数大于0，而不是1。**  
+结果解读：PCA结果建议提取一个或者两个成分，EFA建议提取两个因子。
+
+
+### 14.3.2 提取公共因子  
+
+fa(r, nfactors=, n.obs=, rotate=, scores=, fm=)  
+ r是相关系数矩阵或者原始数据矩阵；  
+ nfactors设定提取的因子数（默认为1）；  
+ n.obs是观测数（输入相关系数矩阵时需要填写）；  
+ rotate设定旋转的方法（默认互变异数最小法）；  
+ scores设定是否计算因子得分（默认不计算）；  
+ fm设定因子化方法（默认极小残差法）。  
+与PCA不同，提取公共因子的方法很多，包括最大似然法（ml）、主轴迭代法（pa）、加权
+最小二乘法（wls）、广义加权最小二乘法（gls）和最小残差法（minres）。统计学家青睐使用
+最大似然法，因为它有良好的统计性质。  
+
+```{r}
+fa <- fa(correlations, nfactors = 2, rotate = "none", fm = "ml") # 提取两个公共因子。
+fa # 返回结果。
+```
+结果解读：两个因子的Proportion Var分别为0.46和0.14，两个因子解释了六个心理学测试60%的方差。  
+
+
+### 14.3.3 因子旋转
+
+```{r}
+fa.varimax <- fa(correlations, nfactors = 2, rotate = "varimax", fm = "ml") # 正交旋转提取因子。
+fa.varimax # 返回结果。
+```
+结果解读：阅读和词汇在第一因子上载荷较大，画图、积木图案和迷宫在第二因子上载荷较大，非语言的普通智力测量在两个因子上载荷较为平均，这表明存在一个语言智力因子和一个非语言智力因子。
+
+```{r}
+fa.promax <- fa(correlations, nfactors = 2, rotate = "promax", fm = "pa") # 斜交旋转提取因子。
+fa.promax # 返回结果。
+```
+
+
+正交旋转和斜交旋转的不同之处。
+对于正交旋转，因子分析的重点在于因子结构矩阵（变量与因子的相关系数），而对于斜交旋转，因子分析会考虑三个矩阵：因子结构矩阵、因子模式矩阵和因子关联矩阵。
+因子模式矩阵即标准化的回归系数矩阵。它列出了因子预测变量的权重。因子关联矩阵即因
+子相关系数矩阵。
+
+
+```{r}
+fsm <- function(oblique) {
+    if (class(oblique)[2]=="fa" & is.null(oblique$Phi)) {
+        warning("Object doesn't look like oblique EFA")
+     } else {
+         P <- unclass(oblique$loading)
+         F <- P %*% oblique$Phi
+         colnames(F) <- c("PA1", "PA2")
+         return(F)
+     }
+} # 构建函数fsm。
+```
+
+
+
+```{r}
+fsm(fa.promax) # 通过fsm函数获取变量和因子间的相关系数。
+```
+
+
+```{r}
+factor.plot(fa.promax, labels=rownames(fa.promax$loadings)) # 绘制正交或者斜交结果的图形。
+```
+
+图形解读：词汇和阅读在第一个因子（PA1）上载荷较大，而积木图案、画图和迷宫在第二个因子（PA2）上载荷较大。普通智力测验在两个因子上较为平均。  
+
+```{r}
+fa.diagram(fa.promax, simple=FALSE) # 两因子斜交旋转结果图。
+```
+
+
+### 14.3.4 因子得分
+
+在fa()函数中添加score =TRUE选项（原始数据可得时）便可很轻松地获得因子得分。另外还可以得到得分系数（标准化的回归权重），它在返回对象的weights元素中。
+
+```{r}
+fa.promax$weights # 通过二因子斜交旋转法获得用来计算因子得分的权重。
+```
+
+与可精确计算的主成分得分不同，因子得分只是估计得到的。它的估计方法有多种，fa()
+函数使用的是回归方法。   
+
+### 14.3.5 其他与 EFA 相关的包
+
+R包含了其他许多对因子分析非常有用的软件包。FactoMineR包不仅提供了PCA和EFA方法，还包含潜变量模型。它有许多此处我们并没考虑的参数选项，比如数值型变量和类别型变量的使用方法。FAiR包使用遗传算法来估计因子分析模型，它增强了模型参数估计能力，能够处理不等式的约束条件，GPArotation包则提供了许多因子旋转方法。最后，还有nFactors包，它提供了用来判断因子数目的许多复杂方法。
+
+## 14.4 其他潜变量模型
+
+## 14.5 小结
+
+![](D:/documents/14-7.png) 
+
+## 实战练习
+
+**主成分分析**  
+
+1.数据导入  
+```{r}
+df20 <- read.table(file = "D:/Documents/R wd/df20.csv", header = T, sep = ",") # 数据导入。
+df20 # 查看数据。
+```
+
+2. 判断主成分数量  
+```{r}
+library(psych) # 调用psych包。
+df20.cor <- cor(df20[,-1]) # 计算相关矩阵。
+fa.parallel(df20[,-1], fa = "pc", n.iter = 100, show.legend = FALSE, main = "Scree plot with parallel analysis") # 碎石检验判断主成分个数。
+abline(h=1,lty=1,lwd=2,col="green") # 添加特征值准则线。
+```
+
+结果解读：选择2个主成分即可保留样本大量信息。  
+
+3.提取主成分   
+```{r}
+df20.df <- principal(df20[,-1], nfactors = 2, score = T, rotate = "varimax") # 提取2个主成分。
+df20.df # 返回结果。
+```
+
+结果解读：主成分1可解释44%的方差，主成分2解释了26%的方差，合计解释了70%的方差。  
+
+4.获取主成分得分  
+```{r}
+dft <- round(unclass(df20.df$weights),2) # 获取主成分得分。
+dft # 返回结果。
+```
+
+5.主成分方程
+
+PC1 = 0.27$\times$株高 - 0.04$\times$穗位 + 0.29$\times$茎粗 - 0.01$\times$穗长 - 0.21$\times$秃顶 - 0.13$\times$穗粗 + 0.16$\times$穗行数 + 0.24$\times$行粒数
+
+PC2 = -0.01$\times$株高 + 0.36$\times$穗位 - 0.10$\times$茎粗 + 0.41$\times$穗长 - 0.08$\times$秃顶 + 0.43$\times$穗粗 - 0.15$\times$穗行数 + 0.01$\times$行粒数
+
+
+```{r}
+plot(df20.df) # 主成分分析可视化
+```
+
+图形解读：此图反映了变量与主成分的关系，三个蓝点对应的RC2值较高，点上的标号2，4，6对应变量名穗位，穗长，穗粗，说明第2主成分主要解释了这些变量，与这些变量相关性强；黑点分别对应株高，茎粗，穗行数，行粒数，说明第一主成分与这些变量相关性强，第一主成分主要解释的也是这些变量，而5号点秃顶对于两个主成分均没有显示好的相关性。
+
+
+**因子分析**  
+
+1. 判断因子数量  
+```{r}
+library(psych) # 调用psych包。
+df20.cor <- cor(df20[,-1]) # 计算相关矩阵。
+fa.parallel(df20[,-1], fa = "fa", n.iter = 100, show.legend = FALSE, main = "Scree plot with parallel analysis") # 碎石检验判断主成分个数。
+abline(h=0,lty=1,lwd=2,col="green") # 添加特征值准则线。
+```
+
+图解：可以看到需要提取4个因子。
+
+2.提取因子  
+```{r}
+df20.df1 <- fa(df20.cor, nfactors = 4, rotate = "promax",fm="ml") # 最大似然法提取4个因子。
+df20.df1 # 返回结果。
+```
+结果解读：因子1到4解释了80%的方差。
+
+3.获取因子得分
+```{r}
+df20.df1$weights # 返回得分。
+```
+
+
+4. 可视化
+```{r}
+factor.plot(df20.df1,labels=rownames(df20.df1$loadings)) # 可视化。
+fa.diagram(df20.df1,simple = TRUE) # 因子分析可视化
+```
+
+图解：可以看出，因子1和因子2的相关系数为0.4，行粒数，株高，茎粗，秃顶在因子1的载荷较大，穗长，穗位在因子2上的载荷较大；因子3只有穗行数相关，因子4只有穗粗相关。
+
+
+
+# 第15章 处理缺失数据的高级方法
+
+## 15.1 处理缺失值的步骤
+
+一个完整的处理方法通常包含以下几个步骤：  
+(1)识别缺失数据；  
+(2)检查导致数据缺失的原因；  
+(3)删除包含缺失值的实例或用合理的数值代替（插补）缺失值。   
+
+**数据缺失的分类**  
+统计学家通常将缺失数据分为三类。它们都用概率术语进行描述，但思想都非常直观。我
+们将用sleep研究中对做梦时长的测量（有12个动物有缺失值）来依次阐述三种类型。  
+(1)完全随机缺失 若某变量的缺失数据与其他任何观测或未观测变量都不相关，则数据为完全随机缺失（MCAR）。若12个动物的做梦时长值缺失不是由于系统原因，那么可认为数据是MCAR。注意，如果每个有缺失值的变量都是MCAR，那么可以将数据完整的实例看做是对更大数据集的一个简单随机抽样。  
+(2)随机缺失 若某变量上的缺失数据与其他观测变量相关，与它自己的未观测值不相关，则数据为随机缺失（MAR）。例如，体重较小的动物更可能有做梦时长的缺失值（可能因为较小的动物较难观察），“缺失”与动物的做梦时长无关，那么该数据就可以认为是MAR。此时，一旦你控制了体重变量，做梦时长数据的缺失与出现将是随机的。  
+(3)非随机缺失 若缺失数据不属于MCAR或MAR，则数据为非随机缺失（NMAR）。例如，做梦时长越短的动物也更可能有做梦数据的缺失（可能由于难以测量时长较短的事件），那么数据可认为是NMAR。大部分处理缺失数据的方法都假定数据是MCAR或MAR。此时，你可以忽略缺失数据的生成机制，并且（在替换或删除缺失数据后）可以直接对感兴趣的关系进行建模。当数据是NMAR时，想对它进行恰当地分析比较困难，你既要对感兴趣的关系进行建模，还要对缺失值的生成机制进行建模。（目前分析NMAR数据的方法有模型选择法和模式混合法。由于NMAR数据的分析十分复杂，超出了本书的范畴，我们将忽略对它的讨论。）
+
+图15-1列出了一系列可用来处理不完整数据的方法，以及相应的R包。
+
+![](D:/documents/15-1.png) 
+
+
+## 15.2 识别缺失值
+
+R使用NA（不可得）代表缺失值，NaN（不是一个数）代表不可能的值。另外，符号Inf和-Inf分别代表正无穷和负无穷。函数is.na()、is.nan()和is.infinite()可分别用来识别缺失值、不可能值和无穷值。每个返回结果都是TRUE或FALSE。  
+
+![](D:/documents/15-1-1.png) 
+
+这些函数返回的对象与其自身参数的个数相同。若每个元素的类型检验通过，则由TRUE替换，
+否则用FALSE替换。
+
+```{r}
+qsz <- c(1, 2, 3, NA) # 定义向量qsz，其中有一个缺失值。
+is.na(qsz) # 识别向量中的缺失值。
+```
+
+函数complete.cases()可用来识别矩阵或数据框中没有缺失值的行。若每行都包含完整的
+实例，则返回TRUE的逻辑向量；若每行有一个或多个缺失值，则返回FALSE。  
+```{r}
+data(sleep, package = "VIM") # 加载数据集。
+sleep[complete.cases(sleep),] # 列出没有缺失值的行。
+sleep[!complete.cases(sleep),] # 列出有1个或多个缺失值的行。
+complete.cases(df) # 识别数据集df是否存在缺失值。
+```
+
+由于逻辑值TRUE和FALSE分别等价于数值1和0，可用sum()和mean()函数来获取关于缺失
+数据的有用信息。  
+```{r}
+sum(is.na(sleep$Dream)) # 统计数据集sleep中Dream变量缺失值个数。
+mean(is.na(sleep$Dream)) # 统计数据集sleep中Dream变量缺失值平均值。
+mean(!complete.cases(sleep)) # 统计数据集sleep中Dream变量多少比例含一个或多个缺失值。
+```
+
+## 15.3 探索缺失值模式
+
+### 15.3.1 列表显示缺失值  
+mice包中的md.pattern()函数可生成一个以矩阵或数据框形式展示缺失值模式的表格.  
+```{r}
+library(mice) # 调用mice包。
+data(sleep, package = "VIM") # 调用数据集sleep。
+md.pattern(sleep) # 探索数据集sleep缺失值。
+```
+
+表中1和0显示了缺失值模式，0表示变量的列中有缺失值，1则表示没有缺失值。  
+
+### 15.3.2 图形探究缺失数据  
+
+aggr()函数不仅绘制每个变量的缺失值数，还绘制每个变量组合的缺失值数。  
+```{r}
+library(VIM) # 调用VIM包。
+aggr(sleep, prop = FALSE, numbers = TRUE) # 图形展示缺失值。选项prop=TRUE用比例作为y轴，选项numbers = FALSE（默认）删去数值型标签。
+```
+
+matrixplot()函数可生成展示每个实例数据的图形。数值型数据被重新转换到[0,1]区间，并用灰度来表示大小：浅色表示值小，深色表示值大。默认缺失值为红色。  
+```{r}
+matrixplot(sleep) # 展示每个实例图形。
+```
+
+marginplot()函数可生成一幅散点图，在图形边界展示两个变量的缺失值信息。
+
+```{r}
+marginplot(sleep[c("Gest", "Dream")], pch = c(20), col = c("darkgray", "red", "blue")) # 缺失值散点图。
+```
+
+图形的主体是Gest和Dream（两变量数据都完整）的散点图。左边界的箱线图展示的是包含
+（深灰色）与不包含（红色）Gest值的Dream变量分布。注意，在灰度图上红色是更深的阴影。
+四个红色的点代表着缺失了Gest得分的Dream值。在底部边界上，Gest和Dream间的关系反过
+来了。可以看到，妊娠期和做梦时长呈负相关，缺失妊娠期数据时动物的做梦时长一般更长。两
+个变量均有缺失值的观测个数在两边界交叉处（左下角）用蓝色输出。
+
+### 15.3.3 用相关性探索缺失值
+
+你可用指示变量替代数据集中的数据（1表示缺失，0表示存在），这样生成的矩阵有时称作影子矩阵。求这些指示变量间和它们与初始（可观测）变量间的相关性，有助于观察哪些变量常一起缺失，以及分析变量“缺失”与其他变量间的关系。   
+
+```{r}
+x <- as.data.frame(abs(is.na(sleep))) # 将sleep数据集中缺失值赋值，若sleep的元素缺失，则数据框x对应的元素为1，否则为0。
+head(sleep) # 查看数据集sleep前6行。
+head(x) # 查看缺失值赋值后数据集的前6行。
+y <- x[which(apply(x,2,sum)>0)] # 提取含缺失值的变量。
+cor(y) # 指示变量的相关系数。
+cor(sleep, y, use = "pairwise.complete.obs") # 缺失值变量与其他观测变量的关系。矩阵中行为可观测变量，列为表示缺失的指示变量。
+```
+
+
+## 15.4 理解缺失数据的来由和影响
+
+识别缺失数据的数目、分布和模式有两个目的：(1)分析生成缺失数据的潜在机制；(2)评价
+缺失数据对回答实质性问题的影响。具体来讲，我们想弄清楚以下几个问题。  
+缺失数据的比例多大？  
+缺失数据是否集中在少数几个变量上，抑或广泛存在？  
+缺失是随机产生的吗？  
+缺失数据间的相关性或与可观测数据间的相关性，是否可以表明产生缺失值的机制呢？  
+回答这些问题将有助于判断哪种统计方法最适合用来分析你的数据。  
+
+假使已经知道了缺失数据的来源和影响，那么让我们看看如何转换标准的统计方法来适应缺
+失数据的分析。我们将重点学习三种非常流行的方法：恢复数据的推理方法、涉及删除缺失值的
+传统方法、涉及模拟的现代方法。  
+
+## 15.5 理性处理不完整数据  
+
+推理方法会根据变量间的数学或者逻辑关系来填补或恢复缺失值。推理研究法常常需要创造性和想法，同时还需要许多数据处理技巧，而且数据的恢复可能是准确的或者近似的。
+
+## 15.6 完整实例分析（行删除）
+
+只有每个变量都包含了有效数据值的观测才会保留下来做进一步的分析。实际上，这样会导致包含一个或多个缺失值的任意一行都会被删除，因此常称作行删除法（listwise）、个案删除（case-wise）或剔除。  
+newdata <- mydata[complete.cases(mydata),]   
+newdata <- na.omit(mydata)  
+两行代码表示的意思都是：mydata中所有包含缺失数据的行都被删除，然后结果才存储到newdata中。  
+```{r}
+options(digits = 1) # 有效数字保留1位。
+cor(na.omit(sleep)) # 删除缺失值后计算sleep数据集相关系数。
+```
+
+```{r}
+summary(lm(Dream ~ Span + Gest, data = na.omit(sleep))) # 按行删除缺失值后进行的回归分析。
+```
+
+## 15.7 多重插补
+
+多重插补（MI）是一种基于重复模拟的处理缺失值的方法。在面对复杂的缺失值问题时，
+MI是最常选用的方法，它将从一个包含缺失值的数据集中生成一组完整的数据集（通常是3到10
+个）。每个模拟数据集中，缺失数据将用蒙特卡洛方法来填补。此时，标准的统计方法便可应用
+到每个模拟的数据集上，通过组合输出结果给出估计的结果，以及引入缺失值时的置信区间。R
+中可利用Amelia、mice和mi包来执行这些操作。本节中，我们将重点学习mice包（利用链式方
+程的多元插补）提供的方法。  
+![](D:/documents/15-5.png)
+
+基于mice包的分析通常符合以下分析过程：  
+library(mice)  
+imp <- mice(data, m)  
+fit <- with(imp, analysis)  
+pooled <- pool(fit)  
+summary(pooled)   
+ mydata是一个包含缺失值的矩阵或数据框。  
+ imp是一个包含m个插补数据集的列表对象，同时还含有完成插补过程的信息。默认地，
+m为5。  
+ analysis是一个表达式对象，用来设定应用于m个插补数据集的统计分析方法。方法包
+括做线性回归模型的lm()函数、做广义线性模型的glm()函数、做广义可加模型的gam()，以及做负二项模型的nbrm()函数。表达式在函数的括号中，~的左边是响应变量，右边是预测变量（用+符号分隔开）。  
+ fit是一个包含m个单独统计分析结果的列表对象。  
+ pooled是一个包含这m个统计分析平均结果的列表对象。  
+
+```{r}
+library(mice) # 调用mice包。
+data(sleep, package="VIM") # 调用数据集sleep。
+imp <- mice(sleep, seed=1234) # 对sleep缺失值进行插补。
+fit25 <- with(imp, lm(Dream ~ Span + Gest)) # 对插补后数据集线性回归。
+pooled <- pool(fit25) # 统计分析平均结果列表。
+summary(pooled) # 返回结果。
+```
+
+你可以通过检查分析过程所创建的对象来获取更多的插补信息。  
+```{r}
+imp # 查看对象imp。
+```
+
+通过提取imp对象的子成分，可以观测到实际的插补值。  
+```{r}
+imp$imp$Dream # 提取子成分Dream。
+```
+
+
+利用 complete() 函数可以观察m个插补数据集中的任意一个。格式为：complete(imp, action=#)，其中 # 指定m个完整数据集中的一个来展示。
+```{r}
+dataset3 <- complete(imp, action=3) # 观察第3个插补数据集。
+dataset3 # 返回结果。
+```
+
+
+## 15.8 处理缺失值的其他方法
+
+![](D:/documents/15-2.png) 
+
+
+### 15.8.1 成对删除  
+处理含缺失值的数据集时，成对删除常作为行删除的备选方法使用。对于成对删除，观测只
+是当它含缺失数据的变量涉及某个特定分析时才会被删除。  
+
+### 15.8.2 简单（非随机）插补
+所谓简单插补，即用某个值（如均值、中位数或众数）来替换变量中的缺失值。若使用均值
+替换，Dream变量中的缺失值可用1.97来替换，NonD中的缺失值可用8.67来替换（两个值分别是
+Dream和NonD的均值）。注意这些替换是非随机的，这意味着不会引入随机误差（与多重插补不同）。  
+简单插补的一个优点是，解决“缺失值问题”时不会减少分析过程中可用的样本量。虽然简单插补用法很简单，但是对于非MCAR的数据会产生有偏的结果。若缺失数据的数目非常大，那么简单插补很可能会低估标准差、曲解变量间的相关性，并会生成不正确的统计检验的p值。与成对删除一样，我建议在解决缺失数据的问题时尽量避免使用该方法。  
+
+## 15.9 小结
+
+# 第16章 高级图形进阶  
+
+除了基础图形，grid、lattice和ggplot2软件包也提供了图形系统，它们克服了R基础图
+形系统的低效性，大大扩展了R的绘图能力。
+grid图形系统可以很容易控制图形基础单元，给予编程者创作图形极大的灵活性。lattice
+包通过一维、二维或三维条件绘图，即所谓的栅栏（trellis）图形来对多元变量关系进行直观展示。ggplot2包则基于一种全面的图形“语法”，提供了一种全新的图形创建方法。
+
+## 16.1 R中的四种图形系统  
+
+如前所述，R中有四种主要的图形系统。其中基础图形系统由Ross Ihaka编写，每个R都默认
+安装，之前几章中的大部分图形都是依赖于基础图形函数创建的。  
+grid图形系统由Paul Murrell（2006）编写，可通过grid包安装执行。grid图形提供了一种比
+标准图形系统更低水平的方法。用户可以在图形设备上随意创建矩形区域，在该区域定义坐标系
+统，然后使用一系列丰富的绘图基础单元来控制图形元素的摆放和外观。  
+grid图形的灵活性对于软件开发者是非常有价值的，但是grid包没有提供生成统计图形以及完整绘图的函数。因此，数据分析师很少直接采用grid包来分析数据。  
+lattice包由Deepayan Sarkar（2008）编写，基于grid包，lattice包对多元数据的可视化功能已经远超Cleveland的原始方法，它为R提供了一种全面的、创建统计图形的备选系统。  
+ggplot2包由Hadley Wickham（2009a）编写，它提供了一种基于Wilkinson（2005）所描述的图形语法的图形系统，Wickham（2009b）还对该语法进行了扩展。ggplot2包的目标是提供一个全面的、基于语法的、连贯一致的图形生成系统，允许用户创建新颖的、有创新性的数据可视化图形。  
+
+![](D:/documents/16-1.png) 
+
+## 16.2 lattice包
+
+```{r}
+library(lattice) # 调用lattice包。
+histogram(~ height | voice.part,data = singer, main = "Distribution of Heights by Voice Pitch", xlab = "Height(inches)") # 对数据集singer中每个声部绘制直方图分布。
+```
+
+height是因变量，voice.part被称作条件变量（conditioning variable）。在栅栏图形中，单个面板要依据条件变量的各个水平来创建。如果指定了多个条件变量，那么一个面板将按照各个因子水平的组合来创建。然后面板将被排成一个阵列以进行比较。每个面板在一个区域都会有一个标签，这里的区域称作条带区域（strip）。  
+lattice包提供了丰富的函数，可生成单变量图形（点图、核密度图、直方图、柱状图和箱
+线图）、双变量图形（散点图、带状图和平行箱线图）和多变量图形（三维图和散点图矩阵）。
+各种高级绘图函数都服从以下格式：  
+graph_function(formula, data, options)  
+ graph_function是表16-2的第二栏列出的某个函数。  
+ formula指定要展示的变量和条件变量。  
+ data指定一个数据框。  
+ options是逗号分隔参数，用来修改图形的内容、摆放方式和标注。表16-3列出了一些常
+见的选项。  
+设小写字母代表数值型变量，大写字母代表类别型变量（因子）。绘图函数表达式形式通常为：  
+y ~ x | A * B   
+在竖线左边的变量称为主要（primary）变量，右边的变量称为条件（conditioning）变量。
+主要变量将变量映射到每个面板的坐标轴上，此处，y ~ x表示变量分别映射到纵轴和横轴上。
+对于单变量绘图，用~ x代替y ~ x即可；对于三维图形，用z ~ x*y代替y ~ x，而对于多变
+量绘图（散点图矩阵或平行坐标图）用一个数据框代替y ~ x即可。注意，条件变量总是可以自
+行挑选的。   
+根据上述的逻辑，~ x | A即展示因子A各个水平下数值型变量x的分布情况；y ~ x | A*B
+即展示因子A和B各个水平组合下数值型变量x和y间的关系。而A ~ x则表示类别型变量A在纵轴
+上，数值型变量x在横轴上进行展示。~ x表示仅展示数值型变量x。  
+
+![](D:/documents/16-2.png)
+
+![](D:/documents/16-3.png) 
+
+```{r}
+library(lattice) # 调用lattice包。
+contourplot(volcano) # 等高线图示例。
+levelplot(v3~v1*v2,data = df) # 三维水平图示例。
+cloud(v3~v1*v2,data = df) # 三维散点图。
+cloud(v3 ~ v1 * v2 | nitrogen,  data = df, main = "3D Scatter Plots by Nitrogen") # 三维散点图。z为v3，x为v1，y为v2。以nitrogen分组。
+wireframe(volcano) # 三维线框图示例。
+barchart(v3 ~ nitrogen, data = df) # 条形图示例。
+barchart(v3 ~ year|nitrogen, data = df) # 条形图分组示例。
+bwplot(df$v1) # 箱线图示例。
+bwplot(year ~ v1,  data = df, main = "Box Plots by Nitrogen ", xlab = "v1", ylab = "year") # 以nitrogen为分组的v3箱线图。
+dotplot(~v3, data = df) # 点图示例。
+dotplot(v3 ~ v1 | year, data = df, main = "Dot Plots by Number of Nitrogen and Year", xlab = "v1") # year分组的v3和v1的散点图。
+histogram(~v3, data = df) # 直方图示例。
+histogram(~v3|nitrogen, data = df) # 分组直方图示例。
+densityplot(~ v1, data = df, main = "Density Plot", xlab = "v1") # df数据集v1密度图。
+densityplot(~ v1 | nitrogen, data = df, main = "Density Plot by Nitrogen", xlab = "v1") # 以nitrogen为分组的v1变量密度图。
+parallelplot(df[5:8]) # 平行坐标图示例。
+xyplot(v3 ~ v1, data = df) # 散点图示例。
+xyplot(v3 ~ v1 | nitrogen * year,  data = df, main = "Scatter Plots by Nitrogen and Years", xlab = "v1", ylab = "v3") # year和nitrogen分组的v3和v1的散点图。
+splom(df[5:8], data= df, main = "Scatter Plot Matrix for mtcars Data") # 散点图矩阵。
+stripplot(v3 ~ nitrogen, data = df) # 带状图示例。
+```
+
+### 16.2.1 条件变量
+
+通常，条件变量是因子。但是，如果想以连续型变量为条件，该怎么办呢？一种方法是利用
+R的cut()函数将连续型变量转换为离散变量。另外，lattice包提供了一些将连续型变量转化
+为瓦块（shingle）数据结构的函数。特别地，连续型变量会被分割到一系列（可能）重叠的数
+值范围中。  
+myshingle<-equal.count(x,number=#,overlap=proportion)
+x为连续形向量，number为需要分为#个瓦块，overlap为重叠度proportion，可以为0。 
+```{r}
+displacement <- equal.count(df$v1, number=3,overlap=0) # 定义瓦块变量。
+xyplot(v3 ~ v1 |displacement, data = df) # 绘制散点图。
+```
+
+图解：深色表示每个面板中条件变量的取值范围。
+
+
+### 16.2.2 面板函数   
+
+```{r}
+mypanel <- function(x,y){
+  panel.xyplot(x,y,pch = 15)
+  panel.rug(x,y)
+  panel.grid(h=-1,v=-1)
+  panel.lmline(x,y,col="red",lwd=1,lty=2)
+} # 定义自己的面板函数。
+```
+
+```{r}
+xyplot(v3 ~ v1|displacement, data = df, panel = mypanel) # 使用自定义面板函数绘制散点图。
+```
+
+```{r}
+panel.smoother <- function(x,y){
+  panel.grid(h=-1,v=-1)
+  panel.xyplot(x,y)
+  panel.loess(x,y)
+  panel.abline(h=mean(y),lwd = 2,lty = 2,col="blue")
+} # 自定义面板函数，定义了拟合线形式和参考线。
+```
+
+
+```{r}
+xyplot(v3 ~ v1 |nitrogen, data = df, panel = panel.smoother) # 使用自定义拟合线面板函数绘制散点图。
+```
+
+
+### 16.2.3 分组变量  
+
+当一个lattice图形表达式含有条件变量时，将会生成在该变量各个水平下的面板。若你想将
+结果叠加到一起，则可以将变量设定为分组变量（grouping variable）。  
+group =选项默认将分组变量各个水平下的图形叠加到一起。  
+```{r}
+densityplot(~ v3 | nitrogen, data = df) # 密度图。
+densityplot(~ v3,data = df,groups = nitrogen) # 分组密度图。
+densityplot(~ v3,data = df,groups = nitrogen,auto.key = TRUE) # 分组密度图带图例。
+```
+
+分组变量和条件变量同时包含在一幅图形中的例子。数据集使用的是R基础安装中的CO2数据框，它描述的是一个对稗草耐寒度的研究。  
+数据结构：数据包含了12个植物（Plant）在七种二氧化碳浓度环境（conc）中的二氧化碳吸收率（uptake）。六个植物来自加拿大的魁北克省，另外六个来自美国的密西西比州。其中每组的三个植物处于严寒环境，另外三个处于非严寒环境。本例中，Plant是分组变量，而Type（魁北克省/密西西比州）和Treatment（严寒/非严寒）是条件变量。  
+
+```{r}
+CO2 # 查看数据集。
+colors <- "darkgreen" # 自定义颜色赋值colors。
+symbols <- c(1:12) # 自定义图标识。
+linetype <- c(1:3) # 自定义线型。
+key.species <- list(title = "Plant", space = "right", text = list(levels(CO2$Plant)), points = list(pch = symbols, col = colors)) # 图例参数设置，title定义标题，space指定图例位置，text指定文本内容，points指定点的参数（颜色和形状）。
+xyplot(uptake ~ conc | Type * Treatment, data = CO2, group = Plant, type = "o", 
+pch = symbols, col = colors, lty = linetype, 
+main = "Carbon Dioxide Uptake\nin Grass Plants", 
+ylab = expression(paste("Uptake ", bgroup("(", italic(frac("umol", "m"^2)), ")"))), 
+xlab = expression(paste("Concentration ", bgroup("(", italic(frac(mL, L)), ")"))), 
+sub = "Grass Species: Echinochloa crus-galli", 
+key = key.species) # 散点图绘制，自变量uptake，因变量conc，条件变量type和treatment，group指定分组（分组依据plant），type指定图形类型（o为点线图）；pch指定符号（选择自定义的symbols）；col指定颜色（选择自定义的colors）；lty指定线型（选择自定义的linetype）；main指定主标题（\n将会使标题分成两行）；ylab和xlab指定y和x坐标轴标题（expression()函数将在坐标轴标签上添加数学符号，paste函数用于符号组合，italic用于指定输出为希腊字母，frac是数学符号分号；）；sub指定副标题，key指定图例（选择自定义的key.species。）
+```
+
+### 16.2.4 图形参数
+
+在lattice图形中，lattice函数默认的图形参数包含在一个很大的列表对象中，你可通过trellis.par.get()函数来获取，并用trellis.par.set()函数来修改。show.settings()函数可展示当前的图形参数设置情况。  
+```{r}
+show.settings() # 显示当前图形参数设置情况。
+mysettings <- trellis.par.get() # 获取参数，赋值给mysettings。
+mysettings$superpose.symbol # 查看默认参数。
+mysettings$superpose.symbol$pch <- c(1:10) # 定义点图形符号参数为10个水平，图形符号被定义后将会被循环使用。
+trellis.par.get(mysettings) # 获取修改后的参数。
+show.settings() # 显示修改后图形参数设置情况。
+```
+
+### 16.2.5 页面摆放
+
+最简单的方法便是先将lattice图形存储到对象中，然后利用plot()函数中的split =或position =选项来进行控制。  
+split选项将页面分割为一个指定行数和列数的矩阵，然后将图形放置到该矩阵中。split
+选项的格式为：  
+split=c(placement column,placement row,total number of columns,total number of rows)  
+使用split组图  
+split=c(列位置号码,行位置号码，列数，行数)。    
+
+```{r}
+library(lattice) # 调用lattice包。
+graph1 <- histogram(~height | voice.part, data = singer, 
+main = "Heights of Choral Singers by Voice Part") # 绘制graph1。
+graph2 <- densityplot(~height, data = singer, group = voice.part, 
+plot.points = FALSE, auto.key = list(columns = 4)) # 绘制graph2。
+plot(graph1, split = c(1, 1, 1, 2)) # graph1排布。
+plot(graph2, split = c(1, 2, 1, 2), newpage = FALSE) # graph2排布。
+```
+
+使用position组图  
+position = c(xmin, ymin, xmax, ymax)，该页面的x-y坐标系统是矩形，x轴和y轴的维度范围都是从0到1，原点（0,0）在图形左下角。    
+
+```{r}
+graph1 <- histogram(~height | voice.part, data = singer, 
+main = "Heights of Choral Singers by Voice Part") # graph1
+graph2 <- densityplot(~height, data = singer, group = voice.part, plot.points = FALSE, auto.key = list(columns = 4)) # graph2
+plot(graph1, position = c(0, 0.3, 1, 1)) # graph1排布。
+plot(graph2, position = c(0, 0, 1, 0.3), newpage = FALSE) # graph2排布。
+```
+
+在lattice图形中你还可以改变面板的顺序。高级绘图函数的index.cond =选项可以设定条
+件变量水平的顺序。    
+```{r}
+levels(df$nitrogen) # 查看因子水平。
+xyplot(v3 ~ v1|nitrogen, data = df, index.cond = list(c(2,1))) # 改变因子顺序作图。
+```
+
+## 16.3 ggplot2包  
+
+ggplot2包提供了一个基于全面而连贯的语法的绘图系统。ggplot2中最简单的绘图方式是利用qplot()函数，即快速绘图函数。  
+qplot(x,y,data=,color=,shape=,size=,alpha=,geom=,method=,formula=,facets=,xlim=,ylim=,xlab=,ylab=,main=,sub=)
+
+![](D:/documents/16-4.png) 
+
+```{r}
+library(ggplot2) # 调用ggplot2包。
+qplot(nitrogen, v3, data = df, geom = c("boxplot", "jitter"), fill = nitrogen, main = "Box plot with superimposed data points", xlab = "v1", ylab = "v3") # 快速出图nitrogen水平下v3箱图带点图。
+```
+
+线性拟合的例子 
+
+```{r}
+library(ggplot2) # 调用ggplot2包。
+transmission <- factor(mtcars$am, levels = c(0, 1), 
+labels = c("Automatic", "Manual")) # 因子设置。
+qplot(wt, mpg, data = mtcars, 
+color = transmission, shape = transmission, 
+geom = c("point", "smooth"), 
+method = "lm", formula = y ~ x, 
+xlab = "Weight",  ylab = "Miles Per Gallon", 
+main = "Regression Example") # 颜色和符号形状区分自动挡和手动挡汽车。
+```
+
+自己的例子  
+```{r}
+qplot(v1, v3, data = df, color = nitrogen, shape = nitrogen, geom = c("point", "smooth"), method = "lm", formula = y ~ x, xlab = "v1",  ylab = "v3", main = "Regression between v1 and v3") # qplot绘制以nitrogen分组的v1和v3之间的线性拟合。
+ggplot(df, aes(x = v1, y = v3, colour=nitrogen, shape = nitrogen)) + geom_point()+ geom_smooth(method = "lm") + labs(title = "Regression between v1 and v3", x = "v1", y = "v3") # 使用ggplot绘制上图。
+```
+
+分面的例子。
+```{r}
+library(ggplot2) # 调用ggplot包。
+qplot(v1, v3, data = df, facets = nitrogen ~ year, size = v1) # 分面散点图。nitrogen定义了行分面，year定义了列分面。数据点的大小由v1定义。
+ggplot(df, aes(x = v1, y = v3, size = v1)) + geom_point() + facet_grid(nitrogen ~ year) # 用ggplot绘制。
+```
+
+
+```{r}
+library(ggplot2) # 调用ggplot2包。
+data(singer, package = "lattice") # 调用lattice包中的singer数据集。
+qplot(height, data = singer, geom = c("density"), facets = voice.part ~ ., fill = voice.part) # qplot绘制密度图。
+ggplot(singer,aes(height, fill = voice.part)) + geom_density() + facet_grid(voice.part ~.) # ggplot绘制上图。
+```
+
+《R语言实战》只是简单的展示了ggplot2绘图，ggplot2的绘图系统很强大，由ggplot2衍生的包很多，极大了丰富了其绘图功能，均需系统学习。
+
+## 16.4 交互式图形
+
+### 16.4.1 与图形交互：鉴别点
+
+R基础安装中一个可对散点图中的点进行鉴别和标注的函数：identify()。利用该函数，你可用鼠标对散点图中所选择的点标注行数或者行名称，直到你选择了Stop或者右击图形识别工作才会停止。  
+
+### 16.4.2 playwith
+
+playwith包提供了一个GTK+图形用户界面（GUI），使得用户可以编辑R图形并与其交互。
+
+playwith()函数允许用户识别和标注点、查看一个观测所有的变量值、缩放和旋转图形、
+添加标注（文本、箭头、线条、矩形、标题和标签）、修改视觉元素（颜色、文本大小等）、应用先前存储的图形风格，以及以多种格式输出图形结果。  
+
+### 16.4.3 latticist
+
+除了拥有playwith的函数功能（识别点、标注、缩放、旋转和风格化），用户还能通过下拉
+菜单和按钮直接创建lattice图形。  
+
+### 16.4.4 iplots包的交互图形
+
+该包提供了交互式马赛克图、柱状图、箱线图、平行坐标图、散点图和直方图，以及颜色刷，并
+可将它们结合在一起绘制。这意味着你可通过鼠标对观测点进行选择和识别，并且对其中一幅图
+形的观测点突出显示时，其他被打开的图形将会自动突出显示相同的观测点。另外，你还可通过
+鼠标来收集图形对象（诸如点、条、线）和箱线图的信息。  
+![](D:/documents/16-5.png) 
+iplots包中的函数可用来探索变量分布和交互选择的观测子集中的变量关系。  
+
+
+### 16.4.5 rggobi
+
+GGobi有许多吸引眼球的优点，包括：交互式散点图、柱状图、平行坐标图、时间序列图、散点图矩阵和三维旋转的综合使用；窗口刷和点识别；多变量变换方法；复杂的探索平台，如导向动画的和手动的1维及2维图形。令人振奋的是，rggobi软件包为GGobi和R提供了一个无缝接口。
+
+## 16.5 小结
+
+::: {#refer-anchor}
+:::
+
+## 参考资料 
+
+1.  《R语言实战》（中文版），人民邮电出版社，2013.
+2.  R 语言的优劣势是什么？<https://www.zhihu.com/question/19611094>
+3.  R \| 如何更新R版本及Rstudio，<https://blog.csdn.net/weixin_41859179/article/details/97570369>
+4.  R语言-包的安装、载入及使用方法，<https://blog.csdn.net/u012325865/article/details/85549555>
+5.  R编程规范，<https://blog.csdn.net/u012311410/article/details/69787569>
+6.  R语言笔记1：R语言对象的数据类型（向量、数组、矩阵、列表和数据框），<https://blog.csdn.net/qy_microbiota/article/details/79377790>
+7.  R语言基础--数据类型之向量，<https://www.jianshu.com/p/7b47a6bbb7a9>
+8.  易百教程，R语言向量，<https://www.yiibai.com/r/r_vectors.html>
+9.  R语言基础-向量运算及R的数据结构（一），<https://www.cnblogs.com/nnadd/p/12492276.html>
+10. R与矩阵运算总结，<https://blog.csdn.net/hnu_lb/article/details/38419405?utm_medium=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-4.control&dist_request_id=5a4eefc0-d6f0-4fc4-85ec-5464a1fdbbaf&depth_1-utm_source=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-4.control>
+11. R语言数据排序，<https://blog.csdn.net/weixin_42712867/article/details/95042077?utm_medium=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-3.control&dist_request_id=43b1df35-a2f1-4d81-98e7-a9c268ffc724&depth_1-utm_source=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-3.control>
+12. R语言_read.table()函数用法，<https://www.jianshu.com/p/90e1d430c9ef>
+13. R中设置图形参数--函数par()详解，<https://blog.csdn.net/qingchongxinshuru/article/details/52004182>
+14. R语言基础图形元素------颜色，<https://blog.csdn.net/qq_40794743/article/details/107746723>
+15. R语言作图：坐标轴设置，<https://blog.csdn.net/weixin_40628687/article/details/79254791>
+16. R语言------ifelse函数，<https://blog.csdn.net/weixin_30399871/article/details/98839968?utm_term=r%E8%AF%AD%E8%A8%80ifelse%E5%87%BD%E6%95%B0%E7%9A%84%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95&utm_medium=distribute.pc_aggpage_search_result.none-task-blog-2~all~sobaiduweb~default-3-98839968&spm=3001.4430>
+17. R语言教程，李东风著，<https://www.math.pku.edu.cn/teachers/lidf/docs/Rbook/html/_Rbook/index.html>
+18. R语言中cbind、rbind和merge函数的使用与区别，<https://www.jb51.net/article/207415.htm>
+19. 使用R中merge()函数合并数据，<https://blog.csdn.net/neweastsun/article/details/79435271>
+20. R语言 subset()函数用法，<https://my.oschina.net/u/4357035/blog/3313631>
+21. R语言-11利用sample函数抽样，<https://www.jianshu.com/p/aa9154786dd2>
+22. R中的sample函数，<https://blog.csdn.net/u012108367/article/details/69913280>
+23. R实战 第九篇：数据标准化，<https://www.cnblogs.com/ljhdo/p/4899086.html>
+24. R语言set.seed()函数的意义以及用法，<https://blog.csdn.net/vencent_cy/article/details/50350020?utm_medium=distribute.pc_relevant.none-task-blog-searchFromBaidu-7.control&dist_request_id=1328679.27500.16162494528177951&depth_1-utm_source=distribute.pc_relevant.none-task-blog-searchFromBaidu-7.control>
+25. R语言中的字符处理函数，<http://www.360doc.com/content/19/0730/13/19913717_851861764.shtml>
+26. R语言中while循环的使用，<http://www.biye5u.com/article/R/2017/6356.html>
+27. R语言中if语句使用方法之超详细教程，<https://blog.csdn.net/weixin_34377065/article/details/92254396?utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromMachineLearnPai2%7Edefault-3.control&dist_request_id=&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromMachineLearnPai2%7Edefault-3.control>
+28. R语言中的switch函数用法，<https://www.jianshu.com/p/5b5e006bbcf5>
+29. R语言-数据整形之aggregate函数，<https://blog.csdn.net/weixin_30496751/article/details/99511041?utm_medium=distribute.pc_relevant.none-task-blog-BlogCommendFromBaidu-3.control&dist_request_id=1328679.50708.16163819563121551&depth_1-utm_source=distribute.pc_relevant.none-task-blog-BlogCommendFromBaidu-3.control>
+30. R\|melt()函数学习，<https://www.jianshu.com/p/ebcbd0d1af18>
+31. R语言入门：函数系列（4）------melt和cast，<https://vlambda.com/wz_5lUh2wUNw50.html>
+32. R语言中使用pie函数绘制饼图，<https://baijiahao.baidu.com/s?id=1608865149548940651&wfr=spider&for=pc>
+33. R语言_seq()函数用法，<https://www.jianshu.com/p/7d2d444b3802>
+34. R语言中的dnorm(),pnorm(),qnorm(),rnorm()的解释，<http://blog.sina.com.cn/s/blog_c3420fe00102xjxl.html>
+35. R语言-rug函数说明，<http://blog.sina.com.cn/s/blog_6676d74d0102uyv7.html>
+36. jitter()函数的使用，<https://blog.csdn.net/weixin_30399821/article/details/98005588>
+37. R语言给图形填充颜色(polygon函数)，<https://blog.csdn.net/ChenQihome9/article/details/88617311>
+38. R语言中因子的创建与使用 ，<https://www.sohu.com/a/250591504_100261403>
+39. R语言里的符号，<https://www.jianshu.com/p/86f716eae434>
+40. R | R语言表达式中常用的符号，<http://www.bubuko.com/infodetail-3463769.html>
+41. R语言高级绘图命令（标题-颜色等），<https://blog.csdn.net/HHTNAN/article/details/54571975>
+42. 现代统计图形，<https://bookdown.org/xiangyun/msg/>
+43. R语言中使用text()函数给绘图添加文字，<https://www.biye5u.com/article/r/2018/6381.html>
+44. R语言基础编程技巧汇编 - 6，<https://blog.csdn.net/liu7788414/article/details/44587213>
+45. R语言常用数学函数，<https://blog.csdn.net/qq_35242986/article/details/72956755>
+46. R语言中的数学运算-最全总结+解惑，<https://blog.csdn.net/qq_38984677/article/details/81170499>
+47. 《田间试验与统计分析》，明道绪，科学出版社，2008
+48. 统计学基础之分位数（Quantile），<https://xueqiu.com/6430452153/178073485>
+49. 什么是绝对中位差，<https://www.zhihu.com/question/56537218>
+50. 绝对中位差，<https://blog.csdn.net/horses/article/details/78749485>
+51. R语言正态分布，<http://bigdatastudy.net/show.aspx?id=143&cid=12>
+52. 一文搞懂正态分布所有需要的知识点，<https://zhuanlan.zhihu.com/p/128809461>
+53. R语言apply族函数详解，<https://blog.csdn.net/wzgl__wh/article/details/52207233>
+54. 偏度和峰度，<https://zhuanlan.zhihu.com/p/84614017>
+55. 频数表，<https://baike.baidu.com/item/%E9%A2%91%E6%95%B0%E8%A1%A8/10127969?fr=aladdin>
+56. 列联表，<https://baike.baidu.com/item/%E5%88%97%E8%81%94%E8%A1%A8/6547006?fr=aladdin>
+57. R实战 第十篇：列联表和频数表，<https://www.cnblogs.com/ljhdo/p/4484246.html>
+58. 独立性检验-百度，<https://baike.baidu.com/item/%E7%8B%AC%E7%AB%8B%E6%80%A7%E6%A3%80%E9%AA%8C/4031921#reference-[2]-939046-wrap>
+59. 统计学-分类数据与卡方检验-20180115，<https://zhuanlan.zhihu.com/p/32952144>
+60. R语言独立性检验，<https://blog.csdn.net/m0_46291589/article/details/104396263>
+61. 相关性分析-百度，<https://baike.baidu.com/item/%E7%9B%B8%E5%85%B3%E6%80%A7%E5%88%86%E6%9E%90>
+62. 数据相关性分析，<https://zhuanlan.zhihu.com/p/343361192>
+63. t检验-百度，<https://baike.baidu.com/item/t%E6%A3%80%E9%AA%8C>
+64. 单样本t检验-投必得R语言教程，<https://mp.weixin.qq.com/s?__biz=MzU1Mzc3OTIwNg==&mid=2247487807&idx=2&sn=4a4a01b6398fefb69231a3919e142ce6&chksm=fbecf856cc9b71404241f2559fcf62674f9969021bc968255eab7a44101c4000b26ce3cc8a22&scene=21#wechat_redirect>
+65. 第十一讲 R-两独立样本Wilcoxon检验-投必得R语言教程，<https://mp.weixin.qq.com/s?__biz=MzU1Mzc3OTIwNg==&mid=2247488160&idx=2&sn=fb0917595b8e8beb91e0b1f8d34c5d12&chksm=fbecfbc9cc9b72df207b5c05ab9b4b36446d828409b1964eda7d0383c29cde7c2cd1ef6abf0f&scene=21#wechat_redirect>
+66. 线性回归之最小二乘法，<https://zhuanlan.zhihu.com/p/90073632>
+67. 7种回归技术，<http://www.datalearner.com/blog/1051537358429810>
+68. 回归分析，<https://baike.baidu.com/item/%E5%9B%9E%E5%BD%92%E5%88%86%E6%9E%90>
+69. 多项式回归-百度，<https://baike.baidu.com/item/%E5%A4%9A%E9%A1%B9%E5%BC%8F%E5%9B%9E%E5%BD%92>
+70. 多元线性回归-百度，<https://baike.baidu.com/item/%E5%A4%9A%E5%85%83%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92>  
+71. 交互作用-百度，<https://baike.baidu.com/item/%E4%BA%A4%E4%BA%92%E4%BD%9C%E7%94%A8>  
+72. 数据挖掘：数据清洗——数据噪声处理，<https://blog.csdn.net/AvenueCyy/article/details/104389276>  
+73. R语言(3)-四张图检验线性回归模型，<https://zhuanlan.zhihu.com/p/49149862>  
+74. R语言之多重共线性的判别以及解决方法，<https://codetd.com/article/9068848>  
+75. Durbin-Watson 检验，<https://blog.csdn.net/robert_chen1988/article/details/106158129>  
+76. 回归诊断，<https://baike.baidu.com/item/%E5%9B%9E%E5%BD%92%E8%AF%8A%E6%96%AD>  
+77. 残差-百度，<https://baike.baidu.com/item/%E6%AE%8B%E5%B7%AE>  
+78. 方差分析-百度，<https://baike.baidu.com/item/%E6%96%B9%E5%B7%AE%E5%88%86%E6%9E%90/1502206>  
+79. 方差分析的基本概念，<https://blog.csdn.net/szmt910912/article/details/46475801>  
+80. 如何理解和使用方差分析，<https://zhuanlan.zhihu.com/p/49479042>  
+81. 第十四讲 R-单因素方差分析1，<https://mp.weixin.qq.com/s?__biz=MzU1Mzc3OTIwNg==&mid=2247488583&idx=2&sn=de31ac2282e9204f8b9500c8071f276a&chksm=fbecfd2ecc9b743815227ace281f424ca97812cc89f9103420e29dbae9117b8405904ddbab3b&scene=21#wechat_redirect>  
+82. 多重比较-百度，<https://baike.baidu.com/item/%E5%A4%9A%E9%87%8D%E6%AF%94%E8%BE%83>  
+83. 基于R语言的七种多重比较方法，<https://baijiahao.baidu.com/s?id=1579153609724028605>  
+84. R语言统计与绘图：组间差异的多重比较，<https://www.sci666.com.cn/58293.html>  
+85. 方差分析之多重比较，<https://zhuanlan.zhihu.com/p/44880434>  
+86. 双因素方差分析在R中的实现及交互效应的绘制方法，<https://zhuanlan.zhihu.com/p/56577859>  
+87. R语言执行多元方差分析，<https://copyfuture.com/blogs-details/20200722183626718630m9z9fdbmfuwn>  
+88. 功效分析-百度，<https://baike.baidu.com/item/%E5%8A%9F%E6%95%88%E5%88%86%E6%9E%90>
+89. R语言实战——scatterplotMatrix()，<https://www.jianshu.com/p/6949b9c2b7ec>
+90. 统计上的“置换检验”有什么用？，<https://www.zhihu.com/question/26629875/answer/392615941>  
+91. 置换检验（Permutation Test），<https://www.bioinfo-scrounger.com/archives/564/>  
+92. 广义线性模型-百度，<https://baike.baidu.com/item/%E5%B9%BF%E4%B9%89%E7%BA%BF%E6%80%A7%E6%A8%A1%E5%9E%8B>  
+93. R制图:马赛克图，哪个时代的人爱阅读，<https://zhuanlan.zhihu.com/p/106381582>  
+94. 广义线性模型一（Generalized Linear Models，GLM），<https://www.jianshu.com/p/97368848f727>  
+95. logistic回归，百度，<https://baike.baidu.com/item/logistic%E5%9B%9E%E5%BD%92>  
+96. 泊松回归-百度，<https://baike.baidu.com/item/%E6%B3%8A%E6%9D%BE%E5%9B%9E%E5%BD%92>  
+97.泊松分布，<https://zhuanlan.zhihu.com/p/279330443>  
+98. 优势比，百度<https://baike.baidu.com/item/%E4%BC%98%E5%8A%BF%E6%AF%94>
+99. 如何理解主成分分析法 （PCA），<https://zhuanlan.zhihu.com/p/170398464>
+100. 主成分分析法，<https://blog.csdn.net/weixin_43914260/article/details/99585202>
+101. R绘图lattice包，<https://blog.csdn.net/yhb315279058/article/details/49429957>
+
+
+
+
+
+
